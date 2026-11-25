@@ -14,8 +14,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   built: the strict range mode refuses a block outside every loop at once, and a loop that stops names its last pass's
   records outside their ranges (17); a purity every column exceeds is refused as exceeded, the scan going to 1e-6 of the
   feed (19); a two-liquid column that fails starts from the one-liquid column (8: column 5 with 14 stages, at the plant's iteration 5; the plant then stops in it at iteration 14, open until the warm starts of proposal 0027); a trial
-  column inside a bracket is tried from the cold start (13, M2: both of Lab's inputs solved). Open: the three questions
-  of the decision (strict mode inside loops judged at convergence; the scan's edge; the time of the cold starts);
+  column inside a bracket is tried from the cold start (13, M2: both of Lab's inputs solved). The maintainer agreed the three
+  answers (2026-11-25). Open: whether a purity may be met as "at least" (the maintainer's remark on request 19);
   Lab's rerun of request 13 in the plant; request 18 (left to proposal 0027).
 - **CO2 in the methanol + water condensate of CHEPTA-Lab's separator** (docs/decisions/2026-11-20-01-co2-methanol-water.md):
   measured ternary data (Xia 2004, Bezanehtak 2004, Xie 2005; ThermoML) show the paper's 18.5 mol % CO2 is not
