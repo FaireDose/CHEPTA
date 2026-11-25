@@ -1,6 +1,7 @@
 # 0027: Faster flowsheet and design-specification runs: columns restarted from their last answer, timing, a time limit
 
-- **Status:** Draft (2026-11-25), for the maintainer's answers to the open questions below
+- **Status:** Accepted (the maintainer, 2026-11-25: "for 267, i agree with all": the seven recommended answers);
+  step 2 (a, b, c and e1) to build; see docs/decisions/2026-11-25-02-solve-speed-proposal.md
 - **Author(s):** drafted by a coding agent for CHEPTA-Lab's priority 1 for release 0.6.3 (speed) and its request 18
   (an `OUT_OF_TIME` in a design specification must say where it was)
 - **Discussion:** the pull request that adds this file
@@ -198,7 +199,7 @@ restart can change is which solution is found where a column has several steady 
 - **A faster cold start** (fewer bubble-point sweeps): helps the first pass only.
 - **(d) and (e)** above: later, if needed.
 
-## Open questions for the maintainer (with the recommendation)
+## Open questions for the maintainer (with the recommendation; all seven accepted on 2026-11-25)
 
 1. **Default on?** Recommended: yes, `columnRestart: "previous"` by default (as Aspen Plus), with `"cold"` to get
    0.6.2's path.

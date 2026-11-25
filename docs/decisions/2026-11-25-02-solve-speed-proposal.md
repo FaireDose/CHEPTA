@@ -31,9 +31,16 @@ with `OUT_OF_TIME` that names the block, the pass, the design-specification eval
 point (request 18); (e1) the old K-values forgotten after a failed split; (d) simultaneous tears and specifications
 and (e2) cheaper properties in the columns only later, (e2) next to reach 10 minutes.
 
-## Waiting for the maintainer
+## Decided (the maintainer, 2026-11-25, relayed by the coordinating session: "for 267, i agree with all")
 
-The seven open questions of the proposal, each with a recommendation: (1) restart on by default; (2) no profiles in the
-project file (later an explicit start profile if needed); (3) `solver.timeLimit_s` beside `limits.time_ms`; (4) the best
-point in `error.details.best`, no partial answer; (5) timing in every result, outside `reproduction`; (6) (e1) in the
-same build; (7) the 10 minutes: (e2) as its own proposal next (the last factor of about 1.6), not (d).
+1. Columns restarted from their last answer by default: `solver.columnRestart` "previous"; "cold" gives 0.6.2's path.
+2. No profiles saved automatically in the project file (later, if needed, an explicit start profile on a column).
+3. `solver.timeLimit_s` in the flowsheet's solver, beside the request's `limits.time_ms`, both reporting the same
+   progress (the design-specification evaluation, its varied value, the bracket, the best point: Lab's request 18).
+4. No partial answer on `OUT_OF_TIME`; the best point in `error.details.best`.
+5. Timing in every result, outside `reproduction`.
+6. (e1), a failed split not retried from a stage's old K-values, in the same build as (a)-(c).
+7. (e2), cheaper properties inside the columns, as its own proposal after this build; not (d).
+
+Next: step 2, one pull request with (a), (b), (c) and (e1), re-measured on Lab's `new-plant-ds-ethanol0.0004` and
+`plant62-R-bottoms-col5-14stages` (request 8).

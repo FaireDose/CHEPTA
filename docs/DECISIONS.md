@@ -15,7 +15,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   every rigorous column cold (74 % of the time is the columns' cold start); proposed: columns restarted from their last
   answer and the two-liquid stage's failed old K-values forgotten (prototype: Lab's design-specification run 108 min to
   16 min, the same answer within its tolerance), timing in the result, `solver.timeLimit_s` with an `OUT_OF_TIME` that
-  names the solve and the varied value. Waiting for the maintainer: the seven open questions of the proposal.
+  names the solve and the varied value. Accepted 2026-11-25 (the seven recommended answers); next: step 2, the build
+  of (a), (b), (c) and (e1), re-measured on Lab's plant; then (e2) as its own proposal.
 - **CO2 in the methanol + water condensate of CHEPTA-Lab's separator** (docs/decisions/2026-11-20-01-co2-methanol-water.md):
   measured ternary data (Xia 2004, Bezanehtak 2004, Xie 2005; ThermoML) show the paper's 18.5 mol % CO2 is not
   physical and CHEPTA's PR with k_ij (3.4 %) is too high (+77 % in solubility in a 1:1 solvent); PR + gE (MHV1) is
