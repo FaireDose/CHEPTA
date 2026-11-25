@@ -12,3 +12,9 @@ CHEPTA is fitted to them. `test/lab-requests-063.test.js` runs them (decision 20
 | R19-column-purity-always-exceeded.request.json | the same folder: column 15 alone (18 stages, R 2, 99.99 mass % water in the bottoms), fed the settled plant's stream 28 with its organics cut to 0.0002 of their flows | `OUT_OF_RANGE` "the reflux ratio is too low", although every column solved was purer than asked (request 19) |
 | rerun-u-column-partial-flash53-purity.request.json | cases/methanol-co2-campos-2022/results-chepta-main-415da41: the methanol column (30 stages, partial condenser, R 2, PR), 99.985 mol % water in the bottoms | `NO_CONVERGENCE`: the value lies inside the scanned range, but the columns where it is met were not solved (M2) |
 | rerun-diag-column-recovery-0.99987.request.json | the same column, a water recovery of 0.99987 in the bottoms | as above (M2) |
+
+Built here from a Lab input (not a Lab file):
+
+| File | Built from | Fault on main 415da41 |
+|---|---|---|
+| plant62-R-bottoms-col5-14stages-SCDS5-iteration5.request.json | Lab's cases/ethyl-acetate-piotrowski-2021/results-chepta-main-415da41/plant62-R-bottoms-col5-14stages.request.json, run on this branch: column 5 (absorber, 14 stages, VLL) alone, with the two inlets (S27, S6) it had when the plant stopped in it at loop iteration 5, as CHEPTA computed them | `NO_CONVERGENCE` (request 8); the same inlets converge with 8, 11 and 13 stages, and with one liquid on 14 |

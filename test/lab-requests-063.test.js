@@ -83,3 +83,24 @@ test("EA-19: a purity every column exceeds is refused as exceeded, with the feed
   assert.ok(r.error.details.range.lowest.at < 18, JSON.stringify(r.error.details.range));
   assert.ok(r.error.details.range.lowest.value > 0.9999);
 });
+
+test("EA-8: column 5 with 14 stages and two liquids allowed, at the plant's iteration 5, starts from the one-liquid column", () => {
+  const r = run(load("plant62-R-bottoms-col5-14stages-SCDS5-iteration5"));
+  assert.equal(r.outcome, "ok", r.error?.message);
+  const col = r.value.blocks?.SCDS5 ?? r.value.results?.SCDS5;
+  assert.ok(col, Object.keys(r.value).join(", "));
+  // the column's balance: what enters leaves (the flowsheet checks it; here its outlets against its feeds)
+  const st = r.value.streams, sum = o => Object.values(o).reduce((a, b) => a + b, 0);
+  const into = sum(st.S27.flow_kmol_h) + sum(st.S6.flow_kmol_h), out = sum(st.S7.flow_kmol_h) + sum(st.S8.flow_kmol_h);
+  assert.ok(Math.abs(into - out) < 1e-6 * into, `${into} ${out}`);
+});
+
+// M2 (Lab's methanol case): a purity and a recovery inside the range the scan reached, not solved on main 415da41
+// because the columns between the crossing points could not be reached from their neighbours. Slow (3 and 7 minutes).
+for (const [name, label] of [["rerun-u-column-partial-flash53-purity", "purity 0.99985"], ["rerun-diag-column-recovery-0.99987", "recovery 0.99987"]]) {
+  test(`M2: the methanol column's water ${label} in the bottoms, inside the scanned range, is solved (slow; CHEPTA_SLOW_TESTS=1)`,
+    { skip: !process.env.CHEPTA_SLOW_TESTS && "set CHEPTA_SLOW_TESTS=1 to run" }, () => {
+      const r = run(load(name));
+      assert.equal(r.outcome, "ok", r.error?.message);
+    });
+}
