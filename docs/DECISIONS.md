@@ -17,6 +17,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   rule. Open: check the transcribed rows (rule 4); a set for nitrogen + methanol (no ThermoML data; search the open
   literature) and nitrogen + water (IAPWS G7-04, as H2 + water) so that MHV1 runs Lab's whole separator; whether Lab
   switches its separator to PR + gE (MHV1).
+- **Nitrogen inside MHV1; pair coverage** (docs/decisions/2026-11-25-01-nitrogen-mhv1.md): built: N2 + methanol
+  fitted inside the rule to IUPAC SDS Vol. 10 (4 sets; PR 2.8 %, SRK 3.7 % in P, within the gate; ChemSep's k_ij 22-25 %),
+  N2 + water to its ThermoML articles (5.4 / 5.6 %, written with a fit-quality warning as a proposal); PR + gE (MHV1)
+  now runs Lab's separator with N2 (2.38 % CO2, 0.42 % H2 in the liquid); `validation/pair_coverage.mjs` prints the
+  sets of every gas + liquid pair. Open: confirm the N2 + water set (or its IAPWS G7-04 alternative) and the SDS source;
+  check the transcribed rows (rule 4). SRK + gE (MHV1) still refuses CO2 + water (unchanged).
 - **Recycle solver safeguards, Lab's request 14** (docs/decisions/2026-11-14-08-recycle-safeguards.md): built: Broyden
   rejects a pass ten times worse (a step reduction, as COFE's line search), a finite-difference Jacobian on a stall
   (COFE's "Jacobian ... when required"); a block that fails in a loop stops it at once, named (the maintainer,

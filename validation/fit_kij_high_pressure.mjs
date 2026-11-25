@@ -68,9 +68,11 @@ export const PAIRS = [
 
 const kij = read("src/data/kij.json");
 
-/** The articles of a pair: [{ file, cite, rows: [{ T, P, p1, x, y }] }]. */
+/** The articles of a pair: [{ file, cite, rows: [{ T, P, p1, x, y }] }]: the ThermoML Archive's (thermoml_<gas>_<solvent>_*.json,
+ *  hp_gas_solubility.py) and, for a pair the Archive lacks, those compiled in an open IUPAC Solubility Data Series volume
+ *  (sds<volume>_<gas>_<solvent>_*.json, transcribed from the page images; N2 + methanol, 2026-11-25). */
 export function articles(gas, solv) {
-  return readdirSync(DIR).filter(f => f.startsWith(`thermoml_${gas}_${solv}_`)).sort().map(file => {
+  return readdirSync(DIR).filter(f => f.startsWith(`thermoml_${gas}_${solv}_`) || new RegExp(`^sds\\d+_${gas}_${solv}_`).test(f)).sort().map(file => {
     const d = JSON.parse(readFileSync(new URL(file, DIR), "utf8"));
     if (d.components.join() !== [gas, solv].join()) throw new Error(`${file}: components ${d.components}`);
     const c = Object.fromEntries(d.columns.map((k, n) => [k, n]));
