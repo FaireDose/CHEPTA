@@ -1,4 +1,4 @@
-# 2026-11-25-01: proposal 0027, faster flowsheet and design-specification runs
+# 2026-11-25-02: proposal 0027, faster flowsheet and design-specification runs
 
 ## The question (CHEPTA-Lab's priority 1 for release 0.6.3, relayed by the coordinating session on 2026-11-20)
 
