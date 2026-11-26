@@ -511,3 +511,4 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - Still open: #270's three points and #271's three points ("points 1-3" was read as #272's); #268 rule-4 check.
 - Workers: I running; D and H on short docs-only recording tasks (three at once for a few minutes, above the 2-worker rule).
 - 19:19 H recorded #272's answers (head 9580b53; docs only: decision 2026-11-26-08 and DECISIONS.md; checked the diff). H done.
+- 19:21 D recorded #268's answers (head 0450446, docs only; 1837 pass, 0 fail). Leftover: the N2+water sets' quality_warning and known-issue text still say "for the maintainer to confirm" (from WARNED in fit_mhv1_high_pressure.mjs; a test checks the wording). Asked D to update the wording only, rerun --from-results --write, update the test's wording, and check that no number in mhv1.json moved.
