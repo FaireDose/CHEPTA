@@ -10,13 +10,21 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **CHEPTA-Lab's requests 17 and 19, and the rest of 8, 13 and M2** (docs/decisions/2026-11-20-03-lab-requests-17-19.md):
+  built: the strict range mode refuses a block outside every loop at once, and a loop that stops names its last pass's
+  records outside their ranges (17); a purity every column exceeds is refused as exceeded, the scan going to 1e-6 of the
+  feed (19); a two-liquid column that fails starts from the one-liquid column (8: column 5 with 14 stages, at the plant's iteration 5; the plant then stops in it at iteration 14, open until the warm starts of proposal 0027); a trial
+  column inside a bracket is tried from the cold start (13, M2: both of Lab's inputs solved). The maintainer agreed the three
+  answers (2026-11-25). Open: whether a purity may be met as "at least" (the maintainer's remark on request 19);
+  Lab's rerun of request 13 in the plant; request 18 (left to proposal 0027).
 - **CO2 in the methanol + water condensate of CHEPTA-Lab's separator** (docs/decisions/2026-11-20-01-co2-methanol-water.md):
   measured ternary data (Xia 2004, Bezanehtak 2004, Xie 2005; ThermoML) show the paper's 18.5 mol % CO2 is not
   physical and CHEPTA's PR with k_ij (3.4 %) is too high (+77 % in solubility in a 1:1 solvent); PR + gE (MHV1) is
   within 9 % and gives about 2.6 % (without N2). Built: the data, the check, the test, four known issues and the method
-  rule. Open: check the transcribed rows (rule 4); a set for nitrogen + methanol (no ThermoML data; search the open
-  literature) and nitrogen + water (IAPWS G7-04, as H2 + water) so that MHV1 runs Lab's whole separator; whether Lab
-  switches its separator to PR + gE (MHV1).
+  rule. Decided (2026-11-25): nitrogen + water (IAPWS G7-04) and nitrogen + methanol MHV1 sets, by a separate worker;
+  then Lab's separator and the methanol examples move to PR + gE (MHV1); Lab does not tune toward the paper's CO2
+  recycle. Open: the maintainer's check of the transcribed rows (rule 4); the nitrogen sets (nitrogen + methanol has
+  no ThermoML data: search the open literature).
 - **Recycle solver safeguards, Lab's request 14** (docs/decisions/2026-11-14-08-recycle-safeguards.md): built: Broyden
   rejects a pass ten times worse (a step reduction, as COFE's line search), a finite-difference Jacobian on a stall
   (COFE's "Jacobian ... when required"); a block that fails in a loop stops it at once, named (the maintainer,

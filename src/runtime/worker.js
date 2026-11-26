@@ -47,7 +47,7 @@ function progressLoops(p) {
   if (p?.kind !== "flowsheet" || !Array.isArray(p.loops) || !p.loops.length) return "";
   const loops = p.loops.map(l => `the loop through ${l.blocks.join(", ")} (tear stream${l.tears.length > 1 ? "s" : ""} ${l.tears.join(", ")}) ${l.converged
     ? `had converged in ${l.iterations} iteration${l.iterations === 1 ? "" : "s"} (residual ${sci(l.residual)})`
-    : `was at iteration ${l.iterations}${l.maxIterations ? ` of ${l.maxIterations}` : ""}, the tear stream${l.tears.length > 1 ? "s" : ""} changing by ${sci(l.residual)} per iteration (tolerance ${sci(l.tolerance)}${l.recent?.length > 1 ? `; the last ${l.recent.length}: ${l.recent.map(sci).join(", ")}` : ""})`}`);
+    : `was at iteration ${l.iterations}${l.maxIterations ? ` of ${l.maxIterations}` : ""}, the tear stream${l.tears.length > 1 ? "s" : ""} changing by ${sci(l.residual)} per iteration (tolerance ${sci(l.tolerance)}${l.recent?.length > 1 ? `; the last ${l.recent.length}: ${l.recent.map(sci).join(", ")}` : ""})${l.strictOutside?.length ? `; its last pass used ${l.strictOutside.length === 1 ? "a record" : `${l.strictOutside.length} records`} outside ${l.strictOutside.length === 1 ? "its range" : "their ranges"}, which the strict range mode (strictRanges) will refuse in the answer if they remain (${l.strictOutside.join("; ")})` : ""}`}`);
   return `When it was stopped, ${loops.join("; ")}.`;
 }
 

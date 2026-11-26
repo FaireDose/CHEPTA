@@ -331,8 +331,11 @@ export function solveSpecified(opts, solve, th) {
   const ln = Math.log;
   const vars = [
     ...candidates.map(name => (name === "distillate_rate"
-      ? { name, unit: "mol/s", lo: -LOGIT_MAX, hi: LOGIT_MAX, to: p => Dmax / (1 + Math.exp(-p)), from: v => logit(v / Dmax), grid: [0.01, 0.03, 0.06, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.94, 0.97, 0.99].map(f => f * Dmax) }
-      : { name, unit: "", lo: ln(RATIO_RANGE[0]), hi: ln(RATIO_RANGE[1]), to: Math.exp, from: ln, grid: [0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 4, 8, 15, 30, 60, 120, 250] })),
+      ? { name, unit: "mol/s", lo: -LOGIT_MAX, hi: LOGIT_MAX, to: p => Dmax / (1 + Math.exp(-p)), from: v => logit(v / Dmax), grid: [0.01, 0.03, 0.06, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.94, 0.97, 0.99].map(f => f * Dmax),
+        edge: { low: [3e-3, 1e-3, 3e-4, 1e-4, 1e-5, 1e-6].map(f => f * Dmax), high: [0.997, 0.999, 0.9997, 0.9999, 0.99999, 0.999999].map(f => f * Dmax),
+          limit: [logit(1e-6) - 1e-9, logit(0.999999) + 1e-9] } }
+      : { name, unit: "", lo: ln(RATIO_RANGE[0]), hi: ln(RATIO_RANGE[1]), to: Math.exp, from: ln, grid: [0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 4, 8, 15, 30, 60, 120, 250],
+        edge: { low: [0.01, 0.005, 0.002, 1.01e-3], high: [500, 990] } })),
     ...freeDraws.map(k => ({ name: "draw_rate", draw: k + 1, unit: "mol/s", lo: ln(1e-6), hi: ln(0.98), to: p => F * Math.exp(p), from: v => ln(v / F),
       grid: [0.001, 0.003, 0.01, 0.03, 0.06, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5, 0.65, 0.8].map(f => f * F) })),
   ];
@@ -372,9 +375,10 @@ export function solveSpecified(opts, solve, th) {
   const scaled = (d, a) => (d.kind === "stage_temperature" ? (a - d.value) / 10 : d.kind === "component_flow" ? Math.log(Math.max(a, 1e-300) / d.value) : logit(a) - logit(d.value));
   // (a point is solved once: a second call with the same variables returns the first answer, a failure included)
   const seen = new Map();
-  const point = p => {
+  const point = (p, cold = false) => {
     const key = p.join(",");
-    if (seen.has(key)) return seen.get(key);
+    if (seen.has(key) && !(cold && seen.get(key) === null)) return seen.get(key);
+    if (cold) warm = null;   // a column from the bubble-point start and the continuation, not from a neighbour
     const values = vars.map((v, k) => v.to(p[k])), r = columnAt(values);
     let q = null;
     if (r) { const a = design.map(d => achieved(r, d)), g = design.map((d, k) => scaled(d, a[k])); q = { p: p.slice(), values, r, a, g, norm: Math.hypot(...g) }; }
@@ -498,6 +502,31 @@ export function solveSpecified(opts, solve, th) {
     pts.sort((a, b) => a.p[0] - b.p[0]);
     const brackets = [], unsolved = [];
     for (let k = 0; k + 1 < pts.length; k++) if (pts[k].g[0] * pts[k + 1].g[0] <= 0) brackets.push([pts[k], pts[k + 1]]);
+    // no sign change, and the column nearest to the value asked is the grid's first or last: the value may lie beyond
+    // the grid, toward the variable's own limit (EA-19, 2026-11-20: a feed nearly free of organics, whose water purity
+    // is met only below 1 % of the feed as distillate). Go on toward that limit, each column from the last one solved
+    if (!brackets.length && pts.length >= 2 && v.edge) {
+      const k = pts.reduce((a, q, e) => (Math.abs(q.g[0]) < Math.abs(pts[a].g[0]) ? e : a), 0);
+      const side = k === 0 ? "low" : k === pts.length - 1 ? "high" : null;
+      let last = pts[k], complete = true;
+      for (const x of side ? v.edge[side] : []) {
+        const p = v.from(x);
+        // the edge may go beyond the range Newton's method takes (a distillate of 1e-4 to 0.9999 of the feed), to
+        // the variable's own `limit` where it has one
+        if (p < (v.edge.limit?.[0] ?? v.lo) || p > (v.edge.limit?.[1] ?? v.hi) || (side === "low" ? p >= last.p[0] : p <= last.p[0])) continue;
+        // from the last column solved, else from the bubble-point start: a column with a trace of distillate is
+        // often easier from nothing than from a neighbour (EA-19)
+        const t = reach(p, last) ?? keep(point([p], true));
+        if (!t) { complete = false; break; }
+        if (!pts.includes(t)) pts.push(t);
+        const crossed = t.g[0] * last.g[0] <= 0;
+        if (crossed) brackets.push(side === "low" ? [t, last] : [last, t]);
+        last = t;
+        if (crossed) break;
+      }
+      edgeScan = side ? { side, complete } : null;
+      pts.sort((a, b) => a.p[0] - b.p[0]);
+    }
     if (!brackets.length && pts.length >= 3) {
       // no sign change on the grid: the specification may still pass its value between two grid points, at an
       // extremum. Close in on the point nearest to the value asked, by halving the intervals next to it
@@ -528,8 +557,9 @@ export function solveSpecified(opts, solve, th) {
         // each trial column from the nearer end, by way of the points halfway where it fails (as in the scan): a
         // column the outer loop cannot reach inside a bracket must not end the search unseen (EA-13, 2026-11-14)
         const nearer = Math.abs(pc - pa) < Math.abs(pc - pb) ? a : b;
+        // and, last, from the bubble-point start (EA-19, 2026-11-20: a column with a trace of distillate)
         let c = reach(pc, nearer);
-        if (!c) { c = reach((pa + pb) / 2, nearer); if (!c) { unsolved.push([a, b]); break; } }
+        if (!c) { c = reach((pa + pb) / 2, nearer) ?? keep(point([pc], true)); if (!c) { unsolved.push([a, b]); break; } }
         if (c.g[0] * b.g[0] > 0) { b = c; fb = c.g[0]; if (kept === "a") fa /= 2; kept = "a"; }
         else { a = c; fa = c.g[0]; if (kept === "b") fb /= 2; kept = "b"; }
         if (Math.abs(a.p[0] - b.p[0]) < 1e-13) break;
@@ -540,7 +570,7 @@ export function solveSpecified(opts, solve, th) {
     return { q: null, pts, unsolved };
   }
 
-  let done = null, run = null, start = null;
+  let done = null, run = null, start = null, edgeScan = null;
   // a restart (src/flowsheet/flowsheet.js: the block's last answer in a recycle loop or a design specification's
   // evaluation): the outer loop first starts from the variables found then, with that column as the start
   const prevVals = Array.isArray(opts.startAdjusted) ? vars.map(v => opts.startAdjusted.find(a => a.variable === v.name && (a.draw ?? null) === (v.draw ?? null))?.value) : null;
@@ -572,7 +602,7 @@ export function solveSpecified(opts, solve, th) {
   let scanned = null;
   if (!done && m === 1) {
     scanned = scan(best.p[0]);
-    tried.push(`a scan of ${varName(vars[0])} from ${fmt(vars[0].grid[0])} to ${fmt(vars[0].grid.at(-1))} (${scanned.pts.length} columns solved)${scanned.q ? ", then a bracketing secant search" : scanned.unsolved?.length ? `: the specification is crossed between ${scanned.unsolved.map(([a, b]) => `${fmt(a.values[0])} and ${fmt(b.values[0])}`).join(", ")}, but the columns between could not be solved` : ": no value meets the specification"}`);
+    tried.push(`a scan of ${varName(vars[0])} from ${fmt(Math.min(vars[0].grid[0], scanned.pts[0]?.values[0] ?? Infinity))} to ${fmt(Math.max(vars[0].grid.at(-1), scanned.pts.at(-1)?.values[0] ?? -Infinity))} (${scanned.pts.length} columns solved)${scanned.q ? ", then a bracketing secant search" : scanned.unsolved?.length ? `: the specification is crossed between ${scanned.unsolved.map(([a, b]) => `${fmt(a.values[0])} and ${fmt(b.values[0])}`).join(", ")}, but the columns between could not be solved` : ": no value meets the specification"}`);
     if (scanned.q) done = scanned.q;
   }
   if (!done) throw refusal();
@@ -616,7 +646,27 @@ export function solveSpecified(opts, solve, th) {
         }
         const short = d.value > hi.a[0] ? hi : lo;
         let why, cure;
-        if (v.name === "distillate_rate" && base.some(s => s.kind === "reflux_ratio" || s.kind === "condenser_duty" || s.kind === "boilup_ratio" || s.kind === "reboiler_duty")) {
+        const what = d.kind === "purity" ? "purer" : d.kind === "stage_temperature" ? "hotter" : "higher";
+        if (d.value < lo.a[0] && d.kind !== "stage_temperature") {
+          // every column solved gives more than asked (EA-19, 2026-11-20: the advice was "the reflux is too low" for a
+          // purity that every column exceeded). The specification is exceeded, not out of reach: the column separates
+          // more than asked even at the end of the range, which in a plant usually means a feed nearly free of what
+          // the specification limits
+          const end = edgeScan && edgeScan.side === (lo === pts[0] ? "low" : lo === pts.at(-1) ? "high" : null);
+          const edgeText = end ? (edgeScan.complete ? `, the end of the range the search takes` : ` (the columns beyond it could not be solved)`) : "";
+          // a product cannot be made less pure than the feed by a column that sends the other components to the
+          // other product: say so when the feed itself is already purer than asked
+          let feedText = "";
+          if (d.kind === "purity" && (d.product === "bottoms" || d.product === "distillate")) {
+            const z = d.basis === "mass" ? feed[d.i] * MW[d.i] / sum(feed.map((f, k) => f * MW[k])) : feed[d.i] / F;
+            if (z >= d.value) feedText = ` The column's feed itself is ${fmtReach(z)} ${names[d.i]} (${d.basis ?? "mole"} fraction), already purer than asked: a column that sends the other components ${d.product === "bottoms" ? "up" : "down"} cannot make its ${d.product} less pure than that.`;
+          }
+          why = `Every column solved is ${what} than asked; the least at ${varText(v, lo.values[0])}${edgeText}: the specification is exceeded, not out of reach.${feedText}`;
+          cure = feedText ? `a purity above the feed's (within the range above), or a flow specification (distillate or bottoms flow) in place of this one; in a flowsheet, a feed this pure is the state of the loop, so check what feeds the column`
+            : base.length
+            ? `${d.kind === "purity" ? "a purer specification (above the range), " : "a specification within the range above, "}${base.map(q => q.kind).includes("reflux_ratio") ? "a smaller reflux_ratio, " : ""}fewer stages, or a flow specification (distillate or bottoms flow) in place of this one; in a flowsheet, check the column's feed: one nearly free of the other components makes any purity near 1 met by a trace of distillate`
+            : "a specification within the range above, or other values of the specifications given with it";
+        } else if (v.name === "distillate_rate" && base.some(s => s.kind === "reflux_ratio" || s.kind === "condenser_duty" || s.kind === "boilup_ratio" || s.kind === "reboiler_duty")) {
           const s = base[0];
           why = `With ${s.kind} fixed at ${fmt(s.value)}, no distillate flow gives it: the ${s.kind.replace("_", " ")} is too low for this specification on ${prob.N} stages (below the minimum reflux for it), or the stages are too few.`;
           cure = `a larger ${s.kind} (or leave it free: give the distillate or bottoms flow, or a second design specification, in its place), more stages, or a specification within the range above`;
