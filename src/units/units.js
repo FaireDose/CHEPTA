@@ -774,10 +774,12 @@ export function specStatus(type, spec = {}, { sys, outletCount, reactions } = {}
  * @param {object[]} [args.reactions]  the flowsheet's reactions (src/reactions/reaction.js), for the reactors
  * @param {boolean} [args.iterating]  the block is calculated inside a recycle loop that has not converged yet: a splitter
  *   by flow then shares a short inlet instead of refusing it (the flowsheet refuses a loop that converges so)
+ * restart: the block's own last answer in the same flowsheet run (proposal 0027, (a)), passed to its solve; a block
+ * may return one as `restart` (not enumerable).
  * @returns {{type:string, outlets:object, duty_kW:number, balance:{material:number, energy_kW:number},
  *   notes:string[], state?:object, reaction?:object, sizing?:object, profile?:object[], warnings?:object[], method?:object}}
  */
-export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reactions = [], iterating = false } = {}) {
+export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reactions = [], iterating = false, restart = null } = {}) {
   const u = unitType(type);
   if (!sys || typeof sys.flash !== "function") throw fail("BAD_INPUT", `${u.label}: a system (property package) is needed.`);
   if (spec == null || typeof spec !== "object" || Array.isArray(spec)) throw fail("BAD_INPUT", `${u.label}: the specification must be an object.`);
@@ -809,7 +811,7 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
     throw fail("NOT_AVAILABLE", `${u.label}: an inlet carries crystals from a crystallizer; this block would recalculate the stream as a fluid and melt them (the property methods have no solid phase yet). Send the crystals to a Product, or name the component in the flowsheet's solids (Method: solids in equilibrium), so that every block keeps it as a solid.`);
   }
   const s = u.checkSpec ? u.checkSpec(spec, { sys, outletCount: n, reactions }) : spec;
-  const r = u.solve({ sys, inlets: ins, spec: s, outletCount: n, reactions, iterating });
+  const r = u.solve({ sys, inlets: ins, spec: s, outletCount: n, reactions, iterating, ...(restart ? { restart } : {}) });
   const outs = Object.values(r.outlets).flatMap(asList);
   const inList = Object.values(ins).flat();
   // material balance per component (a feed creates its flow; a product takes it out of the flowsheet); a reactor:
@@ -829,11 +831,15 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
     if (bad.length) throw new Error(`Internal: ${u.label} does not close its ${u.reactive === "elements" ? "element" : "mass"} balance (${bad.map(([k, d]) => `${k} ${d.toExponential(2)}`).join(", ")}). Please report this.`);
   }
   const energy_kW = type === "feed" || type === "product" ? 0 : sumH(inList) + r.duty_kW - sumH(outs) - (u.reactive ? r.reaction.heat_kW : 0);
-  return { type, outlets: r.outlets, duty_kW: r.duty_kW, balance: { material, energy_kW, ...(elements ? { elements: elements.relative, mass: elements.mass } : {}) },
+  const out = { type, outlets: r.outlets, duty_kW: r.duty_kW, balance: { material, energy_kW, ...(elements ? { elements: elements.relative, mass: elements.mass } : {}) },
     notes: r.notes ?? [], ...(r.state ? { state: r.state } : {}), ...(r.sizing ? { sizing: r.sizing } : {}), ...(u.reactive ? { reaction: r.reaction } : {}),
     ...(r.profile ? { profile: r.profile } : {}), ...(r.warnings?.length ? { warnings: checkWarnings(u, r.warnings) } : {}), ...(r.method ? { method: r.method } : {}),
     // records used outside their range in the block's own method (src/util/ranges.js; a column with its own method)
     ...(r.extrapolations?.length ? { extrapolations: r.extrapolations } : {}) };
+  // what the block's next calculation in the same flowsheet run may start from (proposal 0027, (a); the rigorous
+  // column's profile): not part of the answer, so not enumerable
+  if (r.restart) Object.defineProperty(out, "restart", { value: r.restart, enumerable: false });
+  return out;
 }
 
 /** The warning codes a block may return (proposal 0015, section 9, contract 2); a block adds its own code here. */

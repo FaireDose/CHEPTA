@@ -132,6 +132,7 @@
  * fugacities as the bubble point and the flash. Two liquids on the stages with it are refused (two-liquids.js).
  */
 import { fail } from "../../util/errors.js";
+import { checkTime } from "../../util/progress.js";
 import { anyBubbleT } from "../../equilibrium/bubble-any.js";
 import { liquidTangentPlane } from "../../equilibrium/stability.js";
 import { tpdStability } from "../../equilibrium/eos-stability.js";
@@ -707,6 +708,7 @@ export function solveCascade(opts = {}) {
     let nr = norm(P.res), it = 0, stalls = 0;
     const n0 = nr;
     for (; it <= maxIt; it++) {
+      checkTime();   // a flowsheet's time limit (solver.timeLimit_s; proposal 0027)
       if (meets(groups(P).g)) return { u, P, iterations: it, converged: true };
       if (it === maxIt) break;
       // Newton converges fast near a solution: no thousandfold fall in PATIENCE iterations means it is far from one
@@ -758,7 +760,10 @@ export function solveCascade(opts = {}) {
   const startU = opts.start && Array.isArray(opts.start.stages) && opts.start.stages.length === N && opts.start.stages.every(s => s.l?.length === n && s.v?.length === n)
     ? Float64Array.from(opts.start.stages.flatMap((s, j) => [...s.l.map(a => a * 1), ...s.v, s.T_K, ...(vl ? [j === 0 ? (s.U_mol_s ?? 0.5 * s.L_mol_s) / s.L_mol_s : 1] : [])])) : null;
   if (startU) {
-    const r = newton(startU, { dTmax: 20, maxIt: opts.quick ? Math.min(20, cap) : cap < Infinity ? cap : 40, patient: !!opts.quick, early: !!opts.quick });
+    // a trial column of the specifications' outer loop (quick), or a restart from the block's last answer in a flowsheet
+    // (startEarly; proposal 0027): Newton gives up early, then the cold starts below run as without a start
+    const quick = !!opts.quick || !!opts.startEarly;
+    const r = newton(startU, { dTmax: 20, maxIt: quick ? Math.min(20, cap) : cap < Infinity ? cap : 40, patient: quick, early: quick });
     tried.push(`Newton from the previous solution (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
     if (r.converged) result = { ...r, start: "previous solution" };
   }

@@ -1,0 +1,71 @@
+{
+ "_about": "Nitrogen (1) + methanol (2): mole fraction solubility of nitrogen at a nitrogen partial pressure of 101.325 kPa, 248.15-323.15 K, from Kretschmer, Nowakowska and Wiebe (1946), as compiled in IUPAC SDS Vol. 10.",
+ "components": [
+  "nitrogen",
+  "methanol"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "C. B. Kretschmer, J. Nowakowska, R. Wiebe, Solubility of oxygen and nitrogen in organic solvents from -25 to 50 C, Ind. Eng. Chem. 38 (1946) 506-509",
+  "doi": "10.1021/ie50437a018",
+  "open_copy": "https://iupac.github.io/SolubilityDataSeries/volumes/SDS-10.pdf#page=225",
+  "access": "The original article is not open; its values are compiled in IUPAC Solubility Data Series Vol. 10, Nitrogen and Air (R. Battino, ed., Pergamon, 1982; copyright IUPAC), which IUPAC publishes as open access at iupac.github.io",
+  "title_from": "Crossref record of the DOI",
+  "tables": "IUPAC Solubility Data Series Vol. 10 (1982) p 180 (PDF p 225), prepared by P. L. Long and H. L. Clever; experimental values, x_1 x 10^3 column (the smoothed values of the same sheet are not used). Ostwald coefficients measured at a total pressure of 101.325 kPa; the compiler calculated the mole fraction for a partial pressure of 101.325 kPa assuming the Ostwald coefficient independent of pressure. Estimated error (authors): average deviation from the mean 0.3 %, maximum 0.9 %. Accepted by the evaluator (R. Battino, p 174, PDF p 219).",
+  "transcription": "Read from the scanned page image (rendered at 110 dpi) and the PDF's text layer, which agree value by value. The person checking should compare each row with the page."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "p_1_kPa",
+  "x_1",
+  "y_1",
+  "U_P_kPa",
+  "U_x_1",
+  "P_printed"
+ ],
+ "printed_pressure_unit": null,
+ "rows": [
+  [
+   248.15,
+   null,
+   101.325,
+   0.0002708,
+   null,
+   null,
+   null,
+   null
+  ],
+  [
+   273.15,
+   null,
+   101.325,
+   0.0002703,
+   null,
+   null,
+   null,
+   null
+  ],
+  [
+   298.15,
+   null,
+   101.325,
+   0.0002739,
+   null,
+   null,
+   null,
+   null
+  ],
+  [
+   323.15,
+   null,
+   101.325,
+   0.0002795,
+   null,
+   null,
+   null,
+   null
+  ]
+ ],
+ "notes": "x_1 is the mole fraction of nitrogen in the liquid at a partial pressure of nitrogen of 101.325 kPa (1 atm), as the compiler gives it; it is stored as p_1_kPa = 101.325 (the fit compares it with y_1 P of the bubble point at x_1). To be checked by a person against the page (AGENTS.md rule 4)."
+}

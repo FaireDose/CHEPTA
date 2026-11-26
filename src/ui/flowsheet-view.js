@@ -176,7 +176,7 @@ export const flowsheetKey = state => JSON.stringify(state.userData ? [calculated
 
 /** What the cache keeps of a request's result. */
 const cacheOf = (key, r, ms) => (r.outcome === "ok"
-  ? { key, result: r.value, error: null, ms, reproduction: r.reproduction }
+  ? { key, result: r.value, error: null, ms, reproduction: r.reproduction, timing: r.run?.timing ?? null }
   : { key, result: null, error: r.error?.message ?? r.outcome, loop: r.error?.details?.loop ?? null });
 
 /**
@@ -222,7 +222,7 @@ export function solution(state, ui, redraw = null) {
     }
     f.cache = cacheOf(key, run(request), ms());
   }
-  return { status, result: f.cache.result, error: f.cache.error, loop: f.cache.loop, ms: f.cache.ms, stale: false };
+  return { status, result: f.cache.result, error: f.cache.error, loop: f.cache.loop, ms: f.cache.ms, timing: f.cache.timing ?? null, stale: false };
 }
 
 // ---------------------------------------------------------------------------------------
@@ -1959,6 +1959,12 @@ function reactionList(fs, rx) {
 const zeroed = v => (Math.abs(v) < 1e-6 ? 0 : v);
 const sign = v => (zeroed(v) > 0 ? "+" : zeroed(v) < 0 ? "−" : "");
 const kWText = (v, u, d = 5) => `${fmtShort(dutyToDisplay(zeroed(v), u), d)} ${u.duty ?? "kW"}`;
+/** A solve's time and the blocks it went to (proposal 0027, (b); the request's run.timing). */
+const timingText = t => {
+  const slow = Object.entries(t.blocks ?? {}).sort((a, b) => b[1].s - a[1].s).slice(0, 3).filter(([, b]) => b.s >= 0.01);
+  const ev = t.designSpecs?.evaluations?.length;
+  return `${fmtShort(t.total_s, 3)} s${ev ? `, ${ev} design-specification solve${ev > 1 ? "s" : ""}` : ""}${slow.length ? `; most in ${slow.map(([id, b]) => `${id} ${fmtShort(b.s, 3)} s`).join(", ")}` : ""}`;
+};
 
 function kvList(rows) {
   return h("table", { class: "fa-kv" }, h("tbody", {}, ...rows.filter(Boolean).map(([k, v]) =>
@@ -2156,6 +2162,8 @@ export function resultsPanel({ state, f, sol, u, set }) {
       const inner = Object.values(res.energy).filter(q => q.internal).reduce((a, q) => a + Math.abs(q.duty_kW), 0);
       out.push(kvList([
         ["Recycles", res.loops.length ? res.loops.map(l => `${l.tears.join(", ")}: ${l.iterations} iterations`).join("; ") : "none"],
+        // the time of the solve and where it went (proposal 0027, (b))
+        sol.timing ? ["Solve time", timingText(sol.timing)] : null,
         ["Heat in", kWText(qin, u, 5)], ["Heat out", kWText(-qout, u, 5)],
         wk ? ["Work (pumps and compressors in, expanders out)", `${wk >= 0 ? "+" : "−"}${kWText(Math.abs(wk), u)}`] : null,
         inner ? ["Heat recovered (energy streams)", kWText(inner, u, 5)] : null,

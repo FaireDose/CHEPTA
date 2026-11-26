@@ -746,7 +746,7 @@ function feedSecondLiquid(csys, colFeeds, s, separator) {
   return out;
 }
 
-function solveRigorous(sys, feeds, s, sideOutlets = 0) {
+function solveRigorous(sys, feeds, s, sideOutlets = 0, restart = null) {
   const nDraws = (s.draws ?? []).length;
   if (nDraws !== sideOutlets) {
     throw fail("BAD_INPUT", nDraws > sideOutlets
@@ -794,6 +794,9 @@ function solveRigorous(sys, feeds, s, sideOutlets = 0) {
       ...(separator ? { q: 1 - (Number.isFinite(f.VF) ? f.VF : 0), T_K: f.T_K } : {}) })),
     ...(separator ? { duties: s.duties } : {}), ...(nDraws ? { draws: s.draws } : {}),
     specs: [...s.specs.map(({ kind, value }) => ({ kind, value })), ...(s.design ?? []).map(d => d.engine)], maxIterations: s.maxIterations,
+    // the block's last answer in a flowsheet (proposal 0027, (a)): its profile as the start, Newton from it stopped early,
+    // and the free variables of its specifications as the search's start; the cold path of a first solve otherwise
+    ...(restart?.stages?.length === s.N ? { start: restart, startEarly: true, ...(restart.adjusted ? { startAdjusted: restart.adjusted } : {}) } : {}),
     ...(s.twoLiquidStage ? { twoLiquidStage: s.twoLiquidStage } : {}),
     // a bypassed second liquid for the top of a column with a decanter: the decanter's feed (split there)
     ...(toDecanter ? { condenserFeed: { flows: fsl.total.flows.map(v => v * KMOL_H), H_W: fsl.total.H_kW * 1000 } } : {}) });
@@ -917,10 +920,15 @@ function solveRigorous(sys, feeds, s, sideOutlets = 0) {
   // those of its own method at the outlets; src/flowsheet/flowsheet.js, blockExtrapolations)
   const ownTemps = [...profile.map(p => p.T_K), ...boundary.filter(q => q.into === "column").map(q => q.T_after_K)].filter(Number.isFinite);
   const extrapolations = own && typeof own.extrapolations === "function" ? ownTemps.flatMap(T => own.extrapolations(T)) : null;
-  return { outlets: { distillate, ...(vl ? { vapour_distillate: vapourDistillate } : {}), bottoms, ...(nDraws ? { side } : {}) }, duty_kW: Qr - Qc + Qstages, notes, warnings, profile, state, ...(sizing ? { sizing } : {}),
+  // what the next calculation of this block in the same flowsheet run starts from (proposal 0027, (a)); not part of the
+  // answer (not enumerable: it does not appear in results)
+  const restartOut = { stages: r.stages.map(st => ({ l: st.l, v: st.v, T_K: st.T_K, L_mol_s: st.L_mol_s, ...(st.U_mol_s != null ? { U_mol_s: st.U_mol_s } : {}) })), ...(r.adjusted ? { adjusted: r.adjusted } : {}) };
+  return withRestart(restartOut, { outlets: { distillate, ...(vl ? { vapour_distillate: vapourDistillate } : {}), bottoms, ...(nDraws ? { side } : {}) }, duty_kW: Qr - Qc + Qstages, notes, warnings, profile, state, ...(sizing ? { sizing } : {}),
     ...(extrapolations?.length ? { extrapolations } : {}),
-    ...(own ? { method: { ...s.method, flowsheet_model: sys.info?.method ?? sys.model, boundary: "P-H: component flows, pressure and enthalpy flow kept; the temperature found by a P-H flash in the receiving method" } } : {}) };
+    ...(own ? { method: { ...s.method, flowsheet_model: sys.info?.method ?? sys.model, boundary: "P-H: component flows, pressure and enthalpy flow kept; the temperature found by a P-H flash in the receiving method" } } : {}) });
 }
+/** r with its restart as a property that is not enumerable (kept out of results and copies). */
+const withRestart = (restart, r) => Object.defineProperty(r, "restart", { value: restart, enumerable: false });
 const sum = v => v.reduce((a, c) => a + c, 0);
 const fmt6 = v => +Number(v).toPrecision(6);
 
@@ -941,11 +949,11 @@ registerUnit({
   specKeys: SPEC_KEYS,
   checkSpec,
   dof,
-  solve({ sys, inlets, spec, outletCount }) {
+  solve({ sys, inlets, spec, outletCount, restart }) {
     if (spec.sideDraws) throw fail("NOT_AVAILABLE", `Column: side draws are built for distillation (a condenser and a reboiler); ${spec.configuration === "absorber" ? "an absorber" : "a stripper"} with a side draw is not built.`);
     if (spec.twoLiquids) throw fail("NOT_AVAILABLE", `Column: ${spec.configuration === "absorber" ? "an absorber" : "a stripper"} holds a vapour and one or two liquids (phases "VL" or "VLL"); two liquids without a vapour (phases "${spec.twoLiquids}") are an extraction: use the Extraction block (type "extraction").`);
     if (spec.extraction) throw fail("BAD_INPUT", "Column: two liquids without a vapour (phases \"LL\") are an extraction: use the Extraction block (type \"extraction\", under the Separator button; capability solve_extraction). The Column block solves \"VL\" and \"VLL\".");
-    if (spec.mode === "rigorous") return solveRigorous(sys, inlets.in, spec, outletCount ?? 0);
+    if (spec.mode === "rigorous") return solveRigorous(sys, inlets.in, spec, outletCount ?? 0, restart ?? null);
     if (outletCount) throw fail("BAD_INPUT", "Column: a stream is connected to the side outlet, but side draws are the rigorous column's (mode: \"rigorous\", side_draws); the shortcut has a distillate and a bottoms only.");
     if (inlets.in.length > 1) throw fail("BAD_INPUT", "Column: the shortcut column takes one feed; mix the feeds first, or use the rigorous mode, which takes several.");
     const r = solveShortcut(sys, inlets.in[0], spec);

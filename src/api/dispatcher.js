@@ -44,7 +44,7 @@ import { sizeDrum, sizeDecanter, flashBlockResult } from "../sizing/sizing.js";
 export const RESULT_FORMAT = 1;
 export const OUTCOMES = Object.freeze(["ok", "invalid_input", "missing_data", "unsupported", "not_converged", "cancelled", "out_of_time", "error"]);
 const OUTCOME_OF = { BAD_INPUT: "invalid_input", OUT_OF_RANGE: "invalid_input", MISSING_DATA: "missing_data",
-  NOT_AVAILABLE: "unsupported", PHASE_SPLIT: "unsupported", NO_CONVERGENCE: "not_converged" };
+  NOT_AVAILABLE: "unsupported", PHASE_SPLIT: "unsupported", NO_CONVERGENCE: "not_converged", OUT_OF_TIME: "out_of_time" };
 
 const CAPS = new Map();
 
@@ -69,7 +69,10 @@ export function run(request) {
   const reproduction = { library: pkg.version };
   let theRun = null, capability = request?.capability ?? null;
   const finish = (status, body) => {
-    const runRec = theRun ? endRun(theRun, status) : null;
+    const runRec0 = theRun ? endRun(theRun, status) : null;
+    // a flowsheet's timing per block, loop pass and design-specification evaluation (proposal 0027, (b)): how the run
+    // went, not part of the answer, so in the run record
+    const runRec = runRec0 && body.timing ? { ...runRec0, timing: body.timing } : runRec0;
     const outcome = runRec?.status === "cancelled" ? "cancelled" : body.outcome;
     return { chepta_result: RESULT_FORMAT, capability, outcome, ...(outcome === "cancelled" ? {} : body.rest),
       reproduction: { ...reproduction, ...(body.reproduction ?? {}) }, ...(runRec ? { run: runRec } : {}) };
@@ -94,13 +97,13 @@ export function run(request) {
     }
     checkSchema(cap.input, input);
     const r = withRangePolicy({ strictRanges: options.strictRanges ?? false }, () => cap.run(input));
-    return finish("done", { outcome: "ok", reproduction: r.reproduction,
+    return finish("done", { outcome: "ok", reproduction: r.reproduction, ...(r.timing ? { timing: r.timing } : {}),
       rest: { value: r.value, ...(r.checks ? { checks: r.checks } : {}), ...(r.qualifications ? { qualifications: r.qualifications } : {}) } });
   } catch (e) {
     if (!isCheptaError(e)) {
       return finish("failed", { outcome: "error", rest: { error: { code: null, message: `CHEPTA failed with an internal error: ${e?.message ?? e}. Please report it with the request.`, where: [] } } });
     }
-    return finish("failed", { outcome: OUTCOME_OF[e.code] ?? "error", rest: { error: { code: e.code, message: e.message, where: whereOf(e), ...(e.details !== undefined ? { details: e.details } : {}) } } });
+    return finish("failed", { outcome: OUTCOME_OF[e.code] ?? "error", ...(e.details?.timing ? { timing: e.details.timing } : {}), rest: { error: { code: e.code, message: e.message, where: whereOf(e), ...(e.details !== undefined ? { details: e.details } : {}) } } });
   }
 }
 
@@ -125,7 +128,7 @@ const FLOWSHEET_INPUT = {
   type: "object", additionalProperties: false,
   properties: {
     project: { type: "object", description: "a CHEPTA project file (fugacity_project, flowsheet, user_data)" },
-    flowsheet: { type: "object", description: "a flowsheet document (components, thermo, blocks, streams; src/flowsheet/document.js). Optional designSpecs (proposal 0022): [{ id, vary: { block, key, component (a feed's flow of one component; without it the feed's total flow, its composition kept) or index (a splitter's outlet, from 0), min, max (required), guess }, target: { stream or block, quantity, component, value, ratio_of }, tolerance }]: the solver varies the input within its bounds until the target is met, recycles converged at every step. vary: feed flow_kmol_h, flow_kg_h, T_K, P_kPa; splitter fractions, flow_kmol_h, flow_kg_h (index); heater T_K, duty_kW; flash T_K, P_kPa, duty_kW. target quantity of a stream: flow_kmol_h, flow_kg_h, component_flow_kmol_h, component_flow_kg_h, mole_fraction, mass_fraction, T_K, VF; of a block: duty_kW; ratio_of { stream or block, quantity, component } makes the value a ratio. tolerance: relative to the value (absolute for fractions and VF); default 1e-6, or 100 times solver.tolerance where that is looser; a tolerance you give is used, with a warning when it is tighter than 100 times solver.tolerance. One specification: bracket and Brent's method; several: Broyden's method with bounds; limits solver.designSpecIterations (a number, or { bracket: 8, solve: 50 }). A target out of reach is refused (not_converged, reason \"unreachable\") with its value at both bounds; checks.design_specs lists each as asked and as reached, and value.designSpecs the varied values (also written into value.blocks[id].spec)." },
+    flowsheet: { type: "object", description: "a flowsheet document (components, thermo, blocks, streams; src/flowsheet/document.js). Optional designSpecs (proposal 0022): [{ id, vary: { block, key, component (a feed's flow of one component; without it the feed's total flow, its composition kept) or index (a splitter's outlet, from 0), min, max (required), guess }, target: { stream or block, quantity, component, value, ratio_of }, tolerance }]: the solver varies the input within its bounds until the target is met, recycles converged at every step. vary: feed flow_kmol_h, flow_kg_h, T_K, P_kPa; splitter fractions, flow_kmol_h, flow_kg_h (index); heater T_K, duty_kW; flash T_K, P_kPa, duty_kW. target quantity of a stream: flow_kmol_h, flow_kg_h, component_flow_kmol_h, component_flow_kg_h, mole_fraction, mass_fraction, T_K, VF; of a block: duty_kW; ratio_of { stream or block, quantity, component } makes the value a ratio. tolerance: relative to the value (absolute for fractions and VF); default 1e-6, or 100 times solver.tolerance where that is looser; a tolerance you give is used, with a warning when it is tighter than 100 times solver.tolerance. One specification: bracket and Brent's method; several: Broyden's method with bounds; limits solver.designSpecIterations (a number, or { bracket: 8, solve: 50 }). A target out of reach is refused (not_converged, reason \"unreachable\") with its value at both bounds; checks.design_specs lists each as asked and as reached, and value.designSpecs the varied values (also written into value.blocks[id].spec). solver.columnRestart: \"previous\" (the default) starts each rigorous column from its last answer in the next recycle pass and design-specification solve, \"cold\" from its own start every time; solver.timeLimit_s: a time limit of the solve itself, ended with out_of_time naming the block, the loop's iteration and, in a design specification, the solve, the varied value, the bracket and the best point (error.details.best); run.timing gives the time per block, recycle pass and design-specification solve (proposal 0027)." },
     user_data: USER_DATA,
   },
 };
@@ -228,6 +231,7 @@ function solvedFlowsheet(flowsheet, userData) {
   const info = sys.info ?? {};
   return {
     value: result,
+    ...(result.timing ? { timing: result.timing } : {}),
     checks: {
       material_kmol_h: material, energy_kW: result.balance.energy_kW, blocks,
       // the limit each component's imbalance is held to: balance_tolerance times the fresh feed (decision 2026-11-18-02)
