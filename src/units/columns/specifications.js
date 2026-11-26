@@ -98,8 +98,10 @@ import { fail } from "../../util/errors.js";
 import { findAzeotrope, binaryAzeotropes } from "../../equilibrium/azeotrope.js";
 
 /** The design specifications (milestone M4). */
-export const DESIGN_SPECS = Object.freeze(["distillate_purity", "bottoms_purity", "purity", "recovery", "component_flow", "stage_temperature"]);
-const BASE = ["reflux_ratio", "boilup_ratio", "distillate_rate", "bottoms_rate", "condenser_duty", "reboiler_duty"];
+export const DESIGN_SPECS = Object.freeze(["distillate_purity", "bottoms_purity", "purity", "recovery", "component_flow", "stage_temperature", "component_ratio", "flow_ratio"]);
+const BASE = ["reflux_ratio", "boilup_ratio", "distillate_rate", "bottoms_rate", "condenser_duty", "reboiler_duty", "reflux_rate", "distillate_to_feed"];
+/** The flows a ratio of two flows (flow_ratio) may name; a side draw as { flow: "side_draw", draw: 1 } (from 1). */
+const FLOWS = ["reflux", "distillate", "vapour_distillate", "bottoms", "boilup", "feed", "side_draw"];
 /** A design specification is met when its scaled residual (see the file header) is below this: for a purity x, about
  *  1e-6 x (1 - x); for a flow, a relative 1e-6; for a temperature, 1e-5 K. */
 export const SPEC_TOLERANCE = 1e-6;
@@ -120,7 +122,7 @@ const logit = a => { const c = Math.min(Math.max(a, 1e-300), 1 - 1e-16); return 
 
 /** Does the column carry a design specification, or a side draw whose rate is to be found? */
 export const hasDesign = opts => (Array.isArray(opts?.specs) && opts.specs.some(s => DESIGN_SPECS.includes(s?.kind)))
-  || (Array.isArray(opts?.draws) && opts.draws.some(d => d && d.rate == null));
+  || (Array.isArray(opts?.draws) && opts.draws.some(d => d && d.rate == null && d.share == null && !d.free));
 
 function componentIndex(c, th, sys, what) {
   if (Number.isInteger(c) && c >= 0 && c < th.n) return c;
@@ -142,7 +144,7 @@ function normalize(opts, th) {
   }
   const feed = opts.feeds.reduce((a, f) => a.map((v, i) => v + Number(f.flows[i])), new Array(n).fill(0)), F = sum(feed);
   if (!(F > 0)) throw fail("BAD_INPUT", "Column: the feeds have no flow.");
-  const draws = (opts.draws ?? []).map(d => ({ ...d, free: d?.rate == null }));
+  const draws = (opts.draws ?? []).map(d => ({ ...d, free: d?.rate == null && d?.share == null }));
   let MW = null;
   const molarMass = () => {
     MW = MW ?? opts.molarMass ?? opts.sys?.MW ?? th.MW ?? null;
@@ -160,6 +162,26 @@ function normalize(opts, th) {
       if (!(Number.isInteger(st) && st >= 1 && st <= N)) throw fail("BAD_INPUT", `Column: ${what}: give its stage, 1 to ${N} (got ${JSON.stringify(s.stage)}).`);
       if (!(value > 0)) throw fail("BAD_INPUT", `Column: ${what}: the temperature must be above 0 K (got ${value}).`);
       design.push({ kind: s.kind, stage: st, value, unit: "K", label: `the temperature of stage ${st}` });
+      continue;
+    }
+    if (s.kind === "flow_ratio") {
+      // a ratio of two of the column's flows (proposal 0029, step 5)
+      const term = (t, which) => {
+        const f = typeof t === "string" ? { flow: t } : t;
+        if (!f || !FLOWS.includes(f.flow)) throw fail("BAD_INPUT", `Column: ${what}: the ${which} is one of ${FLOWS.join(", ")} (a side draw as { flow: "side_draw", draw: 1 }); got ${JSON.stringify(t)}.`);
+        if (f.flow === "vapour_distillate" && opts.ends?.condenser !== "vapour_liquid") throw fail("BAD_INPUT", `Column: ${what}: the vapour distillate is the vapour + liquid condenser's (condenser "vapour_liquid").`);
+        if (f.flow === "side_draw") {
+          const k = Number(f.draw ?? 1);
+          if (!(Number.isInteger(k) && k >= 1 && k <= draws.length)) throw fail("BAD_INPUT", `Column: ${what}: the ${which}'s side draw must be the number of a side draw, ${draws.length ? `1 to ${draws.length}` : "and the column has none"} (got ${JSON.stringify(f.draw ?? 1)}).`);
+          return { flow: "side_draw", draw: k };
+        }
+        return { flow: f.flow };
+      };
+      const num = term(s.numerator, "numerator"), den = term(s.denominator, "denominator");
+      if (num.flow === den.flow && num.draw === den.draw) throw fail("BAD_INPUT", `Column: ${what}: the numerator and the denominator are the same flow.`);
+      if (!(value > 0)) throw fail("BAD_INPUT", `Column: ${what}: a ratio of two flows must be above 0 (got ${value}).`);
+      const nm = t => (t.flow === "side_draw" ? `side draw ${t.draw}` : `the ${t.flow === "boilup" ? "boil-up (the reboiler's vapour)" : t.flow.replace("_", " ")}`);
+      design.push({ kind: "flow_ratio", num, den, value, unit: "", label: `the ratio of ${nm(num)} to ${nm(den)}` });
       continue;
     }
     const kind = s.kind.endsWith("_purity") ? "purity" : s.kind;
@@ -180,6 +202,16 @@ function normalize(opts, th) {
     const where = product === "side_draw" ? `side draw ${draw}` : product === "vapour_distillate" ? "the vapour distillate" : vlc && product === "distillate" ? "the liquid distillate" : `the ${product}`;
     if (!(feed[i] > 0)) throw fail("BAD_INPUT", `Column: ${what}: ${names[i]} is not in the feed, so nothing can be asked of it in ${where}.`);
     const d = { kind, product, draw, i, basis: kind === "recovery" ? null : basis, value };
+    if (kind === "component_ratio") {
+      // a ratio of two components' flows in one product (proposal 0029, step 5)
+      const k = componentIndex(s.relative_to, th, opts.sys, `${what}: relative_to`);
+      if (k === i) throw fail("BAD_INPUT", `Column: ${what}: the two components are the same (${names[i]}).`);
+      if (!(feed[k] > 0)) throw fail("BAD_INPUT", `Column: ${what}: ${names[k]} is not in the feed.`);
+      if (!(value > 0)) throw fail("BAD_INPUT", `Column: ${what}: a ratio of two components must be above 0 (got ${value}).`);
+      d.k = k; d.unit = `${basis} ratio`; d.label = `the ${basis} ratio of ${names[i]} to ${names[k]} in ${where}`;
+      design.push(d);
+      continue;
+    }
     if (kind === "purity") {
       if (!(value > 0 && value < 1)) throw fail("BAD_INPUT", `Column: ${what}: a purity is a ${basis} fraction between 0 and 1, both excluded (got ${value}). ${value >= 1 ? "A pure product needs infinitely many stages: ask for 0.999 or 0.9999." : ""}`.trim());
       d.unit = `${basis} fraction`; d.label = `the ${basis} fraction of ${names[i]} in ${where}`;
@@ -357,23 +389,31 @@ export function solveSpecified(opts, solve, th) {
   // 0028, item 1; see the file header); where that does not converge, the outer loop below, its `tried` starting with
   // this attempt
   const profile = Array.isArray(opts.start?.stages) && opts.start.stages.length === prob.N;
-  const product = d => ["purity", "recovery", "component_flow"].includes(d.kind);
-  if (profile && !opts.__probe && !meshNote && !freeDraws.length && design.every(product)) {
+  // (proposal 0029, step 5: also a stage temperature, a ratio of two components, a ratio of two flows; and step 4: side
+  // draws whose rates are found, each rate one more variable of its own stage, its specification that stage's row)
+  const product = d => ["purity", "recovery", "component_flow", "stage_temperature", "component_ratio", "flow_ratio"].includes(d.kind);
+  if (profile && !opts.__probe && !meshNote && design.every(product)) {
     const t0 = Date.now();
     // (a flowsheet's restart carries the last answer's free variables; any other start is a profile given)
     const from = Array.isArray(opts.startAdjusted) ? "from the last answer's profile" : "from the start profile given";
-    const meshSpecs = design.map(d => ({ kind: "product_spec", target: d.kind === "purity" ? "fraction" : d.kind, product: d.product,
-      ...(d.product === "side_draw" ? { draw: d.draw - 1 } : {}), i: d.i, value: d.value, basis: d.basis ?? "mole", ...(d.basis === "mass" ? { MW } : {}) }));
+    const term = t => (t.flow === "side_draw" ? { flow: "side_draw", draw: t.draw - 1 } : { flow: t.flow });
+    const meshSpecs = design.map(d => (d.kind === "stage_temperature" ? { kind: "product_spec", target: "temperature", stage: d.stage - 1, value: d.value }
+      : d.kind === "flow_ratio" ? { kind: "product_spec", target: "flow_ratio", numerator: term(d.num), denominator: term(d.den), value: d.value }
+        : { kind: "product_spec", target: d.kind === "purity" ? "fraction" : d.kind, product: d.product,
+          ...(d.product === "side_draw" ? { draw: d.draw - 1 } : {}), i: d.i, ...(d.k != null ? { k: d.k } : {}), value: d.value, basis: d.basis ?? "mole", ...(d.basis === "mass" ? { MW } : {}) }));
+    // the found draws' rates start from the profile's draws from their stages (else a tenth of the feed)
+    const st = opts.start.stages;
+    const meshDraws = draws.map(d => { const { free, ...rest } = d;
+      return free ? { ...rest, free: true, rate: Math.max((d.phase ?? "liquid") === "liquid" ? st[d.stage - 1].U_mol_s ?? 0 : st[d.stage - 1].W_mol_s ?? 0, 0) || 0.1 * F } : rest; });
     try {
       const { startEarly: _e, quick: _q, ...rest } = opts;
-      const r = solve({ ...rest, specs: [...base, ...meshSpecs] });
+      const r = solve({ ...rest, specs: [...base, ...meshSpecs], ...(draws.length ? { draws: meshDraws } : {}) });
       const a = design.map(d => achievedIn(r, d, feed, MW)), g = design.map((d, k) => scaledOf(d, a[k]));
       if (g.every(v => Math.abs(v) <= SPEC_TOLERANCE)) {
-        const adjusted = vars.map(v => ({ variable: v.name, value: freeValueOf(r, v.name, condenser), ...(v.unit ? { unit: v.unit } : {}) }));
+        const adjusted = vars.map(v => ({ variable: v.name, ...(v.draw ? { draw: v.draw } : {}), value: v.name === "draw_rate" ? sum(r.products.draws[v.draw - 1].flows) : freeValueOf(r, v.name, condenser), ...(v.unit ? { unit: v.unit } : {}) }));
         return {
           ...r,
-          specifications: design.map((d, k) => ({ kind: d.kind, product: d.product, ...(d.draw ? { draw: d.draw } : {}), component: d.i, component_name: names[d.i], ...(d.basis ? { basis: d.basis } : {}), unit: d.unit,
-            asked: d.value, achieved: a[k], error: a[k] - d.value, scaled_residual: g[k], met: true, label: d.label })),
+          specifications: design.map((d, k) => specEntry(d, a[k], g[k], names)),
           adjusted,
           residuals: { ...r.residuals, design_specifications: Math.max(...g.map(Math.abs)) },
           tolerances: { ...r.tolerances, design_specifications: SPEC_TOLERANCE, units: { ...r.tolerances.units, design_specifications: "scaled (logit of a fraction, logarithm of a flow, K / 10)" } },
@@ -410,14 +450,8 @@ export function solveSpecified(opts, solve, th) {
     }
   };
   const flowsOf = (r, d) => (d.product === "distillate" ? r.products.distillate.flows : d.product === "vapour_distillate" ? r.products.vapour_distillate.flows : d.product === "bottoms" ? r.products.bottoms.flows : r.products.draws[d.draw - 1].flows);
-  const achieved = (r, d) => {
-    if (d.kind === "stage_temperature") return r.stages[d.stage - 1].T_K;
-    const f = flowsOf(r, d);
-    if (d.kind === "recovery") return f[d.i] / feed[d.i];
-    if (d.kind === "component_flow") return d.basis === "mass" ? f[d.i] * MW[d.i] / 1000 : f[d.i];
-    return d.basis === "mass" ? f[d.i] * MW[d.i] / sum(f.map((v, k) => v * MW[k])) : f[d.i] / sum(f);
-  };
-  const scaled = (d, a) => (d.kind === "stage_temperature" ? (a - d.value) / 10 : d.kind === "component_flow" ? Math.log(Math.max(a, 1e-300) / d.value) : logit(a) - logit(d.value));
+  const achieved = (r, d) => achievedIn(r, d, feed, MW);
+  const scaled = scaledOf;
   // (a point is solved once: a second call with the same variables returns the first answer, a failure included)
   const seen = new Map();
   const point = (p, cold = false) => {
@@ -448,13 +482,21 @@ export function solveSpecified(opts, solve, th) {
   const vectorOf = r => Float64Array.from(r.stages.flatMap((st, j) => [...st.l, ...st.v, st.T_K, ...(vlc ? [j === 0 ? st.U_mol_s / st.L_mol_s : 1] : [])]));
   const residualsFrom = (u, values) => {
     const N = u.length / w, part = (j, o) => Array.from(u.subarray(j * w + o, j * w + o + nc));
-    const rate = k => (draws[k].free ? values[vars.findIndex(v => v.draw === k + 1)] : Number(draws[k].rate));
+    // (a draw by share: s / (1 - s) times its stage's liquid or vapour; proposal 0029, step 4)
+    const rate = k => (draws[k].free ? values[vars.findIndex(v => v.draw === k + 1)] : draws[k].share != null
+      ? draws[k].share / (1 - draws[k].share) * sum(part(Number(draws[k].stage) - 1, (draws[k].phase ?? "liquid") === "liquid" ? 0 : nc)) : Number(draws[k].rate));
     const flows = d => { if (d.product === "distillate") return vlc ? part(0, 0).map(a => a * u[2 * nc + 1]) : part(0, nc);
       if (d.product === "vapour_distillate") return part(0, nc); if (d.product === "bottoms") return part(N - 1, 0);
       const q = draws[d.draw - 1], f = part(Number(q.stage) - 1, (q.phase ?? "liquid") === "liquid" ? 0 : nc), t = sum(f); return f.map(a => a / t * rate(d.draw - 1)); };
+    const total = (j, o) => sum(part(j, o));
+    const flowFrom = t => (t.flow === "reflux" ? total(0, 0) : t.flow === "distillate" ? (vlc ? total(0, 0) * u[2 * nc + 1] + total(0, nc) : total(0, nc))
+      : t.flow === "vapour_distillate" ? total(0, nc) : t.flow === "bottoms" ? total(N - 1, 0) : t.flow === "boilup" ? total(N - 1, nc) : t.flow === "feed" ? F
+        : sum(flows({ product: "side_draw", draw: t.draw })));
     return design.map(d => {
       if (d.kind === "stage_temperature") return scaled(d, u[(d.stage - 1) * w + 2 * nc]);
+      if (d.kind === "flow_ratio") return scaled(d, flowFrom(d.num) / flowFrom(d.den));
       const f = flows(d);
+      if (d.kind === "component_ratio") return scaled(d, d.basis === "mass" ? f[d.i] * MW[d.i] / (f[d.k] * MW[d.k]) : f[d.i] / f[d.k]);
       const a = d.kind === "recovery" ? f[d.i] / feed[d.i] : d.kind === "component_flow" ? (d.basis === "mass" ? f[d.i] * MW[d.i] / 1000 : f[d.i])
         : d.basis === "mass" ? f[d.i] * MW[d.i] / sum(f.map((v, k) => v * MW[k])) : f[d.i] / sum(f);
       return scaled(d, a);
@@ -827,15 +869,36 @@ function linearSolve(A, b) {
 /** A design specification's value in a solved column (proposal 0028: the MESH form's check, the outer loop's own). */
 function achievedIn(r, d, feed, MW) {
   if (d.kind === "stage_temperature") return r.stages[d.stage - 1].T_K;
+  if (d.kind === "flow_ratio") return flowInResult(r, d.num, feed) / flowInResult(r, d.den, feed);
   const f = d.product === "distillate" ? r.products.distillate.flows : d.product === "vapour_distillate" ? r.products.vapour_distillate.flows
     : d.product === "bottoms" ? r.products.bottoms.flows : r.products.draws[d.draw - 1].flows;
+  if (d.kind === "component_ratio") return d.basis === "mass" ? f[d.i] * MW[d.i] / (f[d.k] * MW[d.k]) : f[d.i] / f[d.k];
   if (d.kind === "recovery") return f[d.i] / feed[d.i];
   if (d.kind === "component_flow") return d.basis === "mass" ? f[d.i] * MW[d.i] / 1000 : f[d.i];
   return d.basis === "mass" ? f[d.i] * MW[d.i] / sum(f.map((v, k) => v * MW[k])) : f[d.i] / sum(f);
 }
 /** The scaled residual of a design specification (see the file header). */
 function scaledOf(d, a) {
-  return d.kind === "stage_temperature" ? (a - d.value) / 10 : d.kind === "component_flow" ? Math.log(Math.max(a, 1e-300) / d.value) : logit(a) - logit(d.value);
+  return d.kind === "stage_temperature" ? (a - d.value) / 10 : ["component_flow", "component_ratio", "flow_ratio"].includes(d.kind) ? Math.log(Math.max(a, 1e-300) / d.value) : logit(a) - logit(d.value);
+}
+/** A design specification as the result lists it. */
+function specEntry(d, a, g, names) {
+  const where = d.kind === "stage_temperature" ? { stage: d.stage } : d.kind === "flow_ratio" ? { numerator: d.num, denominator: d.den }
+    : { product: d.product, ...(d.draw ? { draw: d.draw } : {}), component: d.i, component_name: names[d.i], ...(d.k != null ? { relative_to: d.k, relative_to_name: names[d.k] } : {}), ...(d.basis ? { basis: d.basis } : {}) };
+  return { kind: d.kind, ...where, unit: d.unit, asked: d.value, achieved: a, error: a - d.value, scaled_residual: g, met: true, label: d.label };
+}
+/** One of the column's flows in a solved column (flow_ratio; proposal 0029, step 5), mol/s. */
+function flowInResult(r, t, feed) {
+  const N = r.stages.length, D = sum(r.products.distillate.flows) + (r.products.vapour_distillate ? sum(r.products.vapour_distillate.flows) : 0);
+  switch (t.flow) {
+    case "reflux": return r.stages[0].L_mol_s;
+    case "distillate": return D;
+    case "vapour_distillate": return sum(r.products.vapour_distillate.flows);
+    case "bottoms": return sum(r.products.bottoms.flows);
+    case "boilup": return r.stages[N - 1].V_mol_s;
+    case "feed": return sum(feed);
+    default: return sum(r.products.draws[t.draw - 1].flows);
+  }
 }
 /** The free variable's value in a solved column, as the outer loop names it (proposal 0028: the MESH form's
  *  `adjusted`, which the next restart starts from): the reflux ratio (with the vapour + liquid condenser L1 / U1), the
