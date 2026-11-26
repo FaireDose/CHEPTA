@@ -41,8 +41,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   profile solves them among its MESH equations (any condenser, VL and VLL; the outer loop cold and as the fallback); a
   clearly stable second-liquid verdict reused at a stage's Jacobian points, the full test kept at the answer; one
   secant step and the nearest solved point as the start in a design specification; the tolerance warning of a fraction
-  relative to its target. Open: three questions in the decision file (the MESH form for a start given by a person; the
-  default tolerance of a fraction; free side-draw rates).
+  relative to its target. The maintainer's answers (2026-11-26): the MESH form also for a start given by a person (as
+  built); free side-draw rates on the outer loop for now (proposal 0029). Open: the default tolerance of a fraction
+  target relative to the target, as a separate change.
 - **Proposal 0027 built: faster flowsheet and design-specification runs** (docs/decisions/2026-11-25-03-solve-speed-build.md;
   the proposal and the maintainer's seven answers: docs/decisions/2026-11-25-02-solve-speed-proposal.md): the rigorous
   columns restarted from their last answer (`solver.columnRestart`), the two-liquid stage's failed old K-values
