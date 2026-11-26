@@ -495,3 +495,11 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - REGRESSION, Lab's ds-ethanol case: #271 had 4 solves, 208 s, F1 6506.2211, ethanol 0.00039938. #272 has 6 solves, 343 s, F1 6506.1120, ethanol 0.00039068 (residual -9.3e-6, inside the 1e-5 tolerance). The cause: Brent's solve at 6506.229 took 0.56 s, so the recycle was accepted unchanged after a 0.14 kg/h step (H's question 3). Sent back to H to finish on the same branch (allowed: finishing the same task).
 - H's questions: (1) keep "stalled ... may not be reachable together" for 0.6.3; (2) keep the step tied to the recycle tolerance; (3) the stale-recycle item, now being fixed in #272.
 - Running: H (fix). M6 is still waiting for the maintainer (start refused by the classifier).
+
+### 2026-11-26 15:30 — #272 fixed by H and verified
+- H's fix (head 1646b69): in design-spec solves only, a recycle is accepted from its second pass on, and only when the error left (err·r/(1−r) from the last two passes' rate) is below the tolerance. Plain flowsheet solves are unchanged. New tests: a slow separator loop, and an input held at its bound named "unreachable".
+- Verified here: 1866 tests, 1860 pass, 0 fail, 5 skipped. No removed test/data lines.
+- Ethanol case alone: ok, 3 solves, 297 s (H: 242 s), F1 6506.3365, ethanol 0.000409 (residual +8.6e-6, tolerance 1e-5). #271 was 208 s at 6506.22 / 0.000399, partly because some of its solves read loops that had not moved. Accepted as correct: slower, but no stale reads; still under Lab's 10-minute goal.
+- Distillate + F1 together, alone: "unreachable" in 1369 s (H: 1181 s beside another run), distillate held at its bound 260, F1 6504.07: ester 99.787 %, ethanol 0.0229 %. The old "stalled at 99.36 %" came from stale loops.
+- H's questions: (1) keep the "stalled" message for 0.6.3; (2) keep the step tied to the recycle tolerance; (3) apply the new recycle test to all flowsheets as a separate change (it changes all pass counts). Recommend yes to all three.
+- H done. Running: none. M6 still waits for the maintainer.
