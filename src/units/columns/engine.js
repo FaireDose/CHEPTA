@@ -153,7 +153,27 @@ export const CASCADE_SPECS = Object.freeze(["reflux_ratio", "boilup_ratio", "dis
  *  2026-11-18-07-purity-in-mesh.md), set by specifications.js for a column with a decanter: { kind: "bottoms_fraction",
  *  i, value, basis: "mole" | "mass", MW?, startD }. Its row is ln(x_i / value) = 0 (mass basis: the mass fraction), the
  *  form of DWSIM's Naphtali-Sandholm solver, in place of the reboiler's energy balance (specFraction below). */
-export const MESH_SPECS = Object.freeze(["bottoms_fraction"]);
+export const MESH_SPECS = Object.freeze(["bottoms_fraction", "product_spec"]);
+/**
+ * The product specifications among the MESH equations (proposal 0028, item 1; docs/decisions/2026-11-26-01-column-specs-
+ * in-mesh.md), set by specifications.js when the column has a restart profile: { kind: "product_spec", target:
+ * "fraction" | "recovery" | "component_flow", product: "distillate" | "vapour_distillate" | "bottoms" | "side_draw",
+ * draw?: index of a side draw of given rate, i, value, basis: "mole" | "mass", MW? }. Each takes the place of the energy
+ * balance of an end whose own specification is free (the condenser for a distillate specification, the reboiler for a
+ * bottoms one where free, else the other free end), as The ChemSep Book (2nd ed., section 13.2.4) and DWSIM's
+ * NewtonRaphson.vb write them:
+ *
+ *   fraction        ln(x_P,i / value) = 0       (mass basis: the mass fraction)
+ *   recovery        ln(p_i / (value f_i)) = 0   (f_i the component's total feed)
+ *   component_flow  ln(p_i / value) = 0         (mol/s; mass basis: kg/s)
+ *
+ * p the product's component flows: the condenser's distillate (its "vapour" variables: total, partial, decanter), the
+ * vapour + liquid condenser's liquid distillate r l_1 or its vapour v_1, the reboiler's liquid, a side draw's liquid or
+ * vapour at its rate. A row that reads another stage than its own end widens the band of the Newton matrix to that
+ * stage. Solved only from a given start (startOnly): where Newton from it fails, the column is not converged, and
+ * specifications.js runs its outer loop.
+ */
+export const PRODUCT_TARGETS = Object.freeze(["fraction", "recovery", "component_flow"]);
 /** The dry-stage threshold of the liquid: below this fraction of the column's largest vapour flow (this project's
  *  choice: no open source gives one for equilibrium stages without the trays' geometry). */
 export const DRY_FRACTION = 0.01;
@@ -359,7 +379,7 @@ function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
   if (decanter && ["reflux_ratio", "condenser_duty"].includes(specs[0]?.kind)) throw fail("BAD_INPUT", `Column: with a decanter the reflux is the whole ${refluxLiquid} liquid, so ${specs[0].kind} cannot be given; give boilup_ratio, reboiler_duty, distillate_rate or bottoms_rate.`);
   const bad = specs.filter(s => !CASCADE_SPECS.includes(s?.kind) && !MESH_SPECS.includes(s?.kind));
   if (bad.length) throw fail("BAD_INPUT", `Column: unknown specification ${bad.map(s => JSON.stringify(s?.kind)).join(", ")}. Known: ${[...CASCADE_SPECS, ...DESIGN_SPECS].join(", ")}.`);
-  if (specs.length === 2 && specs[0].kind === specs[1].kind) throw fail("BAD_INPUT", `Column: ${specs[0].kind} is given twice; give two different specifications.`);
+  if (specs.length === 2 && specs[0].kind === specs[1].kind && specs[0].kind !== "product_spec") throw fail("BAD_INPUT", `Column: ${specs[0].kind} is given twice; give two different specifications.`);
   const kinds = specs.map(s => s.kind);
   if (kinds.includes("distillate_rate") && kinds.includes("bottoms_rate")) throw fail("BAD_INPUT", `Column: the distillate and the bottoms flows are not independent (they add up to the feed${drawn ? " less the side draws" : ""}); give one of them with a ratio or a duty.`);
   if (cspec?.kind === "vapour_rate") {
@@ -368,6 +388,20 @@ function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
   }
   if (kinds.includes("condenser_duty") && kinds.includes("reboiler_duty")) throw fail("BAD_INPUT", "Column: the two duties fix the products only through the small difference of their enthalpies; give one duty with a flow or a ratio.");
   const out = specs.map(s => {
+    if (s.kind === "product_spec") {
+      // a product's specification among the MESH equations (proposal 0028; see PRODUCT_TARGETS)
+      const v = Number(s.value), basis = s.basis ?? "mole";
+      const products = ["distillate", "bottoms", "side_draw", ...(vl ? ["vapour_distillate"] : [])];
+      if (!(PRODUCT_TARGETS.includes(s.target) && products.includes(s.product) && Number.isInteger(s.i) && s.i >= 0 && s.i < n && v > 0 && ["mole", "mass"].includes(basis))
+        || (s.target !== "component_flow" && !(v < 1))) throw fail("BAD_INPUT", `Column: product_spec needs a target (${PRODUCT_TARGETS.join(", ")}), a product (${products.join(", ")}), a component index i, a value above 0 (below 1 for a fraction or a recovery) and a basis "mole" or "mass" (got ${JSON.stringify(s)}).`);
+      if (basis === "mass" && s.target !== "recovery" && !(Array.isArray(s.MW) && s.MW.length === n && s.MW.every(w => w > 0))) throw fail("BAD_INPUT", "Column: product_spec on the mass basis needs the molar masses (MW).");
+      if (s.product === "side_draw" && !(Number.isInteger(s.draw) && s.draw >= 0 && s.draw < ds.length)) throw fail("BAD_INPUT", `Column: product_spec on a side draw needs the index of a side draw of given rate (got ${JSON.stringify(s.draw)}).`);
+      if (s.product === "distillate" && !hasCondenser) throw fail("BAD_INPUT", "Column: product_spec on the distillate needs a condenser.");
+      if (s.product === "bottoms" && !hasReboiler) throw fail("BAD_INPUT", "Column: product_spec on the bottoms needs a reboiler.");
+      const prefer = s.product === "bottoms" ? 1 : s.product === "side_draw" ? null : 0;
+      return { kind: s.kind, target: s.target, product: s.product, draw: s.product === "side_draw" ? s.draw : null, i: s.i, value: v, basis, MW: s.MW ?? null, prefer,
+        src: s.product === "bottoms" ? N - 1 : s.product === "side_draw" ? ds[s.draw].stage : 0 };
+    }
     if (MESH_SPECS.includes(s.kind)) {
       // a product's fraction among the MESH equations (set by specifications.js; see MESH_SPECS)
       const v = Number(s.value);
@@ -390,7 +424,15 @@ function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
     throw fail("BAD_INPUT", `Column: ${a.kind} and ${b.kind} both fix the ${top.length > 1 ? "top" : "bottom"} of the column; give one of them with a product flow or a specification of the other end.`);
   }
   const flow = out.filter(s => !TOP.includes(s.kind) && !BOTTOM.includes(s.kind));
-  const slot = [!hasCondenser ? null : decanter ? { kind: "decanter" } : top[0] ?? flow.shift(), !hasReboiler ? null : bottom[0] ?? flow.shift()];
+  // a product specification among the MESH equations goes to its own end where that is free (proposal 0028): the
+  // first flow specification preferring this end, else the first with no preference, else the first
+  const take = e => {
+    let k = flow.findIndex(s => s.prefer === e);
+    if (k < 0) k = flow.findIndex(s => s.prefer == null);
+    if (k < 0) k = flow.length ? 0 : -1;
+    return k < 0 ? undefined : flow.splice(k, 1)[0];
+  };
+  const slot = [!hasCondenser ? null : decanter ? { kind: "decanter" } : top[0] ?? take(0), !hasReboiler ? null : bottom[0] ?? take(1)];
   // heat added to the equilibrium stages (W; negative: removed), adiabatic where none is given; the condenser's and the
   // reboiler's duties follow from their specifications
   const Q = new Array(N).fill(0);
@@ -492,6 +534,12 @@ export function solveCascade(opts = {}) {
   const UJ = new Array(N).fill(0), WJ = new Array(N).fill(0);   // liquid and vapour side draws of each stage, mol/s
   for (const d of inp.draws) (d.phase === "liquid" ? UJ : WJ)[d.stage] += d.rate;
   const anyDraw = inp.draws.length > 0;
+  // the product specifications among the MESH equations (proposal 0028): each component's total feed (for a
+  // recovery), and the rows that read another stage than their own end (the band of the Newton matrix reaches it)
+  const feedTotal = Array.from({ length: n }, (_, i) => sum(fJ.map(f => f[i])));
+  const endStage = e => (e === 0 ? 0 : N - 1);
+  const nonlocal = [0, 1].filter(e => slot[e]?.kind === "product_spec" && slot[e].src !== endStage(e)).map(e => ({ end: e, stage: endStage(e), src: slot[e].src }));
+  const general = inp.specs.some(q => q.kind === "product_spec");
 
   // ---- one stage's properties from its variables
   function props(j, u) {
@@ -540,12 +588,29 @@ export function solveCascade(opts = {}) {
     const w = s.basis === "mass" ? p.l.map((v, i) => v * s.MW[i]) : p.l;
     return Math.max(w[s.i], 1e-300 * F) / sum(w);
   }
-  function specResidual(s, p, end) {
+  // a product's component flows (proposal 0028), from the properties q of the stage that delivers it
+  function productFlows(s, q) {
+    if (s.product === "bottoms") return q.l;
+    if (s.product === "vapour_distillate") return q.v;
+    if (s.product === "distillate") return vl ? q.l.map(a => a * q.r) : q.v;
+    const d = inp.draws[s.draw];
+    return (d.phase === "liquid" ? q.x : q.y).map(a => a * d.rate);
+  }
+  function productResidual(s, q) {
+    const f = productFlows(s, q), i = s.i;
+    const fi = Math.max(f[i], 1e-300 * F);
+    if (s.target === "recovery") return Math.log(fi / (s.value * feedTotal[i]));
+    if (s.target === "component_flow") return Math.log((s.basis === "mass" ? fi * s.MW[i] / 1000 : fi) / s.value);
+    const w = s.basis === "mass" ? f.map((v, k) => v * s.MW[k]) : f;
+    return Math.log((s.basis === "mass" ? fi * s.MW[i] : fi) / sum(w) / s.value);
+  }
+  function specResidual(s, p, end, PP) {
     // stage 1: V holds the distillate (with the vapour + liquid condenser: the vapour distillate, and the whole
     // distillate is U1 + V1); stage N: L is the bottoms
     const D = vl && end === 0 ? p.V + p.U : p.V, B = p.L;
     switch (s.kind) {
       case "bottoms_fraction": return Math.log(specFraction(s, p) / s.value);
+      case "product_spec": return productResidual(s, s.src === endStage(end) ? p : PP[s.src]);
       // with the vapour + liquid condenser the reflux over the liquid distillate, L1 / U1 (the maintainer, 2026-11-18,
       // answer 2: DWSIM's stream ratio and IDAES's reflux_ratio)
       case "reflux_ratio": return (p.L - s.value * (vl ? p.U : D)) / F;
@@ -562,7 +627,7 @@ export function solveCascade(opts = {}) {
     e -= j === 0 && decanter ? p.L * p.hL + p.V * p.hD : j === 0 && total ? (p.L + p.V) * p.hL : (p.L + p.U) * p.hL + (p.V + WJ[j]) * p.hV;
     return e;   // W: in - out, before any duty
   }
-  function stageResidual(j, pa, p, pb, out, at) {
+  function stageResidual(j, pa, p, pb, out, at, PP = null) {
     // (the ends' energy rows, or their specifications, below; endOf(j) is null for every equilibrium stage)
     const rl = 1 + p.U / p.L, rv = 1 + WJ[j] / p.V;   // 1 on a stage without a side draw
     if (vl) out[at + 2 * n + 1] = j === 0 ? condenserRow(p) : p.r - 1;
@@ -588,7 +653,7 @@ export function solveCascade(opts = {}) {
       const s = slot[end];
       if (s.kind === "condenser_duty") h = (energyIn(j, pa, p, pb) - s.value) / scaleE;
       else if (s.kind === "reboiler_duty") h = (energyIn(j, pa, p, pb) + s.value) / scaleE;
-      else h = specResidual(s, p, end);
+      else h = specResidual(s, p, end, PP);
     }
     out[at + 2 * n] = h;
   }
@@ -602,7 +667,7 @@ export function solveCascade(opts = {}) {
     : cspec.kind === "vapour_rate" ? Math.abs(p.V - cspec.value) / cspec.value : Math.abs(p.V / (p.V + p.U) - cspec.value) / cspec.value);
   const residualOf = P => {
     const r = new Float64Array(nv);
-    for (let j = 0; j < N; j++) stageResidual(j, P[j - 1], P[j], P[j + 1], r, j * m);
+    for (let j = 0; j < N; j++) stageResidual(j, P[j - 1], P[j], P[j + 1], r, j * m, P);
     return r;
   };
   const allProps = u => Array.from({ length: N }, (_, j) => props(j, u));
@@ -610,8 +675,12 @@ export function solveCascade(opts = {}) {
 
   // central differences (forward where a flow would turn negative): near a pinch the Jacobian is nearly singular, and
   // the error of forward differences (about 1e-8) is enough to turn the Newton step away from the solution
+  // (a product specification that reads another stage than its end's: the band reaches that stage, and that row is
+  // differentiated with the stage it reads; proposal 0028)
+  const bandW = Math.max(2 * m - 1, ...nonlocal.map(q => (Math.abs(q.src - q.stage) + 1) * m));
+  const withStage = (P, j, q) => { const Q = P.slice(); Q[j] = q; return Q; };
   function jacobian(u, P) {
-    const B = bandMatrix(nv, 2 * m - 1, 2 * m - 1), tp = new Float64Array(m), tm = new Float64Array(m);
+    const B = bandMatrix(nv, bandW, bandW), tp = new Float64Array(m), tm = new Float64Array(m);
     for (let j = 0; j < N; j++) {
       const o = j * m;
       for (let k = 0; k < m; k++) {
@@ -624,12 +693,21 @@ export function solveCascade(opts = {}) {
         const pp = props(j, w), up = w[o + k];
         let pm = null, um = uk;
         if (back) { w[o + k] = uk - h; pm = props(j, w); um = w[o + k]; }
+        const Pp = nonlocal.length ? withStage(P, j, pp) : null, Pm = nonlocal.length && pm ? withStage(P, j, pm) : null;
         for (let jj = Math.max(0, j - 1); jj <= Math.min(N - 1, j + 1); jj++) {
           const at = q => [jj - 1 === j ? q : P[jj - 1], jj === j ? q : P[jj], jj + 1 === j ? q : P[jj + 1]];
-          stageResidual(jj, ...at(pp), tp, 0);
-          if (pm) stageResidual(jj, ...at(pm), tm, 0);
+          stageResidual(jj, ...at(pp), tp, 0, Pp);
+          if (pm) stageResidual(jj, ...at(pm), tm, 0, Pm);
           else for (let e = 0; e < m; e++) tm[e] = P.res[jj * m + e];
           for (let e = 0; e < m; e++) B.a[bandAt(B, jj * m + e, o + k)] = (tp[e] - tm[e]) / (up - um);
+        }
+        // the specification rows that read stage j from a distant end: only their end row depends on it
+        for (const q of nonlocal) {
+          if (q.src !== j || Math.abs(q.stage - j) <= 1) continue;
+          const jj = q.stage, e = 2 * n;
+          stageResidual(jj, P[jj - 1], P[jj], P[jj + 1], tp, 0, Pp);
+          const vm = pm ? (stageResidual(jj, P[jj - 1], P[jj], P[jj + 1], tm, 0, Pm), tm[e]) : P.res[jj * m + e];
+          B.a[bandAt(B, jj * m + e, o + k)] = (tp[e] - vm) / (up - um);
         }
       }
     }
@@ -642,7 +720,7 @@ export function solveCascade(opts = {}) {
     const stageRes = [];
     for (let j = 0; j < N; j++) {
       const p = P[j], pa = P[j - 1], pb = P[j + 1];
-      stageResidual(j, pa, p, pb, tmp, 0);
+      stageResidual(j, pa, p, pb, tmp, 0, P);
       const mat = Math.max(...Array.from(tmp.slice(0, n), Math.abs)) * F;
       let eq, su;
       if (j === 0 && decanter) {
@@ -736,9 +814,14 @@ export function solveCascade(opts = {}) {
     // a trial column of the specifications' outer loop (quick), or a restart from the block's last answer in a flowsheet
     // (startEarly; proposal 0027): Newton gives up early, then the cold starts below run as without a start
     const quick = !!opts.quick || !!opts.startEarly;
-    const r = newton(startU, { dTmax: 20, maxIt: quick ? Math.min(20, cap) : cap < Infinity ? cap : 40, patient: quick, early: quick });
+    const r = newton(startU, { dTmax: 20, maxIt: quick ? Math.min(20, cap) : cap < Infinity ? cap : 40, patient: quick || general, early: quick });
     tried.push(`Newton from the previous solution (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
     if (r.converged) result = { ...r, start: "previous solution" };
+  }
+  // product specifications among the MESH equations (proposal 0028) are solved only from a start: the cold starts and
+  // the continuation cannot hold a purity (The ChemSep Book, section 13.5), so specifications.js's outer loop takes over
+  if (general && !result) {
+    throw fail("NO_CONVERGENCE", `Column: the product specifications among the MESH equations did not converge from the start given. Tried: ${tried.join("; ") || "no start profile was given"}.`, { tried });
   }
   let cold = null;
   const slow = [];

@@ -1,0 +1,237 @@
+{
+ "chepta_column_specification_cases": 1,
+ "about": "Proposal 0028, item 1: columns whose design specifications the engine writes among its MESH equations when it has a restart profile (src/units/columns/specifications.js, engine.js product_spec). Each case is solved by the independent reference validation/python/reference_mesh_specifications.py --mesh (its specifications among its own equations), and by the engine twice: cold (the outer loop) and from its own profile, perturbed (the MESH form); test/columns-specs-in-mesh.test.js. The values asked were chosen near columns solved at a given reflux ratio and distillate flow (2026-11-26), so that each column exists; they are not data.",
+ "tolerances": {
+  "numerical": {
+   "engine_against_reference": {
+    "flows_relative": 2e-05,
+    "mole_fractions_absolute": 2e-06,
+    "T_K_absolute": 0.0001,
+    "adjusted_relative": 2e-05,
+    "why": "The engine meets a design specification to a scaled residual of 1e-6 (src/units/columns/specifications.js, SPEC_TOLERANCE: for a purity x about 1e-6 x (1 - x), for a flow a relative 1e-6), the reference to 1e-12, so the two columns differ by the engine's tolerance on the specification times the column's sensitivity to it; these limits are about ten times the largest difference seen when the cases were written (2026-11-11)."
+   }
+  }
+ },
+ "cases": [
+  {
+   "id": "M1-ternary-partial-two-purities",
+   "title": "Model ternary, 15 stages, partial condenser: the vapour distillate's purity and the bottoms' purity",
+   "thermo": {
+    "kind": "constant-alpha",
+    "alpha": [
+     4.0,
+     2.0,
+     1.0
+    ],
+    "reference_vapour_pressure": {
+     "form": "ln(p/kPa) = A - B/T",
+     "A": 16.0,
+     "B_K": 4000.0
+    },
+    "latent_heat_J_mol": 30000.0,
+    "note": "The model system of the cases A1 to A4 (validation/data/columns/README.md): K_i = alpha_i p(T) / P, liquid enthalpy 0, vapour enthalpy the latent heat, so constant molar overflow holds exactly. Not a real mixture: docs/METHOD_SELECTION.md does not apply."
+   },
+   "components": [
+    "A",
+    "B",
+    "C"
+   ],
+   "pressure_kPa": 101.325,
+   "column": {
+    "configuration": "distillation",
+    "stages": 15,
+    "condenser": "partial",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 8,
+     "flow_mol_s": 100.0,
+     "z": [
+      0.3,
+      0.3,
+      0.4
+     ],
+     "q": 1.0
+    }
+   },
+   "specs": [
+    {
+     "kind": "purity",
+     "product": "distillate",
+     "component": "A",
+     "value": 0.92
+    },
+    {
+     "kind": "purity",
+     "product": "bottoms",
+     "component": "C",
+     "value": 0.58
+    }
+   ],
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 32.0
+   }
+  },
+  {
+   "id": "M2-ternary-side-draw-purity",
+   "title": "Model ternary, 15 stages, a liquid side draw of 10 mol/s from stage 5: its purity at a given reflux ratio (a row that reads a stage inside the column)",
+   "thermo": {
+    "kind": "constant-alpha",
+    "alpha": [
+     4.0,
+     2.0,
+     1.0
+    ],
+    "reference_vapour_pressure": {
+     "form": "ln(p/kPa) = A - B/T",
+     "A": 16.0,
+     "B_K": 4000.0
+    },
+    "latent_heat_J_mol": 30000.0,
+    "note": "The model system of the cases A1 to A4 (validation/data/columns/README.md): K_i = alpha_i p(T) / P, liquid enthalpy 0, vapour enthalpy the latent heat, so constant molar overflow holds exactly. Not a real mixture: docs/METHOD_SELECTION.md does not apply."
+   },
+   "components": [
+    "A",
+    "B",
+    "C"
+   ],
+   "pressure_kPa": 101.325,
+   "column": {
+    "configuration": "distillation",
+    "stages": 15,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 8,
+     "flow_mol_s": 100.0,
+     "z": [
+      0.3,
+      0.3,
+      0.4
+     ],
+     "q": 1.0
+    }
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 4.0
+    },
+    {
+     "kind": "purity",
+     "product": "side_draw",
+     "draw": 1,
+     "component": "B",
+     "value": 0.38
+    }
+   ],
+   "start": {
+    "reflux_ratio": 4.0,
+    "distillate_flow_mol_s": 25.0
+   },
+   "draws": [
+    {
+     "stage": 5,
+     "phase": "liquid",
+     "rate_mol_s": 10.0
+    }
+   ]
+  },
+  {
+   "id": "M3-benzene-toluene-reflux-bottoms-mass-purity",
+   "title": "Benzene + toluene, Peng-Robinson, 10 stages: a reflux ratio and the bottoms' mass purity (the form of CHEPTA-Lab's column SCDS15, with one liquid)",
+   "method_choice": "As case B2: Peng-Robinson for both phases.",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 3.0
+    },
+    {
+     "kind": "purity",
+     "product": "bottoms",
+     "component": "toluene",
+     "value": 0.95,
+     "basis": "mass"
+    }
+   ],
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   }
+  },
+  {
+   "id": "M4-benzene-toluene-partial-flow-recovery",
+   "title": "Benzene + toluene, Peng-Robinson, 10 stages, partial condenser: the benzene flow in the vapour distillate and the toluene recovery in the bottoms",
+   "method_choice": "As case B2: Peng-Robinson for both phases.",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "partial",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "specs": [
+    {
+     "kind": "component_flow",
+     "product": "distillate",
+     "component": "benzene",
+     "value": 5.55,
+     "unit": "mol/s"
+    },
+    {
+     "kind": "recovery",
+     "product": "bottoms",
+     "component": "toluene",
+     "value": 0.955
+    }
+   ],
+   "start": {
+    "reflux_ratio": 2.5,
+    "distillate_flow_mol_s": 5.8
+   }
+  }
+ ]
+}

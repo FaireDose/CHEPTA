@@ -63,6 +63,15 @@
  *    entrainer columns of proposal 0025: decision 2026-11-18-01 found the product flow a poor parameter there), and the
  *    outer loop refused even the easy entrainer columns at its first trial column. If the MESH equations do not
  *    converge, the outer loop below is tried as before, its `tried` starting with that attempt;
+ *  - a column that has a restart profile (a flowsheet's last answer of the block, a design specification's next solve,
+ *    a `start` given; proposal 0028, item 1, the maintainer, 2026-11-26; docs/decisions/2026-11-26-01-column-specs-in-
+ *    mesh.md), whose design specifications are all purities, recoveries or component flows of the distillate, the
+ *    vapour distillate, the bottoms or a side draw of given rate, with any condenser: the specifications among the MESH
+ *    equations, one Newton solve from the profile, each in place of the energy balance of the end it frees (engine.js,
+ *    product_spec: ln(x / value), ln(p_i / (value f_i)), ln(p_i / value), the forms of DWSIM's NewtonRaphson.vb; The
+ *    ChemSep Book, section 13.2.4). Where that does not converge, the paths below, their `tried` starting with this
+ *    attempt. The cold first call (no profile) keeps the outer loop: the continuation that solves it cannot hold a
+ *    purity (above);
  *  - every other design specification (every column without a decanter, a distillate purity with a decanter, two
  *    specifications, a recovery, a component flow, a stage temperature, side draws): the outer loop, unchanged. A
  *    distillate purity with a decanter was tried among the MESH equations too and not kept: the decanter's distillate
@@ -339,6 +348,42 @@ export function solveSpecified(opts, solve, th) {
   const m = vars.length;   // = design.length
   const varName = v => (v.name === "draw_rate" ? `the rate of side draw ${v.draw}` : v.name === "distillate_rate" ? "the distillate flow" : v.name === "reflux_ratio" ? "the reflux ratio" : "the boil-up ratio");
   const varText = (v, value) => `${varName(v)} ${fmt(value)}${v.unit ? ` ${v.unit}` : ""}`;
+
+  // ---- a restart profile (a flowsheet's last answer of this block, a design specification's next solve, a start
+  // given): the product specifications among the MESH equations first, one Newton solve from the profile (proposal
+  // 0028, item 1; see the file header); where that does not converge, the outer loop below, its `tried` starting with
+  // this attempt
+  const profile = Array.isArray(opts.start?.stages) && opts.start.stages.length === prob.N;
+  const product = d => ["purity", "recovery", "component_flow"].includes(d.kind);
+  if (profile && !opts.__probe && !meshNote && !freeDraws.length && design.every(product)) {
+    const t0 = Date.now();
+    // (a flowsheet's restart carries the last answer's free variables; any other start is a profile given)
+    const from = Array.isArray(opts.startAdjusted) ? "from the last answer's profile" : "from the start profile given";
+    const meshSpecs = design.map(d => ({ kind: "product_spec", target: d.kind === "purity" ? "fraction" : d.kind, product: d.product,
+      ...(d.product === "side_draw" ? { draw: d.draw - 1 } : {}), i: d.i, value: d.value, basis: d.basis ?? "mole", ...(d.basis === "mass" ? { MW } : {}) }));
+    try {
+      const { startEarly: _e, quick: _q, ...rest } = opts;
+      const r = solve({ ...rest, specs: [...base, ...meshSpecs] });
+      const a = design.map(d => achievedIn(r, d, feed, MW)), g = design.map((d, k) => scaledOf(d, a[k]));
+      if (g.every(v => Math.abs(v) <= SPEC_TOLERANCE)) {
+        const adjusted = vars.map(v => ({ variable: v.name, value: freeValueOf(r, v.name, condenser), ...(v.unit ? { unit: v.unit } : {}) }));
+        return {
+          ...r,
+          specifications: design.map((d, k) => ({ kind: d.kind, product: d.product, ...(d.draw ? { draw: d.draw } : {}), component: d.i, component_name: names[d.i], ...(d.basis ? { basis: d.basis } : {}), unit: d.unit,
+            asked: d.value, achieved: a[k], error: a[k] - d.value, scaled_residual: g[k], met: true, label: d.label })),
+          adjusted,
+          residuals: { ...r.residuals, design_specifications: Math.max(...g.map(Math.abs)) },
+          tolerances: { ...r.tolerances, design_specifications: SPEC_TOLERANCE, units: { ...r.tolerances.units, design_specifications: "scaled (logit of a fraction, logarithm of a flow, K / 10)" } },
+          solver: { ...r.solver, specifications: { method: `among the MESH equations ${from}: ${design.map(d => d.label).join(" and ")} in place of the energy balance of the end${design.length > 1 ? "s" : ""} they free (The ChemSep Book, section 13.2.4; DWSIM's Naphtali-Sandholm solver; proposal 0028)`,
+            column_solves: 1, column_iterations: r.iterations, tried: [`the specifications among the MESH equations ${from}: converged (${r.iterations} iterations, ${Date.now() - t0} ms)`], tolerance: SPEC_TOLERANCE } },
+        };
+      }
+      meshNote = `the specifications among the MESH equations ${from}: converged, but met only to ${fmt(Math.max(...g.map(Math.abs)))} (${Date.now() - t0} ms)`;
+    } catch (e) {
+      if (e?.code !== "NO_CONVERGENCE" && e?.code !== "PHASE_SPLIT") throw e;
+      meshNote = `the specifications among the MESH equations ${from}: not converged (${Date.now() - t0} ms; ${e.message.replace(/^Column: /, "").slice(0, 300)})`;
+    }
+  }
 
   // ---- one column for a set of free variables; a failure is a failed trial point, kept for the report
   let anySolved = false;
@@ -727,4 +772,28 @@ function linearSolve(A, b) {
   const x = new Array(n);
   for (let r = n - 1; r >= 0; r--) { let s = M[r][n]; for (let k = r + 1; k < n; k++) s -= M[r][k] * x[k]; x[r] = s / M[r][r]; }
   return x.every(Number.isFinite) ? x : null;
+}
+
+/** A design specification's value in a solved column (proposal 0028: the MESH form's check, the outer loop's own). */
+function achievedIn(r, d, feed, MW) {
+  if (d.kind === "stage_temperature") return r.stages[d.stage - 1].T_K;
+  const f = d.product === "distillate" ? r.products.distillate.flows : d.product === "vapour_distillate" ? r.products.vapour_distillate.flows
+    : d.product === "bottoms" ? r.products.bottoms.flows : r.products.draws[d.draw - 1].flows;
+  if (d.kind === "recovery") return f[d.i] / feed[d.i];
+  if (d.kind === "component_flow") return d.basis === "mass" ? f[d.i] * MW[d.i] / 1000 : f[d.i];
+  return d.basis === "mass" ? f[d.i] * MW[d.i] / sum(f.map((v, k) => v * MW[k])) : f[d.i] / sum(f);
+}
+/** The scaled residual of a design specification (see the file header). */
+function scaledOf(d, a) {
+  return d.kind === "stage_temperature" ? (a - d.value) / 10 : d.kind === "component_flow" ? Math.log(Math.max(a, 1e-300) / d.value) : logit(a) - logit(d.value);
+}
+/** The free variable's value in a solved column, as the outer loop names it (proposal 0028: the MESH form's
+ *  `adjusted`, which the next restart starts from): the reflux ratio (with the vapour + liquid condenser L1 / U1), the
+ *  whole distillate flow, the boil-up ratio. */
+function freeValueOf(r, name, condenser) {
+  const top = r.stages[0], bot = r.stages[r.stages.length - 1], vl = condenser === "vapour_liquid";
+  const D = sum(r.products.distillate.flows) + (vl ? sum(r.products.vapour_distillate.flows) : 0), B = sum(r.products.bottoms.flows);
+  if (name === "reflux_ratio") return top.L_mol_s / (vl ? top.U_mol_s : D);
+  if (name === "distillate_rate") return D;
+  return bot.V_mol_s / B;
 }
