@@ -199,6 +199,16 @@ const PATIENCE = 12;
  */
 const LONG_NEWTON = 100;
 /**
+ * The vapour + liquid condenser given by its temperature, reached from a column at a vapour share (proposal 0029,
+ * step 1; CHEPTA-Lab M6, 2026-11-26): at most this many solves in the condenser's temperature, a step halved down to
+ * this fraction of the way (this project's choice).
+ */
+const VIA_SHARE = Object.freeze({ maxSteps: 24, minStep: 1 / 64 });
+/** The bounds of the vapour share that starts that path (this project's choice: a share of 0.1 % to 99.9 %). */
+/** The vapour share above which a failed column's message says that a small liquid distillate means a small reflux. */
+const LARGE_SHARE = 0.5;
+const VIA_SHARE_BOUNDS = Object.freeze([1e-3, 0.999]);
+/**
  * The means of the continuation in the relative volatilities: "plain", the mean of ln K_i over the components (as
  * before 2026-11-17), then, as the very last attempt, "liquid", the mean weighted by the stage's liquid. This project's
  * choice (proposal 0024's work on CHEPTA-Lab's column 11; docs/decisions/2026-11-17-01-two-liquid-columns.md).
@@ -941,6 +951,43 @@ export function solveCascade(opts = {}) {
     tried.push(`${name} (stopped at ${fmt(t * 100)} % of the way, after ${steps} steps, ${took()})`);
     return null;
   };
+  // the condenser's temperature by way of a vapour share (see its call below): the column at the share s0, then the
+  // temperature in steps from that column's to the one asked for (a step halved where Newton fails from the last)
+  function viaShare() {
+    const name = "the condenser's temperature reached from a column at a vapour share";
+    let s0;
+    try { s0 = startShare(th, inpStart, fJ, HF); } catch (e) {
+      if (e?.code !== "NO_CONVERGENCE") throw e;
+      tried.push(`${name}: its start failed (${e.message}; ${took()})`); return null;
+    }
+    const at = cs => ({ ...opts, ends: { ...opts.ends, condenser_spec: cs }, __viaShare: true });
+    let base;
+    try { base = solveCascade({ ...at({ kind: "vapour_share", value: s0 }), start: null, startEarly: false }); } catch (e) {
+      if (!["NO_CONVERGENCE", "PHASE_SPLIT", "OUT_OF_RANGE"].includes(e?.code)) throw e;
+      tried.push(`${name}: the column at a vapour share of ${fmt(s0)} (from a flash of the start's top vapour at ${fmt(cspec.value)} K) was not solved either (${e.code}; ${took()})`);
+      return null;
+    }
+    const T0 = base.stages[0].T_K, Tt = cspec.value, way = [];
+    let prev = base, t = 0, dt = 1, steps = 0;
+    while (steps < VIA_SHARE.maxSteps && dt >= VIA_SHARE.minStep) {
+      const tn = Math.min(1, t + dt), Tk = T0 + (Tt - T0) * tn;
+      steps += 1;
+      try {
+        const r = solveCascade({ ...at({ kind: "T_K", value: Tk }), start: prev, startEarly: false, homotopy: tn < 1 ? "step" : "last" });
+        prev = r; t = tn; way.push(fmt(Tk)); dt = Math.min(1, 2 * dt);
+        if (tn === 1) {
+          const note = `${name}: the column at a vapour share of ${fmt(s0)} (from a flash of the start's top vapour at ${fmt(Tt)} K) converged with its condenser at ${fmt(T0)} K (${base.solver?.start ?? "Newton"}); then the condenser's temperature given, ${way.length > 1 ? `in ${way.length} steps (${way.join(", ")} K)` : "in one step"}, each solve started from the last (${took()})`;
+          return { ...r, iterations: base.iterations + r.iterations, solver: { ...r.solver, start: `${name} (a vapour share of ${fmt(s0)}, then ${way.length} step${way.length > 1 ? "s" : ""} in the condenser's temperature)`, tried: [...tried, note] } };
+        }
+      } catch (e) {
+        if (!["NO_CONVERGENCE", "PHASE_SPLIT"].includes(e?.code)) throw e;
+        if (tn === 1 && e.code === "PHASE_SPLIT") throw e;   // the answer itself would hold two liquids: refused as such
+        dt /= 2;
+      }
+    }
+    tried.push(`${name}: the column at a vapour share of ${fmt(s0)} converged with its condenser at ${fmt(T0)} K, but the condenser's temperature was brought only ${fmt(t * 100)} % of the way to ${fmt(Tt)} K${way.length ? ` (reached ${way[way.length - 1]} K)` : ""}, after ${steps} steps (${took()})`);
+    return null;
+  }
   // (quick: a trial column of the specifications' outer loop: Newton from its neighbour gives up early, then the
   // bubble-point start; no continuation)
   if (!result && !opts.homotopy && !opts.quick) {
@@ -960,6 +1007,16 @@ export function solveCascade(opts = {}) {
     const r = continuation(CONTINUATION_MEANS[1]);
     if (r) return r;
   }
+  // the vapour + liquid condenser given by its temperature (proposal 0029, step 1; CHEPTA-Lab M6, 2026-11-26): where
+  // every attempt above failed, the same column at a vapour share is solved first (the share from a flash of the
+  // start's top vapour at the given temperature), and the condenser's temperature is then brought from that column's
+  // to the one asked for, each step started from the last (VIA_SHARE). The continuation in the volatilities cannot help
+  // here: its first column, without any separation, has no top vapour that is partly condensed at the given
+  // temperature. Last, so that every column that converged before keeps its path
+  if (!result && vl && cspec.kind === "T_K" && !opts.homotopy && !opts.quick && !opts.epsStep && !opts.__viaShare) {
+    const r = viaShare();
+    if (r) return r;
+  }
   // the very last attempt of a decanter (the maintainer, 2026-11-18, answer 1 of decision 2026-11-18-03): the entrainer
   // start where every other attempt failed, so that no column that converged before changes its path
   if (!result) tryEntrainer(true);
@@ -975,7 +1032,10 @@ export function solveCascade(opts = {}) {
     }
     const { g } = last ? groups(last.P) : { g: null };
     let hint = cold?.boilupWarning ? ` ${cold.boilupWarning}` : "";
-    if (vl && inp.specs.some(q => q.kind === "reflux_ratio")) hint += ` With the vapour + liquid condenser the reflux ratio is the reflux over the liquid distillate (L1 / U1): a small liquid distillate (a large vapour share) means a small reflux; give the reflux by another specification (a duty, a boil-up ratio) where most of the distillate leaves as vapour.`;
+    // (only where the last iterate's vapour share is large: CHEPTA-Lab M6, 2026-11-26, a share of 0.8 % got this hint)
+    const lastShare = vl && last?.P ? last.P[0].V / (last.P[0].V + last.P[0].U) : null;
+    if (vl && inp.specs.some(q => q.kind === "reflux_ratio") && lastShare > LARGE_SHARE) hint += ` With the vapour + liquid condenser the reflux ratio is the reflux over the liquid distillate (L1 / U1); on the last iterate ${fmt(lastShare * 100)} % of the distillate left as vapour, and a small liquid distillate means a small reflux: give the reflux by another specification (a duty, a boil-up ratio) where most of the distillate leaves as vapour.`;
+    else if (vl && cspec.kind === "T_K") hint += ` The condenser is given by its temperature${lastShare != null ? ` (on the last iterate ${fmt(lastShare * 100)} % of the distillate left as vapour)` : ""}: the same column given by its vapour share (vapour_share) or its vapour distillate's flow (vapour_distillate_kmol_h) may converge and show the condenser's temperature it reaches.`;
     if (anyDraw) hint += ` The column has ${inp.draws.length > 1 ? "side draws" : "a side draw"} (${inp.draws.map(d => `${fmt(d.rate)} mol/s of ${d.phase} from stage ${d.stage + 1}`).join(", ")}): a draw larger than the liquid or the vapour that reaches its stage has no solution; take a smaller draw, or a larger reflux (for a liquid draw) or boil-up (for a vapour draw).`;
     if (last && th.stable && phases !== "VLL") {
       const split = last.P.map((p, j) => j).filter(j => { try { return !th.stable(last.P[j].x, last.P[j].T).stable; } catch { return false; } });
@@ -1248,6 +1308,17 @@ function bubblePointStart(th, inp, fJ, HF, opts = {}) {
   const Rg = inp.specs.find(q => q.kind === "reflux_ratio")?.value;
   const s0 = Rg != null ? beta * (Rg + 1) / (1 + beta * Rg) : beta * (first.top.R + 1);
   return bubblePointStartAt(th, inp, fJ, HF, opts, Math.min(0.98, Math.max(0.02, s0)));
+}
+
+/** The vapour share of the distillate that starts the path by way of a vapour share (VIA_SHARE): the share from a flash
+ *  of the bubble-point start's top vapour at the condenser's given temperature, as bubblePointStart takes it, within
+ *  VIA_SHARE_BOUNDS (not its narrower bounds: the share of CHEPTA-Lab's methanol column is 0.8 %). */
+function startShare(th, inp, fJ, HF) {
+  const first = bubblePointStartAt(th, inp, fJ, HF, {}, 0.5);
+  const beta = startFlash(th, first.top.y, inp.cspec.value);
+  const Rg = inp.specs.find(q => q.kind === "reflux_ratio")?.value;
+  const s0 = Rg != null ? beta * (Rg + 1) / (1 + beta * Rg) : beta * (first.top.R + 1);
+  return Math.min(VIA_SHARE_BOUNDS[1], Math.max(VIA_SHARE_BOUNDS[0], s0));
 }
 
 /** The vapour fraction of z flashed at T and the column's pressure, by the adapter's K-values (for a start only). */
