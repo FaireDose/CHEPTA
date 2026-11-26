@@ -462,6 +462,35 @@ export function solveCascade(opts = {}) {
   // to be found: the outer loop of specifications.js, which calls this solver with ratios and flows
   if (hasDesign(opts)) return solveSpecified(opts, solveCascade, th);
   const phases = opts.phases ?? "VL";
+  // two liquids allowed, and the column did not converge: the column with one liquid on each stage (phases "VL"), whose
+  // stability check refuses any stage whose liquid would split; where it converges, every stage holds one stable
+  // liquid, so it is a solution of the two-liquid equations too, and their Newton is started from it (CHEPTA-Lab EA-8,
+  // 2026-11-20: column 5 of the closed ethyl acetate plant, 14 stages, an absorber that converged with 8, 11 and 13
+  // stages and with one liquid on 14, but not from the cold starts with two liquids allowed on 12 or 14). Not for a
+  // decanter (its condenser holds two liquids), a trial column of the outer loop (quick), a step of a continuation or
+  // the smooth stage's ladder, or a given adapter (the one-liquid column needs the property system)
+  if (phases === "VLL" && opts.sys && !opts.thermo && !opts.quick && !opts.homotopy && !opts.epsStep && !opts.condenserFeed && opts.ends?.condenser !== "decanter" && !opts.__oneLiquidStart
+    // (nor the product specifications among the MESH equations, solved only from their start: proposal 0028)
+    && !(opts.specs ?? []).some(q => q?.kind === "product_spec")) {
+    try { return solveCascade({ ...opts, __oneLiquidStart: true }); } catch (e) {
+      if (e?.code !== "NO_CONVERGENCE") throw e;
+      let one;
+      try { one = solveCascade({ ...opts, phases: "VL", __oneLiquidStart: true }); } catch (e2) {
+        if (!e2?.code || ["NOT_AVAILABLE", "MISSING_DATA", "BAD_INPUT"].includes(e2.code)) throw e2;
+        e.message += ` (The same column with one liquid on each stage, phases "VL", as a start: ${e2.code === "PHASE_SPLIT" ? "a second liquid would form there" : "not converged either"}.)`;
+        throw e;
+      }
+      try {
+        const r = solveCascade({ ...opts, start: one, __oneLiquidStart: true });
+        return { ...r, solver: { ...r.solver, start: `the same column with one liquid on each stage (phases "VL", every stage's liquid stable), then two liquids allowed: ${r.solver?.start ?? "Newton"}`,
+          tried: [...(r.solver?.tried ?? []), `the cold starts with two liquids allowed: not converged; the column with one liquid on each stage: converged (${one.iterations} iterations), its answer the start`] } };
+      } catch (e3) {
+        if (e3?.code !== "NO_CONVERGENCE") throw e3;
+        e.message += " (The same column with one liquid on each stage converged, every stage's liquid stable, but the two-liquid equations did not converge from it.)";
+        throw e;
+      }
+    }
+  }
   const inp = checkInput({ ...opts, phases }, n);
   // a second liquid that bypassed the stages into the decanter (proposal 0024, (b), feed_second_liquid "top"): the
   // decanter's feed, split there with the condensate; it counts in the feed and in what leaves as products
