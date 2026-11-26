@@ -40,7 +40,8 @@
  * { bracket: 8, solve: 50 }. Tolerance (open question 3, changed by the maintainer on 2026-11-14): relative to the value
  * asked (absolute for a mole or mass fraction and a vapour fraction, and where the value asked is 0); by default 1e-6, or
  * 100 times the recycle tolerance (solver.tolerance) where that is looser; any tolerance the person gives is used, with a
- * warning when it is tighter than 100 times the recycle tolerance.
+ * warning when it is tighter than 100 times the recycle tolerance (for a fraction, an absolute tolerance, 100 times the
+ * recycle tolerance times the target's value: proposal 0028, item 4).
  * Units: K, kPa, kmol/h, kg/h, kW.
  */
 import { fail } from "../util/errors.js";
@@ -270,10 +271,16 @@ export function checkDesignSpecs(sys, fs, inspected, defaultRecycleTolerance = 1
     const tol = d.tolerance ?? Math.max(DESIGN_SPEC_DEFAULTS.tolerance, floor);
     if (!(isNum(tol) && tol > 0 && tol < 0.1)) throw fail("BAD_INPUT", `${name}: tolerance must be between 0 and 0.1 (got ${JSON.stringify(d.tolerance)}).`, { where: [{ field: `${at}.tolerance` }] });
     const warnings = [];
-    if (tol < floor * (1 - 1e-12)) {
-      warnings.push(`${name}: its tolerance ${tol} is tighter than ${DESIGN_SPEC_TOLERANCE_RATIO} times the recycle tolerance (solver.tolerance ${recycleTol}); the recycles' own convergence noise may then be as large as the tolerance, so the solver may stop at the limit or close the bracket on noise. If it does, loosen the tolerance to ${+floor.toPrecision(6)} or tighten solver.tolerance to ${+(tol / DESIGN_SPEC_TOLERANCE_RATIO).toPrecision(6)}.`);
-    }
     const absolute = (ABSOLUTE.has(tg.quantity) && !tg.ratio_of) || t.value === 0;
+    // the recycles' convergence noise in the target: the recycle tolerance is relative, so for a fraction (an absolute
+    // tolerance) it scales with the target's value (proposal 0028, item 4: a mass fraction of 0.0004 converged to 1e-5
+    // relative moves by about 4e-9, not 1e-5; before, the advice was 0.001 for that target, larger than the target)
+    const scale = absolute && t.value !== 0 ? Math.abs(t.value) : 1;
+    const noiseFloor = floor * scale;
+    if (tol < noiseFloor * (1 - 1e-12)) {
+      const what = scale === 1 ? `${DESIGN_SPEC_TOLERANCE_RATIO} times the recycle tolerance (solver.tolerance ${recycleTol})` : `${DESIGN_SPEC_TOLERANCE_RATIO} times the recycle tolerance (solver.tolerance ${recycleTol}) times the target ${t.value}, ${+noiseFloor.toPrecision(6)}`;
+      warnings.push(`${name}: its tolerance ${tol} is tighter than ${what}; the recycles' own convergence noise may then be as large as the tolerance, so the solver may stop at the limit or close the bracket on noise. If it does, loosen the tolerance to ${+noiseFloor.toPrecision(6)} or tighten solver.tolerance to ${+(tol / DESIGN_SPEC_TOLERANCE_RATIO / scale).toPrecision(6)}.`);
+    }
     return { id, vary: vr, target: tg, tolerance: tol, toleranceGiven: d.tolerance != null, warnings, absolute, tolAbs: absolute ? tol : tol * Math.abs(t.value), MW, name };
   });
 }

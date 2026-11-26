@@ -44,3 +44,16 @@ test("item 3: the same answer as the bracketing by doubling steps would give (sc
   const r = solveFlowsheet(sys, loop([ds()]));
   assert.ok(Math.abs(r.designSpecs[0].varied.value - ref.one.makeup_water_kmol_h) <= 1e-6, `${r.designSpecs[0].varied.value} vs ${ref.one.makeup_water_kmol_h}`);
 });
+
+test("item 4: the tolerance warning of a fraction is relative to the target (0.0004 at a recycle tolerance of 1e-5 advised 0.001 before)", () => {
+  const frac = tol => ds({ target: { stream: "S6", quantity: "mole_fraction", component: "methanol", value: 0.0004 }, tolerance: tol });
+  // 1e-5 against 100 x 1e-5 x 0.0004 = 4e-7: no warning
+  assert.equal((flowsheetStatus(sys, loop([frac(1e-5)], { tolerance: 1e-5 })).warnings ?? []).filter(w => /tighter than/.test(w.message)).length, 0);
+  // 1e-7: tighter, and the advice is 4e-7 (or a recycle tolerance of 2.5e-6), not 0.001
+  const w = flowsheetStatus(sys, loop([frac(1e-7)], { tolerance: 1e-5 })).warnings.find(q => /tighter than/.test(q.message));
+  assert.ok(w, "a warning");
+  assert.match(w.message, /tighter than 100 times the recycle tolerance \(solver\.tolerance 0\.00001\) times the target 0\.0004, 4e-7/);
+  assert.match(w.message, /loosen the tolerance to 4e-7 or tighten solver\.tolerance to 0\.0000025/);
+  // a flow (a relative tolerance): as before
+  assert.match(flowsheetStatus(sys, loop([ds({ tolerance: 1e-7 })])).warnings[0].message, /tolerance 1e-7 is tighter than 100 times the recycle tolerance \(solver.tolerance 1e-8\);/);
+});
