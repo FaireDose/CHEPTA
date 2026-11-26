@@ -586,6 +586,19 @@
         "validation/data/eos/thermoml_methane_water_10-1016-j-fluid-2015-03-041.json"
       ]
     },
+    "boyer1960-nitrogen-methanol": {
+      "title": "The solubility of nitrogen, argon, methane, ethylene and ethane in normal primary alcohols",
+      "authors": "F. L. Boyer, L. J. Bircher",
+      "year": 1960,
+      "published": "J. Phys. Chem. 64 (1960) 1330-1331",
+      "kind": "open-access article",
+      "doi": "10.1021/j100838a501",
+      "url": "https://iupac.github.io/SolubilityDataSeries/volumes/SDS-10.pdf#page=226",
+      "access": "The original article is not open; its values are compiled in IUPAC Solubility Data Series Vol. 10, Nitrogen and Air (R. Battino, ed., Pergamon, 1982; copyright IUPAC), which IUPAC publishes as open access at iupac.github.io",
+      "files": [
+        "validation/data/eos/sds10_nitrogen_methanol_boyer1960.json"
+      ]
+    },
     "braga2017-carbon-dioxide-methanol": {
       "title": "Phase Behavior Data of (CO2 + Toluene + Phenanthrene) and (CO2 + (Methanol + Phenanthrene) Systems at High Pressure",
       "authors": "A. J. O. Braga, R. P. do Carmo, P. M. Ndiaye, F. W. Tavares",
@@ -846,6 +859,20 @@
       "note": "Dimerization constants of formic acid, Table 8, transcribed into validation/data/association/formic-acid_chao1978.json; matched by the authors to the measured vapour densities of Coolidge (1928).",
       "files": [
         "validation/data/association/formic-acid_chao1978.json"
+      ]
+    },
+    "chapoy2004-nitrogen-water": {
+      "title": "Gas Solubility Measurement and Modeling for the Nitrogen + Water System from 274.18 K to 363.02 K",
+      "authors": "A. Chapoy, A. H. Mohammadi, B. Tohidi, D. Richon",
+      "year": 2004,
+      "published": "J. Chem. Eng. Data 49 (2004) 1110-1115",
+      "kind": "thermoml",
+      "doi": "10.1021/je049869d",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je049869d.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_nitrogen_water_10-1021-je049869d.json"
       ]
     },
     "chemicals-surface-tension-mixture": {
@@ -2645,6 +2672,19 @@
         "validation/data/eos/thermoml_methane_water_10-1021-acs-jced-7b00777.json"
       ]
     },
+    "katayama1976-nitrogen-methanol": {
+      "title": "Solubilities of hydrogen and nitrogen in alcohols and n-hexane",
+      "authors": "T. Katayama, T. Nitta",
+      "year": 1976,
+      "published": "J. Chem. Eng. Data 21 (1976) 194-196",
+      "kind": "open-access article",
+      "doi": "10.1021/je60069a018",
+      "url": "https://iupac.github.io/SolubilityDataSeries/volumes/SDS-10.pdf#page=227",
+      "access": "The original article is not open; its values are compiled in IUPAC Solubility Data Series Vol. 10, Nitrogen and Air (R. Battino, ed., Pergamon, 1982; copyright IUPAC), which IUPAC publishes as open access at iupac.github.io",
+      "files": [
+        "validation/data/eos/sds10_nitrogen_methanol_katayama1976.json"
+      ]
+    },
     "khoshooei2018-cyclohexane-toluene": {
       "title": "A new analysis method for improving collection of vapor-liquid equilibrium (VLE) data of binary mixtures using differential scanning calorimetry (DSC)",
       "authors": "M. A. Khoshooei, D. Sharp, Y. Maham, A. Afacan, G. P. Dechaine",
@@ -2755,6 +2795,31 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json"
+      ]
+    },
+    "kretschmer1946-nitrogen-methanol": {
+      "title": "Solubility of oxygen and nitrogen in organic solvents from -25 to 50 C",
+      "authors": "C. B. Kretschmer, J. Nowakowska, R. Wiebe",
+      "year": 1946,
+      "published": "Ind. Eng. Chem. 38 (1946) 506-509",
+      "kind": "open-access article",
+      "doi": "10.1021/ie50437a018",
+      "url": "https://iupac.github.io/SolubilityDataSeries/volumes/SDS-10.pdf#page=225",
+      "access": "The original article is not open; its values are compiled in IUPAC Solubility Data Series Vol. 10, Nitrogen and Air (R. Battino, ed., Pergamon, 1982; copyright IUPAC), which IUPAC publishes as open access at iupac.github.io",
+      "files": [
+        "validation/data/eos/sds10_nitrogen_methanol_kretschmer1946.json"
+      ]
+    },
+    "krichevskii1947-nitrogen-methanol": {
+      "title": "[nitrogen + methanol at high pressure: the compiled sheet gives no title and the article has no DOI]",
+      "authors": "I. R. Krichevskii, E. S. Lebedeva",
+      "year": 1947,
+      "published": "Zh. Fiz. Khim. 21 (1947) 715-717",
+      "kind": "open-access article",
+      "url": "https://iupac.github.io/SolubilityDataSeries/volumes/SDS-10.pdf#page=491",
+      "access": "The original article is not open; its values are compiled in IUPAC Solubility Data Series Vol. 10, Nitrogen and Air (R. Battino, ed., Pergamon, 1982; copyright IUPAC), which IUPAC publishes as open access at iupac.github.io",
+      "files": [
+        "validation/data/eos/sds10_nitrogen_methanol_krichevskii1947.json"
       ]
     },
     "ku2005-acetone-ethanol": {
@@ -3803,6 +3868,20 @@
         "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json"
       ]
     },
+    "mohammadi2005-nitrogen-water": {
+      "title": "Water Content Measurement and Modeling in the Nitrogen + Water System",
+      "authors": "A. H. Mohammadi, A. Chapoy, B. Tohidi, D. Richon",
+      "year": 2005,
+      "published": "J. Chem. Eng. Data 50 (2005) 541-545",
+      "kind": "thermoml",
+      "doi": "10.1021/je049676q",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je049676q.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_nitrogen_water_10-1021-je049676q.json"
+      ]
+    },
     "mohammadian2015-carbon-dioxide-water": {
       "title": "Measurement of CO2 Solubility in NaCl Brine Solutions at Different Temperatures and Pressures Using the Potentiometric Titration Method",
       "authors": "E. Mohammadian, H. Hamidi, M. Assadullah, A. Azdarpour, S. Motamedi, R. Junin",
@@ -3996,6 +4075,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json"
+      ]
+    },
+    "muromachi2017-nitrogen-water": {
+      "title": "Solubility of Nitrogen Gas in Aqueous Solution of Tetra-n-Butylammonium Bromide",
+      "authors": "S. Muromachi, H. Miyamoto, R. Ohmura",
+      "year": 2017,
+      "published": "Int. J. Thermophys. 38 (2017) 173",
+      "kind": "thermoml",
+      "doi": "10.1007/s10765-017-2310-y",
+      "url": "https://trc.nist.gov/ThermoML/10.1007/s10765-017-2310-y.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json"
       ]
     },
     "nagamachi2006-ethanol-water": {

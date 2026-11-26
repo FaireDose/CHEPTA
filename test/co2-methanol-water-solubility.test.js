@@ -92,8 +92,11 @@ test("CHEPTA-Lab's separator (stream 23, 30 degC, 6925 kPa): CO2 in the liquid b
   // PR with k_ij: Lab's 3.414 mol % (COMPARISON.md, main 415da41), reproduced
   const pr = labFlash(method("PR (k_ij)"));
   assert.ok(Math.abs(pr.liquid_mol_pct[2] - 3.414) < 0.002, JSON.stringify(pr));
-  // PR + gE (MHV1) refuses nitrogen + methanol (no open set); without nitrogen it gives about 2.6 %
-  assert.match(labFlash(method("PR + gE (MHV1)")).refused, /Methanol \+ Nitrogen/);
+  // PR + gE (MHV1): until 2026-11-25 it refused nitrogen + methanol (no set); since then nitrogen + methanol (IUPAC SDS
+  // Vol. 10) and nitrogen + water (ThermoML) have sets (docs/decisions/2026-11-25-01-nitrogen-mhv1.md), and the whole
+  // separator gives about 2.4 % CO2, as the decision of 2026-11-20 estimated; without nitrogen about 2.6 %
+  const all = labFlash(method("PR + gE (MHV1)"));
+  assert.ok(!all.refused && all.liquid_mol_pct[2] > 2.2 && all.liquid_mol_pct[2] < 2.6, JSON.stringify(all));
   const mh = labFlash(method("PR + gE (MHV1)"), true);
   assert.ok(mh.liquid_mol_pct[2] > 2 && mh.liquid_mol_pct[2] < 3, JSON.stringify(mh));
   // and its H2 in the liquid is 4-5 times PR's, which has no H2 + methanol k_ij

@@ -5082,6 +5082,758 @@
      }
     ]
    }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "nitrogen",
+    "water"
+   ],
+   "check_henry": {
+    "aad": 12.1,
+    "max": 42,
+    "T_K": [
+     278.15,
+     288.15,
+     298.15,
+     308.15,
+     318.15,
+     328.15,
+     338.15,
+     348.15,
+     358.15,
+     368.15,
+     378.15,
+     388.15,
+     398.15
+    ],
+    "deviations": [
+     8.19,
+     2.42,
+     -0.78,
+     -1.98,
+     -1.56,
+     0.23,
+     3.23,
+     7.32,
+     12.42,
+     18.49,
+     25.46,
+     33.31,
+     41.98
+    ],
+    "source": "src/data/henry.json (IAPWS G7-04)"
+   },
+   "NRTL": {
+    "a_ij": 13.6375,
+    "a_ji": 7.3712,
+    "b_ij": -58.57,
+    "b_ji": -1012.06,
+    "alpha": 0.3
+   },
+   "points": 61,
+   "articles": 2,
+   "range": {
+    "T_K": [
+     274.18,
+     363.02
+    ],
+    "P_kPa": [
+     915,
+     7160
+    ]
+   },
+   "ok": false,
+   "warned": "the maintainer, 2026-11-26 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md: the ThermoML fit confirmed)",
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 5.6,
+      "bias": 2,
+      "max": 23.2
+     },
+     "x_pct": {
+      "aad": 5.3,
+      "bias": -1.4,
+      "max": 26.9
+     },
+     "y": {
+      "aad": 0.0012,
+      "max": 0.0058,
+      "points": 24
+     },
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 11
+    },
+    "articles": [
+     {
+      "file": "thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json",
+      "cite": "Muromachi et al. (2017)",
+      "points": 9,
+      "P_pct": {
+       "aad": 11.8,
+       "bias": -1.4,
+       "max": 23.2
+      },
+      "x_pct": {
+       "aad": 12,
+       "bias": 3.4,
+       "max": 26.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_nitrogen_water_10-1021-je049676q.json",
+      "cite": "Mohammadi et al. (2005)",
+      "points": 0,
+      "P_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "x_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "y": {
+       "aad": 0.0012,
+       "max": 0.0058,
+       "points": 24
+      },
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 11
+     },
+     {
+      "file": "thermoml_nitrogen_water_10-1021-je049869d.json",
+      "cite": "Chapoy et al. (2004)",
+      "points": 52,
+      "P_pct": {
+       "aad": 4.5,
+       "bias": 2.6,
+       "max": 12.9
+      },
+      "x_pct": {
+       "aad": 4.2,
+       "bias": -2.3,
+       "max": 11.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "files": [
+    "thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json",
+    "thermoml_nitrogen_water_10-1021-je049869d.json"
+   ]
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "nitrogen",
+    "water"
+   ],
+   "check_henry": {
+    "aad": 9.8,
+    "max": 34.1,
+    "T_K": [
+     278.15,
+     288.15,
+     298.15,
+     308.15,
+     318.15,
+     328.15,
+     338.15,
+     348.15,
+     358.15,
+     368.15,
+     378.15,
+     388.15,
+     398.15
+    ],
+    "deviations": [
+     7.29,
+     1.78,
+     -1.39,
+     -2.74,
+     -2.6,
+     -1.22,
+     1.25,
+     4.69,
+     9.01,
+     14.17,
+     20.1,
+     26.75,
+     34.09
+    ],
+    "source": "src/data/henry.json (IAPWS G7-04)"
+   },
+   "NRTL": {
+    "a_ij": -1.7718,
+    "a_ji": 9.2255,
+    "b_ij": 504.58,
+    "b_ji": -1483.15,
+    "alpha": 0.3
+   },
+   "points": 61,
+   "articles": 2,
+   "range": {
+    "T_K": [
+     274.18,
+     363.02
+    ],
+    "P_kPa": [
+     915,
+     7160
+    ]
+   },
+   "ok": false,
+   "warned": "the maintainer, 2026-11-26 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md: the ThermoML fit confirmed)",
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 5.4,
+      "bias": 1.8,
+      "max": 23.2
+     },
+     "x_pct": {
+      "aad": 5.1,
+      "bias": -1.2,
+      "max": 26.8
+     },
+     "y": {
+      "aad": 0.0003,
+      "max": 0.0007,
+      "points": 12
+     },
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 23
+    },
+    "articles": [
+     {
+      "file": "thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json",
+      "cite": "Muromachi et al. (2017)",
+      "points": 9,
+      "P_pct": {
+       "aad": 12,
+       "bias": -1.2,
+       "max": 23.2
+      },
+      "x_pct": {
+       "aad": 12,
+       "bias": 3.2,
+       "max": 26.8
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_nitrogen_water_10-1021-je049676q.json",
+      "cite": "Mohammadi et al. (2005)",
+      "points": 0,
+      "P_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "x_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "y": {
+       "aad": 0.0003,
+       "max": 0.0007,
+       "points": 12
+      },
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 23
+     },
+     {
+      "file": "thermoml_nitrogen_water_10-1021-je049869d.json",
+      "cite": "Chapoy et al. (2004)",
+      "points": 52,
+      "P_pct": {
+       "aad": 4.2,
+       "bias": 2.3,
+       "max": 12.1
+      },
+      "x_pct": {
+       "aad": 3.9,
+       "bias": -1.9,
+       "max": 10.6
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "files": [
+    "thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json",
+    "thermoml_nitrogen_water_10-1021-je049869d.json"
+   ]
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "nitrogen",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.6337,
+    "b_ij": 0,
+    "b_ji": -722.43,
+    "alpha": 0.3
+   },
+   "points": 13,
+   "range": {
+    "T_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "ok": false,
+   "errors": {
+    "henry_pct": {
+     "aad": 6.6,
+     "max": 15.3,
+     "deviations": [
+      15.35,
+      5.38,
+      -1.21,
+      -5.33,
+      -7.57,
+      -8.31,
+      -7.83,
+      -6.31,
+      -3.88,
+      -0.64,
+      3.34,
+      8,
+      13.27
+     ]
+    }
+   },
+   "files": [],
+   "check_thermoml": {
+    "files": [
+     "thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json",
+     "thermoml_nitrogen_water_10-1021-je049869d.json"
+    ],
+    "pooled": {
+     "P_pct": {
+      "aad": 9.3,
+      "bias": 1.5,
+      "max": 24.6
+     },
+     "x_pct": {
+      "aad": 8.8,
+      "bias": -0.2,
+      "max": 31.2
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 0
+    },
+    "articles": [
+     {
+      "file": "thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json",
+      "cite": "Muromachi et al. (2017)",
+      "points": 9,
+      "P_pct": {
+       "aad": 11.9,
+       "bias": -2.7,
+       "max": 24.6
+      },
+      "x_pct": {
+       "aad": 12.4,
+       "bias": 4.7,
+       "max": 31.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_nitrogen_water_10-1021-je049869d.json",
+      "cite": "Chapoy et al. (2004)",
+      "points": 52,
+      "P_pct": {
+       "aad": 8.8,
+       "bias": 2.2,
+       "max": 22.3
+      },
+      "x_pct": {
+       "aad": 8.1,
+       "bias": -1.1,
+       "max": 18
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "nitrogen",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.4107,
+    "b_ij": 0,
+    "b_ji": -667.66,
+    "alpha": 0.3
+   },
+   "points": 13,
+   "range": {
+    "T_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "ok": false,
+   "errors": {
+    "henry_pct": {
+     "aad": 6.8,
+     "max": 15.7,
+     "deviations": [
+      15.65,
+      5.49,
+      -1.22,
+      -5.42,
+      -7.7,
+      -8.47,
+      -7.98,
+      -6.44,
+      -3.97,
+      -0.66,
+      3.4,
+      8.16,
+      13.56
+     ]
+    }
+   },
+   "files": [],
+   "check_thermoml": {
+    "files": [
+     "thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json",
+     "thermoml_nitrogen_water_10-1021-je049869d.json"
+    ],
+    "pooled": {
+     "P_pct": {
+      "aad": 9.8,
+      "bias": 2.6,
+      "max": 24.1
+     },
+     "x_pct": {
+      "aad": 9,
+      "bias": -1.2,
+      "max": 29.9
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 0
+    },
+    "articles": [
+     {
+      "file": "thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json",
+      "cite": "Muromachi et al. (2017)",
+      "points": 9,
+      "P_pct": {
+       "aad": 12.1,
+       "bias": -1.6,
+       "max": 24.1
+      },
+      "x_pct": {
+       "aad": 12.2,
+       "bias": 3.6,
+       "max": 29.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_nitrogen_water_10-1021-je049869d.json",
+      "cite": "Chapoy et al. (2004)",
+      "points": 52,
+      "P_pct": {
+       "aad": 9.4,
+       "bias": 3.3,
+       "max": 23.2
+      },
+      "x_pct": {
+       "aad": 8.4,
+       "bias": -2,
+       "max": 18.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "nitrogen",
+    "methanol"
+   ],
+   "NRTL": {
+    "a_ij": 4.3997,
+    "a_ji": -0.214,
+    "b_ij": 13.02,
+    "b_ji": 125.57,
+    "alpha": 0.3
+   },
+   "points": 26,
+   "articles": 4,
+   "range": {
+    "T_K": [
+     213.15,
+     343.15
+    ],
+    "P_kPa": [
+     101.325,
+     19700
+    ]
+   },
+   "ok": true,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 3.7,
+      "bias": -2.5,
+      "max": 8.8
+     },
+     "x_pct": {
+      "aad": 3.6,
+      "bias": 2.4,
+      "max": 9
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 0
+    },
+    "articles": [
+     {
+      "file": "sds10_nitrogen_methanol_boyer1960.json",
+      "cite": "Boyer et al. (1960)",
+      "points": 1,
+      "P_pct": {
+       "aad": 3.9,
+       "bias": 3.9,
+       "max": 3.9
+      },
+      "x_pct": {
+       "aad": 3.7,
+       "bias": -3.7,
+       "max": 3.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "sds10_nitrogen_methanol_katayama1976.json",
+      "cite": "Katayama et al. (1976)",
+      "points": 5,
+      "P_pct": {
+       "aad": 2.1,
+       "bias": 0.4,
+       "max": 4.2
+      },
+      "x_pct": {
+       "aad": 2.1,
+       "bias": -0.3,
+       "max": 4.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "sds10_nitrogen_methanol_kretschmer1946.json",
+      "cite": "Kretschmer et al. (1946)",
+      "points": 4,
+      "P_pct": {
+       "aad": 2.1,
+       "bias": 1.2,
+       "max": 3
+      },
+      "x_pct": {
+       "aad": 2,
+       "bias": -1.1,
+       "max": 2.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "sds10_nitrogen_methanol_krichevskii1947.json",
+      "cite": "Krichevskii et al. (1947)",
+      "points": 16,
+      "P_pct": {
+       "aad": 4.7,
+       "bias": -4.7,
+       "max": 8.8
+      },
+      "x_pct": {
+       "aad": 4.5,
+       "bias": 4.5,
+       "max": 9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "files": [
+    "sds10_nitrogen_methanol_boyer1960.json",
+    "sds10_nitrogen_methanol_katayama1976.json",
+    "sds10_nitrogen_methanol_kretschmer1946.json",
+    "sds10_nitrogen_methanol_krichevskii1947.json"
+   ]
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "nitrogen",
+    "methanol"
+   ],
+   "NRTL": {
+    "a_ij": 4.3846,
+    "a_ji": -0.3887,
+    "b_ij": 10.44,
+    "b_ji": 167.12,
+    "alpha": 0.3
+   },
+   "points": 26,
+   "articles": 4,
+   "range": {
+    "T_K": [
+     213.15,
+     343.15
+    ],
+    "P_kPa": [
+     101.325,
+     19700
+    ]
+   },
+   "ok": true,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 2.8,
+      "bias": -1.9,
+      "max": 8.4
+     },
+     "x_pct": {
+      "aad": 2.7,
+      "bias": 1.8,
+      "max": 8.5
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 0
+    },
+    "articles": [
+     {
+      "file": "sds10_nitrogen_methanol_boyer1960.json",
+      "cite": "Boyer et al. (1960)",
+      "points": 1,
+      "P_pct": {
+       "aad": 3.2,
+       "bias": 3.2,
+       "max": 3.2
+      },
+      "x_pct": {
+       "aad": 3.1,
+       "bias": -3.1,
+       "max": 3.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "sds10_nitrogen_methanol_katayama1976.json",
+      "cite": "Katayama et al. (1976)",
+      "points": 5,
+      "P_pct": {
+       "aad": 1.6,
+       "bias": 0.1,
+       "max": 3.5
+      },
+      "x_pct": {
+       "aad": 1.6,
+       "bias": -0.1,
+       "max": 3.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "sds10_nitrogen_methanol_kretschmer1946.json",
+      "cite": "Kretschmer et al. (1946)",
+      "points": 4,
+      "P_pct": {
+       "aad": 1.8,
+       "bias": 0.6,
+       "max": 2.3
+      },
+      "x_pct": {
+       "aad": 1.8,
+       "bias": -0.6,
+       "max": 2.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "sds10_nitrogen_methanol_krichevskii1947.json",
+      "cite": "Krichevskii et al. (1947)",
+      "points": 16,
+      "P_pct": {
+       "aad": 3.5,
+       "bias": -3.5,
+       "max": 8.4
+      },
+      "x_pct": {
+       "aad": 3.3,
+       "bias": 3.3,
+       "max": 8.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "files": [
+    "sds10_nitrogen_methanol_boyer1960.json",
+    "sds10_nitrogen_methanol_katayama1976.json",
+    "sds10_nitrogen_methanol_kretschmer1946.json",
+    "sds10_nitrogen_methanol_krichevskii1947.json"
+   ]
   }
  ]
 }
