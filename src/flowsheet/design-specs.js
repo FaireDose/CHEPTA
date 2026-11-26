@@ -42,6 +42,7 @@
 import { fail } from "../util/errors.js";
 import { findComponent } from "../thermo/components.js";
 import { molarMasses } from "../stream/stream.js";
+import { reportProgress, progressWanted, setProgressContext, timeUp } from "../util/progress.js";
 
 export const DESIGN_SPEC_DEFAULTS = Object.freeze({ tolerance: 1e-6, bracket: 8, solve: 50 });
 /** How much tighter than a specification the recycles must be converged (the maintainer, 2026-11-13). */
@@ -346,8 +347,11 @@ export function withStartValues(sys, fs, specs) {
  * @param {object} fs          the flowsheet with designSpecs
  * @param {Function} solveInner  (sys, fs) → result of the sequential solver, without design specifications
  * @param {object} inspected   inspectFlowsheet(fs)
+ * @param {object} [ctx]        the run's context (src/flowsheet/flowsheet.js; proposal 0027): the columns' last answers
+ *                              (carried from one solve to the next, dropped for a retry from the document's own start),
+ *                              the timing of each solve, and where the run is when its time limit passes
  */
-export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleTolerance = 1e-8) {
+export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleTolerance = 1e-8, ctx = null) {
   const specs = checkDesignSpecs(sys, fs, inspected, defaultRecycleTolerance);
   const limits = designSpecLimits(fs.solver);
   const { designSpecs, ...plain } = fs;
@@ -356,6 +360,35 @@ export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleT
   let warm = null, solves = 0;
   const trail = [];   // every solve: x and reached
   const describeX = xs => specs.map((d, k) => `${d.vary.label} = ${fmt(xs[k])}${d.vary.unit ? ` ${d.vary.unit}` : ""}`).join(", ");
+  if (ctx) ctx.evaluations = [];
+  const now = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
+  /** The solve nearest to meeting the specifications so far (the largest scaled residual smallest), and for one
+   *  specification the bracket the solves give (the nearest values on either side of the target). */
+  const bestSoFar = () => {
+    if (!trail.length) return null;
+    const score = t => Math.max(...t.reached.map((v, k) => Math.abs(v - specs[k].target.value) / Math.max(specs[k].tolAbs, 1e-300)));
+    const t = trail.reduce((a, b) => (score(b) < score(a) ? b : a));
+    return { at: Object.fromEntries(specs.map((d, k) => [d.id, t.x[k]])), reached: Object.fromEntries(specs.map((d, k) => [d.id, t.reached[k]])),
+      asked: Object.fromEntries(specs.map(d => [d.id, d.target.value])) };
+  };
+  const bracketSoFar = () => {
+    if (specs.length !== 1) return null;
+    const v = specs[0].target.value, lo = trail.filter(t => t.reached[0] < v), hi = trail.filter(t => t.reached[0] > v);
+    if (!lo.length || !hi.length) return null;
+    const near = list => list.reduce((a, b) => (Math.abs(b.reached[0] - v) < Math.abs(a.reached[0] - v) ? b : a));
+    return [near(lo).x[0], near(hi).x[0]].sort((a, b) => a - b);
+  };
+  /** An OUT_OF_TIME in solve n at xs (proposal 0027, (c); CHEPTA-Lab's request 18): which solve, which value, the
+   *  bracket and the best point so far; no partial answer (the best point is in details.best). */
+  const outOfTimeAt = (e, xs, context) => {
+    const best = bestSoFar(), bracket = bracketSoFar();
+    const text = ` Design specification${specs.length > 1 ? "s" : ""} ${specs.map(d => d.id).join(", ")}: in solve ${solves}${context} at ${describeX(xs)}; ${trail.length} solve${trail.length === 1 ? "" : "s"} finished before it${bracket ? `, the target bracketed between ${fmt(bracket[0])} and ${fmt(bracket[1])}${specs[0].vary.unit ? ` ${specs[0].vary.unit}` : ""}` : ""}${best ? `; the best so far ${describeX(specs.map(d => best.at[d.id]))}, where ${specs.map(d => `${d.target.label} is ${fmt(best.reached[d.id])} (asked ${fmt(d.target.value)})`).join(", ")}: give it as vary.guess to go on from there` : ""}.`;
+    e.message = e.message.replace(/ The time went to /, `${text} The time went to `);
+    if (!e.message.includes(text)) e.message += text;
+    e.details = { ...(e.details ?? {}), designSpecs: specs.map(d => d.id), solve: solves, at: Object.fromEntries(specs.map((d, k) => [d.id, xs[k]])),
+      ...(bracket ? { bracket } : {}), ...(best ? { best } : {}), trail: trail.slice() };
+    return e;
+  };
 
   /** One whole-flowsheet solve with the varied inputs at xs. */
   const evaluate = (xs, context = "") => {
@@ -367,13 +400,27 @@ export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleT
     const doc = { ...base, blocks };
     let result;
     solves++;
+    const t0 = now(), evaluation = { solve: solves, at: Object.fromEntries(specs.map((d, k) => [d.id, xs[k]])), ...(context ? { step: context.replace(/^, /, "") } : {}) };
+    // where the run is, with every progress report (src/util/progress.js): an OUT_OF_TIME of the request's own time
+    // limit (limits.time_ms) then says it too (CHEPTA-Lab's request 18)
+    setProgressContext({ designSpec: { ids: specs.map(d => d.id), solve: solves, at: describeX(xs), bracket: bracketSoFar(), best: bestSoFar() } });
+    if (progressWanted()) reportProgress({ kind: "flowsheet", loops: [] });
+    const record = outcome => { if (ctx) ctx.evaluations.push({ ...evaluation, outcome, passes: ctx.loops.map(l => l.passes.length), ms: now() - t0 }); };
     try {
       result = solveInner(sys, warm ? { ...doc, ...warmGuesses(doc, warm) } : doc);
     } catch (e) {
-      // a warm start far from the answer can fail where the document's own start does not: try that once
+      if (e?.code === "OUT_OF_TIME" || timeUp()) { record("out of time"); setProgressContext(null); throw outOfTimeAt(e, xs, context); }
+      // a warm start far from the answer can fail where the document's own start does not: try that once, the
+      // columns' last answers dropped too (that retry is the cold solve)
       let again = null;
-      if (warm) { try { solves++; result = solveInner(sys, doc); } catch (e2) { again = e2; } }
+      if (warm) {
+        ctx?.restarts.clear();
+        try { solves++; result = solveInner(sys, doc); } catch (e2) { again = e2; }
+        if (again && (again.code === "OUT_OF_TIME" || timeUp())) { record("out of time"); setProgressContext(null); throw outOfTimeAt(again, xs, context); }
+      }
       if (!warm || again) {
+        record("failed");
+        setProgressContext(null);
         const err = again ?? e;
         const msg = `${specs.map(d => d.id).join(", ")}: the flowsheet could not be solved at ${describeX(xs)} (solve ${solves}${context}): ${err.message}`;
         err.message = msg;
@@ -381,6 +428,7 @@ export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleT
         throw err;
       }
     }
+    record(solves > evaluation.solve ? "solved from the document's own start" : "solved");
     warm = result;
     const reached = specs.map(d => targetOf(d.target, result, MW));
     const r = reached.map((v, k) => v - specs[k].target.value);
@@ -393,8 +441,11 @@ export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleT
     { reason: "undefined", designSpec: d.id, at: p.x[k], solves, trail });
   const met = p => p.r.every((v, k) => Math.abs(v) <= specs[k].tolAbs);
 
-  const out = specs.length === 1 ? solveOne(specs[0], evaluate, limits, undefinedAt, () => solves, trail)
-    : solveMany(specs, evaluate, limits, undefinedAt, met, () => solves, trail);
+  let out;
+  try {
+    out = specs.length === 1 ? solveOne(specs[0], evaluate, limits, undefinedAt, () => solves, trail)
+      : solveMany(specs, evaluate, limits, undefinedAt, met, () => solves, trail);
+  } finally { setProgressContext(null); }
   // the answer: the last solve, with the varied values written into the blocks' specifications
   const result = out.point.result;
   for (const d of specs) {

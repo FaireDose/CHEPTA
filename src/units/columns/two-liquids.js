@@ -251,6 +251,10 @@ export function twoLiquidThermo(th, sys, opts = {}) {
       let r = null;
       try { r = splitLL(sys, x, T, K0); } catch { r = newtonLL(sys, x, T, K0); }
       if (ok(r)) { lastK.set(j, r.K); return { beta: r.beta, x1: r.x1, x2: r.x2 }; }
+      // a liquid that no longer splits from the old K-values: forget them, so that the next call goes to the stability
+      // test at once (proposal 0027, (e1): the bubble-point search shares one key for every stage, so a single split
+      // made every later bubble point run a full failed substitution first; the stability test decides as before)
+      lastK.delete(j);
     }
     const st = liquidTangentPlane(sys, x, T);
     if (st.stable || !st.trial) return null;

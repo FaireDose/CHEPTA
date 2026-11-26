@@ -21,10 +21,14 @@ export const ERROR_CODES = Object.freeze([
   "BAD_INPUT", "OUT_OF_RANGE", "MISSING_DATA", "NO_CONVERGENCE", "PHASE_SPLIT", "NOT_AVAILABLE",
 ]);
 
+/** The codes of the runtime (src/runtime/worker.js): a run out of time, cancelled, or a worker that failed. The engine
+ *  throws OUT_OF_TIME itself where a flowsheet's own time limit passes (solver.timeLimit_s; proposal 0027). */
+export const RUNTIME_CODES = Object.freeze(["OUT_OF_TIME", "CANCELLED", "WORKER_FAILED"]);
+
 const BRAND = Symbol.for("fugacity.error");
 
 function brand(e, code, details) {
-  if (!ERROR_CODES.includes(code)) throw new Error(`Internal: unknown error code "${code}".`);
+  if (!ERROR_CODES.includes(code) && !RUNTIME_CODES.includes(code)) throw new Error(`Internal: unknown error code "${code}".`);
   Object.defineProperty(e, BRAND, { value: true });
   e.code = code;
   if (details !== undefined) e.details = details;

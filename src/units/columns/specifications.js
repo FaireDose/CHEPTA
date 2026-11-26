@@ -84,6 +84,7 @@
  * SPEC_TOLERANCE; `specifications` lists each with the value asked, the value reached and the difference, and
  * `adjusted` the variables found.
  */
+import { checkTime } from "../../util/progress.js";
 import { fail } from "../../util/errors.js";
 import { findAzeotrope, binaryAzeotropes } from "../../equilibrium/azeotrope.js";
 
@@ -257,6 +258,18 @@ function checkAzeotrope({ design, feed, F, MW }, th, opts) {
 
 /** Solve a column with design specifications; `solve` is the stage solver (solveCascade), `th` its adapter. */
 export function solveSpecified(opts, solve, th) {
+  // a restart (the block's last answer in a flowsheet; proposal 0027, (a)): the search from the last answer's free
+  // variables first; where it does not meet the specifications, the search exactly as without a restart
+  if (Array.isArray(opts.startAdjusted) && !opts.restarted) {
+    const t0 = Date.now();
+    try { return solveSpecified({ ...opts, restarted: true }, solve, th); } catch (e) {
+      if (e?.code !== "NO_CONVERGENCE") throw e;
+      const note = `the search from the last answer: not met (${Date.now() - t0} ms), so the search as from a cold start`;
+      const { start: _s, startAdjusted: _a, startEarly: _e, ...cold } = opts;
+      const r = solveSpecified(cold, solve, th);
+      return r.solver?.specifications ? { ...r, solver: { ...r.solver, specifications: { ...r.solver.specifications, tried: [note, ...r.solver.specifications.tried] } } } : r;
+    }
+  }
   const prob = normalize(opts, th);
   const { design, base, draws, feed, F, MW } = prob;
   if (!design.length && draws.every(d => !d.free)) return solve(opts);
@@ -283,7 +296,7 @@ export function solveSpecified(opts, solve, th) {
   if (decanter && hasR && design.length === 1 && !base.length && !draws.length && pd.kind === "purity" && pd.product === "bottoms") {
     const t0 = Date.now();
     try {
-      const r = solve({ ...opts, specs: [{ kind: "bottoms_fraction", i: pd.i, value: pd.value, basis: pd.basis, ...(pd.basis === "mass" ? { MW } : {}), startD: estimateDistillate(prob, th, F) }] });
+      const r = solve({ ...opts, specs: [{ kind: "bottoms_fraction", i: pd.i, value: pd.value, basis: pd.basis, ...(pd.basis === "mass" ? { MW } : {}), startD: (Array.isArray(opts.startAdjusted) ? opts.startAdjusted.find(q => q.variable === "distillate_rate")?.value : null) ?? estimateDistillate(prob, th, F) }] });
       const f = r.products.bottoms.flows;
       const a = pd.basis === "mass" ? f[pd.i] * MW[pd.i] / sum(f.map((v, k) => v * MW[k])) : f[pd.i] / sum(f);
       const g = logit(a) - logit(pd.value);
@@ -337,6 +350,7 @@ export function solveSpecified(opts, solve, th) {
     const specs = [...base, ...vars.map((v, k) => (v.name === "draw_rate" ? null : { kind: v.name, value: values[k] })).filter(Boolean)];
     const ds = draws.map((d, k) => { const { free, ...rest } = d; return free ? { ...rest, rate: values[vars.findIndex(v => v.draw === k + 1)] } : rest; });
     solves += 1;
+    checkTime();   // a flowsheet's time limit (solver.timeLimit_s; proposal 0027)
     try {
       // after the first column, each is started from a solved neighbour, then from the bubble-point start; the
       // continuation is left to the first
@@ -557,7 +571,20 @@ export function solveSpecified(opts, solve, th) {
   }
 
   let done = null, run = null, start = null, edgeScan = null;
-  for (const R0 of [3, 8, 1.2, 20]) {
+  // a restart (src/flowsheet/flowsheet.js: the block's last answer in a recycle loop or a design specification's
+  // evaluation): the outer loop first starts from the variables found then, with that column as the start
+  const prevVals = Array.isArray(opts.startAdjusted) ? vars.map(v => opts.startAdjusted.find(a => a.variable === v.name && (a.draw ?? null) === (v.draw ?? null))?.value) : null;
+  if (prevVals && prevVals.every(v => Number.isFinite(v) && v > 0)) {
+    warm = opts.start ?? null;
+    const q = keep(point(clamp(vars.map((v, k) => v.from(prevVals[k])))));
+    if (q) {
+      const rr = newton(q);
+      tried.push(`Newton's method on the specifications from the last answer's ${vars.map((v, k) => varText(v, prevVals[k])).join(", ")} (${rr.iterations} iterations${rr.converged ? "" : `: ${rr.why}`})`);
+      if (rr.converged) { done = rr.q; run = rr; start = q; }
+    } else tried.push(`a first column with the last answer's ${vars.map((v, k) => varText(v, prevVals[k])).join(", ")}: not solved (${lastError?.code})`);
+  }
+  if (opts.restarted && !done) throw fail("NO_CONVERGENCE", "Column: the specifications were not met from the last answer.");
+  for (const R0 of done ? [] : [3, 8, 1.2, 20]) {
     warm = opts.start ?? null;
     const values = startValues(R0);
     start = keep(point(clamp(vars.map((v, k) => v.from(values[k])))));
