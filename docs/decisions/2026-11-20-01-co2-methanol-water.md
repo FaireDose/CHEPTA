@@ -113,3 +113,12 @@ or with PR and the known issue (3.4 %, about 1.3 to 1.8 times too high). Lab sho
    DATA_RULES "How to search").
 3. Should Lab's separator, and the methanol examples, move to PR + gE (MHV1) once nitrogen has its sets? Recommended:
    yes.
+
+## What the maintainer decided (2026-11-25, on #264, relayed by the coordinating session)
+
+1. Nitrogen sets for MHV1 (nitrogen + water to IAPWS G7-04, nitrogen + methanol after a full search): "likely yes do
+   it". A separate worker builds them; they are not part of this pull request.
+2. Once nitrogen has its sets, CHEPTA-Lab's separator and the methanol examples move to PR + gE (MHV1): yes.
+3. CHEPTA-Lab is told not to tune toward the paper's CO2 recycle (stream 24, 18.5 % CO2): yes.
+
+Still open: the maintainer's check of the transcribed rows against the three ThermoML records (AGENTS.md rule 4).

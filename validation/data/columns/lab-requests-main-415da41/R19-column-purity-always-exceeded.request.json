@@ -1,0 +1,79 @@
+{
+ "capability": "solve_flowsheet",
+ "input": {
+  "flowsheet": {
+   "components": [
+    "ethanol",
+    "water",
+    "ethyl acetate",
+    "acetic acid"
+   ],
+   "thermo": {
+    "model": "UNIQUAC",
+    "vapour": "ideal"
+   },
+   "blocks": [
+    {
+     "id": "F28",
+     "type": "feed",
+     "spec": {
+      "flow_kmol_h": {
+       "ethanol": 0.043357145028425845,
+       "water": 6504.019476613482,
+       "ethyl acetate": 0.030611030003038792,
+       "acetic acid": 3.612063278637614e-08
+      },
+      "T_K": 343.15,
+      "P_kPa": 100
+     }
+    },
+    {
+     "id": "SCDS15",
+     "type": "column",
+     "spec": {
+      "mode": "rigorous",
+      "stages": 18,
+      "feed_stage": 9,
+      "condenser": "total",
+      "P_kPa": 100.0,
+      "reflux_ratio": 2,
+      "phases": "VLL",
+      "bottoms_purity": {
+       "component": "water",
+       "value": 0.9999,
+       "basis": "mass"
+      }
+     }
+    },
+    {
+     "id": "P21",
+     "type": "product"
+    },
+    {
+     "id": "P22",
+     "type": "product"
+    }
+   ],
+   "streams": [
+    {
+     "id": "S28",
+     "from": "F28.out",
+     "to": "SCDS15.in"
+    },
+    {
+     "id": "S21",
+     "from": "SCDS15.distillate",
+     "to": "P21.in"
+    },
+    {
+     "id": "S22",
+     "from": "SCDS15.bottoms",
+     "to": "P22.in"
+    }
+   ],
+   "solver": {
+    "maxIterations": 200
+   }
+  }
+ }
+}
