@@ -47,6 +47,16 @@ const TRACE = 1e-9;
 /** The two-liquid stage formulations: "split" (the yes/no tangent-plane test and split of each stage) and "smooth". */
 export const TWO_LIQUID_STAGES = Object.freeze(["split", "smooth"]);
 export const SMOOTH_EPS = Object.freeze([1e-3, 1e-4, 1e-5]);
+/**
+ * The reuse of a clearly stable verdict (proposal 0028, item 2; docs/decisions/2026-11-26-01-column-specs-in-mesh.md):
+ * where a stage's last full tangent-plane test found its liquid stable with every nontrivial stationary point at a
+ * distance tm of at least TM_MARGIN (or none at all), a liquid within REUSE_LN_X in every ln x_i and REUSE_T_K in T of
+ * that test (the perturbed points of the stage's Jacobian, 1e-5 relative in the flows and about 1e-4 K) is taken as
+ * stable without a new test. Moving ln x by 1e-4 moves tm by about as much (tm = 1 - sum W, W_i = exp(d_i - ln gamma_i),
+ * d_i = ln x_i + ln gamma_i(x)), a hundredth of the margin. This project's choice of the three numbers. The verdict is
+ * never reused at a column's answer: the engine repeats the full test on every stage there (setReuse(false)).
+ */
+export const TM_MARGIN = 0.01, REUSE_LN_X = 1e-4, REUSE_T_K = 0.01;
 
 /**
  * The liquid-liquid split at T by Newton's method on ln K_i = ln gamma_i(x') - ln gamma_i(x'') (K_i = x''_i / x'_i,
@@ -228,21 +238,47 @@ export function twoLiquidThermo(th, sys, opts = {}) {
   }
   const lastK = new Map();     // stage -> the K-values of its last split
   const memo = new Map();      // stage -> { x, T, s }: lnK and hL ask for the same split one after the other
+  // stage -> { x, T, s }: the last split computed in full (not by a reused verdict), so that the base point of a
+  // Jacobian survives its perturbed points (proposal 0028, item 2)
+  const memoBase = new Map();
+  // stage -> { x, T }: the last full stability test that found the liquid clearly stable (TM_MARGIN), and whether a
+  // verdict may be reused
+  const clearlyStable = new Map();
+  // (opts.reuse false: never, for a comparison; the engine's stableReuse option)
+  let reuse = opts.reuse !== false, reused = 0, tests = 0;
   const same = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
   // the smooth stage (proposal 0024, (c)): the smoothing parameter of the moment (the engine lowers it in steps)
   const smooth = !!opts.smooth;
   let eps = smooth ? (opts.eps ?? SMOOTH_EPS[0]) : null;
   const lastS = new Map();     // stage -> { key, a }: the last solution of its smooth equations
-  const setEps = e => { eps = e; memo.clear(); };
+  const setEps = e => { eps = e; memo.clear(); memoBase.clear(); };
+  // (turned off: every memo and verdict dropped, so that each stage is tested in full; turned on again: the memos kept)
+  const setReuse = on => { reuse = !!on; if (!reuse) { memo.clear(); memoBase.clear(); clearlyStable.clear(); } };
 
   /** The liquids of a whole liquid x at T: null (one liquid) or { beta, x1, x2 } (beta: the fraction of x2). */
   function split(x, T, j = -1) {
     const m = memo.get(j);
     if (m && m.T === T && same(m.x, x)) return m.s;
+    const b = memoBase.get(j);
+    if (b && b.T === T && same(b.x, x)) { memo.set(j, b); return b.s; }
+    full = true;
     const s = smooth ? smoothOf(x, T, j) : splitOf(x, T, j);
-    memo.set(j, { x: x.slice(), T, s });
+    const e = { x: x.slice(), T, s };
+    memo.set(j, e);
+    if (full) memoBase.set(j, e);
     return s;
   }
+  let full = true;   // (set false by splitOf where it reused a verdict)
+  /** A liquid near the stage's last clearly stable full test (see TM_MARGIN). */
+  const nearStable = (x, T, j) => {
+    const a = reuse && !smooth ? clearlyStable.get(j) : null;
+    if (!a || Math.abs(a.T - T) > REUSE_T_K) return false;
+    for (let i = 0; i < x.length; i++) {
+      if ((x[i] > 0) !== (a.x[i] > 0)) return false;
+      if (x[i] > 0 && Math.abs(Math.log(x[i] / a.x[i])) > REUSE_LN_X) return false;
+    }
+    return true;
+  };
   function splitOf(x, T, j) {
     if (sys.n < 2) return null;
     const ok = r => r && r.beta > 0 && r.beta < 1;
@@ -256,7 +292,11 @@ export function twoLiquidThermo(th, sys, opts = {}) {
       // made every later bubble point run a full failed substitution first; the stability test decides as before)
       lastK.delete(j);
     }
+    if (nearStable(x, T, j)) { reused += 1; full = false; return null; }
+    tests += 1;
     const st = liquidTangentPlane(sys, x, T);
+    if (st.stable && !(st.tmMin < TM_MARGIN)) clearlyStable.set(j, { x: x.slice(), T });
+    else clearlyStable.delete(j);
     if (st.stable || !st.trial) return null;
     // the trial phase is the second liquid's start: K_i = x''_i / x'_i
     let r = null;
@@ -390,5 +430,6 @@ export function twoLiquidThermo(th, sys, opts = {}) {
   }
 
   return { ...th, base: th, lnK, hL, bubbleT, split, liquids, third, density, twoLiquids: true,
+    setReuse, reuseCounts: () => ({ reused, tests }), reuses: () => reuse,
     ...(smooth ? { smooth: true, setEps, eps: () => eps } : {}) };
 }

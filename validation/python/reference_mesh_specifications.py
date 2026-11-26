@@ -37,6 +37,12 @@ Newton's method with the design specifications from that solution. Every scaled 
 
 Writes validation/fixtures/column_specifications.json, which test/columns-specifications.test.js reads.
 Regenerate: python validation/python/reference_mesh_specifications.py      (about two minutes; numpy, scipy, thermo, iapws)
+
+With --mesh (proposal 0028, item 1): the cases of validation/data/columns/specifications/mesh-cases.json (a partial
+condenser with two purities, a side draw's purity at a given reflux, a reflux with a bottoms mass purity, a component
+flow with a recovery), solved the same way. Writes validation/fixtures/column_specifications_mesh.json, which
+test/columns-specs-in-mesh.test.js reads. The engine writes these specifications among its MESH equations as
+logarithms (ln(x / value) = 0); this reference keeps its linear rows above: the same solution, another form.
 """
 import json
 from pathlib import Path
@@ -188,6 +194,22 @@ def record(case, c, u, info):
     return prof
 
 
+def main_mesh():
+    """Proposal 0028, item 1: the cases of mesh-cases.json, every side draw of given rate."""
+    doc = json.loads((CASES.parent / "mesh-cases.json").read_text())
+    out = {"_about": "Written by validation/python/reference_mesh_specifications.py --mesh (independent MESH reference with the design "
+                     "specifications among its equations). The cases: validation/data/columns/specifications/mesh-cases.json. "
+                     "Converged reference profiles are not validated against data.",
+           "H_scale_J_mol": H_SCALE, "solve_tolerance": SOLVE_TOL, "cases": {}}
+    for case in doc["cases"]:
+        print(case["id"], flush=True)
+        c, u, info = solve_fixed(case, case.get("draws", []))
+        out["cases"][case["id"]] = {"title": case["title"], "rigorous": record(case, c, u, info)}
+    path = OUT.parent / "column_specifications_mesh.json"
+    path.write_text(json.dumps(out, indent=1) + "\n")
+    print("wrote", path)
+
+
 def main():
     doc = json.loads(CASES.read_text())
     out = {"_about": "Written by validation/python/reference_mesh_specifications.py (independent MESH reference with side draws and with "
@@ -239,4 +261,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main_mesh() if "--mesh" in sys.argv else main()

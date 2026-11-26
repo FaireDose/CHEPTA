@@ -75,6 +75,9 @@ export function liquidTangentPlane(sys, z, T, opts = {}) {
     starts.push(z.map((v, i) => (!present[i] ? 0 : i === k ? 0.999 : 0.001 * v)));
   }
   let best = { tm: 0, trial: null };
+  // the smallest tangent-plane distance of the nontrivial stationary points found, negative or not (Infinity where every
+  // trial returned to z): the margin of a stable verdict (proposal 0028, item 2: a clearly stable liquid)
+  let tmMin = Infinity;
   const found = []; // converged non-trivial trials
   const near = (a, b, tol) => a.every((v, i) => Math.abs(v - b[i]) < tol);
   for (const s0 of starts) {
@@ -113,7 +116,8 @@ export function liquidTangentPlane(sys, z, T, opts = {}) {
       tm = tpd;
     }
     found.push(w);
+    if (tm < tmMin) tmMin = tm;
     if (tm < best.tm) best = { tm, trial: w };
   }
-  return { stable: !(best.tm < threshold), ...best };
+  return { stable: !(best.tm < threshold), ...best, tmMin };
 }
