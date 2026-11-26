@@ -33,7 +33,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   sets of every gas + liquid pair. Decided (the maintainer, 2026-11-26, "ok with your recommendation"): the ThermoML
   N2 + water set stays (it replaces the "IAPWS G7-04" of the 2026-11-25 wording); IUPAC SDS Vol. 10 and Boyer 1960 at
   1 atm partial pressure confirmed; SRK + gE (MHV1) stays refused for CO2 + water; nothing for ethylene until a case
-  dissolves it in a liquid. Open: the maintainer's check of the transcribed rows (rule 4).
+  dissolves it in a liquid. The maintainer agrees to #268 as it stands (2026-11-26: "I will not check data now but
+  agree"). Open: the maintainer's check of the transcribed rows (rule 4), deferred: the SDS Vol. 10 rows (PDF pages 491,
+  225, 226, 227, 219) and the three ThermoML nitrogen + water files.
 - **Recycle solver safeguards, Lab's request 14** (docs/decisions/2026-11-14-08-recycle-safeguards.md): built: Broyden
   rejects a pass ten times worse (a step reduction, as COFE's line search), a finite-difference Jacobian on a stall
   (COFE's "Jacobian ... when required"); a block that fails in a loop stops it at once, named (the maintainer,
