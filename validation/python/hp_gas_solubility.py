@@ -20,7 +20,7 @@ One file per article and pair: validation/data/eos/thermoml_<gas>_<solvent>_<doi
 columns T_K, P_kPa, p_1_kPa, x_1, y_1, U_P_kPa, U_x_1), with its source block. A person still compares the rows with
 the record (AGENTS.md rule 4).
 
-    python validation/python/hp_gas_solubility.py --cache DIR [--write]
+    python validation/python/hp_gas_solubility.py --cache DIR [--write] [--only gas+solvent]
 """
 import argparse
 import json
@@ -38,7 +38,8 @@ INDEX = json.loads((ROOT / "validation" / "data" / "vle" / "archive_index.json")
 
 # gas first, as in src/data/kij.json
 PAIRS = [("carbon-dioxide", "methanol"), ("carbon-dioxide", "water"), ("hydrogen", "methanol"),
-         ("carbon-monoxide", "methanol"), ("methane", "methanol"), ("methane", "water")]
+         ("carbon-monoxide", "methanol"), ("methane", "methanol"), ("methane", "water"),
+         ("nitrogen", "water")]
 
 
 def kind(t):
@@ -122,10 +123,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", required=True)
     ap.add_argument("--write", action="store_true")
+    ap.add_argument("--only", help="one pair, gas+solvent (e.g. nitrogen+water)")
     a = ap.parse_args()
     cache = Path(a.cache)
     cache.mkdir(parents=True, exist_ok=True)
     for gas, solv in PAIRS:
+        if a.only and a.only != f"{gas}+{solv}":
+            continue
         print(f"== {gas} + {solv}")
         for art in INDEX["+".join(sorted((gas, solv)))]:
             rec = record(cache, art["doi"])

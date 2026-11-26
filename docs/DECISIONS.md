@@ -28,10 +28,21 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   measured ternary data (Xia 2004, Bezanehtak 2004, Xie 2005; ThermoML) show the paper's 18.5 mol % CO2 is not
   physical and CHEPTA's PR with k_ij (3.4 %) is too high (+77 % in solubility in a 1:1 solvent); PR + gE (MHV1) is
   within 9 % and gives about 2.6 % (without N2). Built: the data, the check, the test, four known issues and the method
-  rule. Decided (2026-11-25): nitrogen + water (IAPWS G7-04) and nitrogen + methanol MHV1 sets, by a separate worker;
+  rule. Decided (2026-11-25): nitrogen + water and nitrogen + methanol MHV1 sets, by a separate worker (built in #268:
+  nitrogen + water fitted to its ThermoML data, not IAPWS G7-04 as first written here; the maintainer, 2026-11-26);
   then Lab's separator and the methanol examples move to PR + gE (MHV1); Lab does not tune toward the paper's CO2
   recycle. Open: the maintainer's check of the transcribed rows (rule 4); the nitrogen sets (nitrogen + methanol has
   no ThermoML data: search the open literature).
+- **Nitrogen inside MHV1; pair coverage** (docs/decisions/2026-11-25-01-nitrogen-mhv1.md): built: N2 + methanol
+  fitted inside the rule to IUPAC SDS Vol. 10 (4 sets; PR 2.8 %, SRK 3.7 % in P, within the gate; ChemSep's k_ij 22-25 %),
+  N2 + water to its ThermoML articles (5.4 / 5.6 %, written with a fit-quality warning as a proposal); PR + gE (MHV1)
+  now runs Lab's separator with N2 (2.38 % CO2, 0.42 % H2 in the liquid); `validation/pair_coverage.mjs` prints the
+  sets of every gas + liquid pair. Decided (the maintainer, 2026-11-26, "ok with your recommendation"): the ThermoML
+  N2 + water set stays (it replaces the "IAPWS G7-04" of the 2026-11-25 wording); IUPAC SDS Vol. 10 and Boyer 1960 at
+  1 atm partial pressure confirmed; SRK + gE (MHV1) stays refused for CO2 + water; nothing for ethylene until a case
+  dissolves it in a liquid. The maintainer agrees to #268 as it stands (2026-11-26: "I will not check data now but
+  agree"). Open: the maintainer's check of the transcribed rows (rule 4), deferred: the SDS Vol. 10 rows (PDF pages 491,
+  225, 226, 227, 219) and the three ThermoML nitrogen + water files.
 - **Recycle solver safeguards, Lab's request 14** (docs/decisions/2026-11-14-08-recycle-safeguards.md): built: Broyden
   rejects a pass ten times worse (a step reduction, as COFE's line search), a finite-difference Jacobian on a stall
   (COFE's "Jacobian ... when required"); a block that fails in a loop stops it at once, named (the maintainer,
