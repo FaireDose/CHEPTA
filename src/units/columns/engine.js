@@ -245,6 +245,8 @@ export function cascadeThermo(sys, P) {
     hL: (x, T) => sys.enthalpy("liquid", T, P, x),
     hV: (y, T) => sys.enthalpy("vapour", T, P, y),
     bubbleT: x => anyBubbleT(sys, x, P).T,
+    // for a column's start only (startBubbleT): an equation of state's bubble point without its liquid-stability test
+    ...(eos ? { bubbleTUnchecked: x => anyBubbleT(sys, x, P, { stability: false }).T } : {}),
     stable(x, T) {
       if (sys.n < 2) return { stable: true };
       if (eos) { const s = tpdStability(sys.eos, T, P, x, "liquid"); return { stable: s.stable || s.trialRoot === "vapour", trial: s.trial }; }
@@ -1278,10 +1280,14 @@ function condenserRange(th, P, cspec, missing, lim = null, lastIterate = false) 
 
 /** Below this mole fraction a component is a trace, for the start values of a column only. */
 const TRACE = 1e-3;
-/** The bubble temperature for a column's start: without the traces where the full liquid has none (M1). */
+/** The bubble temperature for a column's start: without the traces where the full liquid has none (M1); and, with an
+ *  equation of state, without the liquid-stability test where the start's liquid would split at its bubble point (a
+ *  start value only, proposal 0029, step 1: CHEPTA-Lab's methanol column with PR + MHV1, whose first sweeps put a
+ *  CO2-rich liquid on the condenser, at 185 K). The answer's own stability test of every stage is not changed. */
 function startBubbleT(th) {
   return x => {
     try { return th.bubbleT(x); } catch (e) {
+      if (e?.code === "PHASE_SPLIT" && th.bubbleTUnchecked) return th.bubbleTUnchecked(x);
       if (e?.code !== "NO_CONVERGENCE") throw e;
       const kept = x.map(v => (v >= TRACE ? v : 0)), s = sum(kept);
       if (!(s > 0) || kept.every((v, i) => v === x[i])) throw e;
