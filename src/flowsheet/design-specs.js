@@ -18,9 +18,11 @@
  * One specification: the residual r(x) = target(x) - value is bracketed (the guess, a step of 1 % of max - min, then
  * one secant step from these two points, aimed a tenth beyond the root it estimates so that a good estimate brackets
  * the target, inside the bounds and at most a quarter of the range: Aspen Plus's default for one specification is
- * the secant method (proposal 0028, item 3); where it does not bracket, doubling steps towards the side where |r|
+ * the secant method (proposal 0028, item 3); where the root it estimates lies beyond a bound, that bound instead
+ * (CHEPTA-Lab's request 16); where it does not bracket, doubling steps towards the side where |r|
  * falls, from the secant step's length where it brought the target closer; at most `bracket` solves; then the bounds
- * themselves, which also give the message when there is no sign change), then
+ * themselves, which also give the message when there is no sign change, with the nearest value reached; once the
+ * target has come closer all the way to a bound without crossing, the other bound at once), then
  * Brent's method inside the bracket: inverse quadratic interpolation and secant steps, bisection when they would leave
  * the bracket (R. P. Brent, Algorithms for Minimization without Derivatives, Prentice-Hall 1973, chapter 4; the same
  * algorithm as scipy.optimize.brentq, BSD). It never leaves the bracket, so never the bounds. At most `solve` solves.
@@ -42,6 +44,10 @@
  * 100 times the recycle tolerance (solver.tolerance) where that is looser; any tolerance the person gives is used, with a
  * warning when it is tighter than 100 times the recycle tolerance (for a fraction, an absolute tolerance, 100 times the
  * recycle tolerance times the target's value: proposal 0028, item 4).
+ * What may be varied: VARIABLES below, and a column's numbers (CHEPTA-Lab's request 16: its distillate or bottoms flow,
+ * reflux or boil-up ratio, duties, the vapour + liquid condenser's own number, a side draw's flow, an absorber's stage
+ * duty), each one the column's specification gives and its mode uses (variableColumnKeys, src/units/columns/column.js).
+ * Each solve starts the column from its answer at the nearest solved point (solver.columnRestart "previous").
  * Units: K, kPa, kmol/h, kg/h, kW.
  */
 import { fail } from "../util/errors.js";
