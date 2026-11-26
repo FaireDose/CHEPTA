@@ -483,6 +483,7 @@ export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleT
     if (progressWanted()) reportProgress({ kind: "flowsheet", loops: [] });
     const record = outcome => { if (ctx) ctx.evaluations.push({ ...evaluation, outcome, passes: ctx.loops.map(l => l.passes.length), ms: now() - t0 }); };
     startNearest(xs);
+    if (ctx) ctx.designSpecSolve = true;
     try {
       result = solveInner(sys, warm ? { ...doc, ...warmGuesses(doc, warm) } : doc);
     } catch (e) {

@@ -6,6 +6,7 @@
 // (docs/METHOD_SELECTION.md rules 3 and 7).
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { system, solveFlowsheet, flowsheetStatus } from "../src/index.js";
 
 const sys = system({ components: ["methanol", "water"], model: "NRTL" });
@@ -98,4 +99,36 @@ test("the vapour + liquid condenser's own number may be varied; a share above 1 
   assert.equal(st(0.9).ready, true, st(0.9).message);
   assert.equal(st(1.2).ready, false);
   assert.match(st(1.2).message + JSON.stringify(st(1.2)), /vary\.max of Column C1's vapour_share cannot be above 1/);
+});
+
+test("a slow recycle in a design specification's solve is not accepted after its first pass (the old answer barely moved)", () => {
+  // the separator loop of test/design-specs.test.js with 1 % purged (a slow loop: each pass closes about 1 % of the
+  // gap), direct substitution and a loose recycle tolerance (1e-5), as on CHEPTA-Lab's plant: started from a solved
+  // point at a nearby input, the first pass changes the tears by less than the tolerance. Before, that pass was
+  // accepted (one solve of one pass, 6 solves in all, the answer 2.9e-5 off the target in a tight solve)
+  const ref = JSON.parse(readFileSync(new URL("../validation/fixtures/design_specs.json", import.meta.url), "utf8"));
+  const loop = (water, designSpecs, solver) => ({
+    blocks: [
+      { id: "F1", type: "feed", spec: { flow_kmol_h: { methanol: ref.feed_kmol_h[0], water: ref.feed_kmol_h[1] }, T_K: 320, P_kPa: 101.325 } },
+      { id: "F2", type: "feed", spec: { flow_kmol_h: { water }, T_K: 320, P_kPa: 101.325 } },
+      { id: "M1", type: "mixer" },
+      { id: "X1", type: "separator", spec: { fractions: { methanol: [ref.top_shares[0], "rest"], water: [ref.top_shares[1], "rest"] } } },
+      { id: "SP1", type: "splitter", spec: { fractions: [0.01, "rest"] } },
+      { id: "TOP", type: "product" }, { id: "PURGE", type: "product" },
+    ],
+    streams: [
+      { id: "S1", from: "F1.out", to: "M1.in" }, { id: "S0", from: "F2.out", to: "M1.in" }, { id: "S2", from: "M1.out", to: "X1.in" },
+      { id: "S3", from: "X1.out", to: "TOP.in" }, { id: "S4", from: "X1.out", to: "SP1.in" },
+      { id: "S5", from: "SP1.out", to: "PURGE.in" }, { id: "S6", from: "SP1.out", to: "M1.in" },
+    ],
+    ...(designSpecs ? { designSpecs } : {}), solver,
+  });
+  const tight = { tolerance: 1e-12, maxIterations: 5000 };
+  const target = solveFlowsheet(sys, loop(5, null, tight)).streams.S5.F_kmol_h * 1.001;
+  const r = solveFlowsheet(sys, loop(5, [{ id: "DS1", vary: { block: "F2", key: "flow_kmol_h", component: "water", min: 0, max: 50 },
+    target: { stream: "S5", quantity: "flow_kmol_h", value: target }, tolerance: 1e-4 }], { tolerance: 1e-5, method: "direct", maxIterations: 5000 }));
+  const passes = r.timing.designSpecs.evaluations.map(e => e.passes[0]);
+  assert.ok(passes.every(n => n >= 2), `passes per solve: ${passes}`);
+  const check = solveFlowsheet(sys, loop(r.designSpecs[0].varied.value, null, tight)).streams.S5.F_kmol_h;
+  assert.ok(Math.abs(check - target) / target < 2e-5, `${check} vs ${target}`);
 });
