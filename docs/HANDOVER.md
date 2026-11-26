@@ -487,3 +487,4 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - Started H (Lab request 16: a design spec varying a column spec): session_01FPbeWWrDHFFeAZug8nDpfW, branch claude/lab-request-16-column-spec-design-spec, from #271's branch.
 - Starting I (M6, vapour+liquid condenser by temperature on Lab's methanol feed, also tried with PR+MHV1) was REFUSED by the permission classifier. Asked the maintainer whether to start it. Running: H.
 - Merge order: #267 → #269 → #268 → #270 → #271, then H's (and M6's).
+- 13:01 G: merged 03539ac into #271 (head 3bc1b9a). Its code is identical to the tree I tested; only the decision file gained the new timings. G's benchmark, 4 runs at once on one core each, 03539ac → #271: ds-ethanol 1179 → 184 s (SCDS15 958 → 69 s); plant62 col5-14 828 → 663 s, identical streams.
