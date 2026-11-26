@@ -488,3 +488,10 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - Starting I (M6, vapour+liquid condenser by temperature on Lab's methanol feed, also tried with PR+MHV1) was REFUSED by the permission classifier. Asked the maintainer whether to start it. Running: H.
 - Merge order: #267 → #269 → #268 → #270 → #271, then H's (and M6's).
 - 13:01 G: merged 03539ac into #271 (head 3bc1b9a). Its code is identical to the tree I tested; only the decision file gained the new timings. G's benchmark, 4 runs at once on one core each, 03539ac → #271: ds-ethanol 1179 → 184 s (SCDS15 958 → 69 s); plant62 col5-14 828 → 663 s, identical streams.
+
+### 2026-11-26 13:50 — #272 (request 16) checked: one regression sent back to H
+- H opened #272 (design spec varying a column's numbers), head 97ebe3d, based on #271's branch. Verified here: 1864 tests, 1858 pass, 0 fail, 5 skipped. No removed test/data lines. It conflicts with #267 (DECISIONS.md, proposals/README.md) and #270 (DECISIONS.md) only in docs.
+- The column-11 distillate run reproduces H's "not reachable": ester 0.990821 at 235, 0.99109 at 240, 0.991896 at 260 kmol/h; 248 s.
+- REGRESSION, Lab's ds-ethanol case: #271 had 4 solves, 208 s, F1 6506.2211, ethanol 0.00039938. #272 has 6 solves, 343 s, F1 6506.1120, ethanol 0.00039068 (residual -9.3e-6, inside the 1e-5 tolerance). The cause: Brent's solve at 6506.229 took 0.56 s, so the recycle was accepted unchanged after a 0.14 kg/h step (H's question 3). Sent back to H to finish on the same branch (allowed: finishing the same task).
+- H's questions: (1) keep "stalled ... may not be reachable together" for 0.6.3; (2) keep the step tied to the recycle tolerance; (3) the stale-recycle item, now being fixed in #272.
+- Running: H (fix). M6 is still waiting for the maintainer (start refused by the classifier).
