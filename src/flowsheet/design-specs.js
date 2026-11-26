@@ -779,6 +779,15 @@ function solveMany(specs, evaluate, limits, undefinedAt, met, solves, trail) {
     fresh = false;
     u = accepted.un; p = accepted.pn; f = accepted.fn;
   }
+  // at the limit with an input held at a bound and the next step pushing it further out (CHEPTA-Lab's request 16: the
+  // distillate at 260 kmol/h for 99.90 % ester), that input is named: the targets need it beyond the bound
+  const duEnd = linsolve(J, f.map(v => -v));
+  const pinned = duEnd ? specs.filter((d, k) => (u[k] <= 0 && duEnd[k] < 0) || (u[k] >= 1 && duEnd[k] > 0)) : [];
+  if (pinned.length) {
+    throw fail("NO_CONVERGENCE",
+      `${specs.map(d => d.id).join(", ")}: not met in ${limits.solve} Broyden iterations, with ${pinned.map(d => `${d.vary.label} held at its bound ${fmt(u[specs.indexOf(d)] <= 0 ? d.vary.min : d.vary.max)}${d.vary.unit ? ` ${d.vary.unit}` : ""}`).join(" and ")} and the next step going beyond it (${specs.map((d, k) => `${d.target.label} ${fmt(p.reached[k])} against ${fmt(d.target.value)}`).join("; ")}, at ${specs.map((d, k) => `${d.vary.label} = ${fmt(toX(u)[k])}`).join(", ")}). The targets are likely not reachable inside the bounds: widen them, or ask for values the flowsheet can reach.`,
+      { reason: "unreachable", pinned: pinned.map(d => d.id), solves: solves(), trail });
+  }
   throw fail("NO_CONVERGENCE",
     `${specs.map(d => d.id).join(", ")}: not met in ${limits.solve} Broyden iterations (${specs.map((d, k) => `${d.target.label} ${fmt(p.reached[k])} against ${fmt(d.target.value)}`).join("; ")}). Raise solver.designSpecIterations, give start values (vary.guess) closer to the answer, or loosen the tolerances.`,
     { reason: "limit", solves: solves(), trail });

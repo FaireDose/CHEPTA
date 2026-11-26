@@ -132,3 +132,15 @@ test("a slow recycle in a design specification's solve is not accepted after its
   const check = solveFlowsheet(sys, loop(r.designSpecs[0].varied.value, null, tight)).streams.S5.F_kmol_h;
   assert.ok(Math.abs(check - target) / target < 2e-5, `${check} vs ${target}`);
 });
+
+test("two specifications at their iteration limit with an input held at its bound: named, reason unreachable", () => {
+  // a reflux ratio of 1.5 at most cannot give 98 mol % methanol at the top (the column's own two purities need 1.84)
+  const e = (() => { try { solveFlowsheet(sys, plant({ reflux_ratio: 1.2, distillate_kmol_h: 48 }, [
+    { ...distillateDS, vary: { ...distillateDS.vary, max: 52 } },
+    { id: "DS2", vary: { block: "C1", key: "reflux_ratio", min: 1, max: 1.5 }, target: { stream: "S2", quantity: "mole_fraction", component: "methanol", value: 0.98 } }],
+  { solver: { designSpecIterations: 2 } })); } catch (err) { return err; } })();
+  assert.equal(e?.code, "NO_CONVERGENCE");
+  assert.equal(e.details.reason, "unreachable");
+  assert.deepEqual(e.details.pinned, ["DS2"]);
+  assert.match(e.message, /with the reflux ratio of C1 held at its bound 1\.5 and the next step going beyond it/);
+});
