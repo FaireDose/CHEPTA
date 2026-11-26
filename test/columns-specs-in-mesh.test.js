@@ -141,3 +141,34 @@ test("a decanter (F9's column, VLL): the decanter's distillate purity and the bo
     r.stages.forEach((s, j) => assert.ok(Math.abs(s.T_K - r0.stages[j].T_K) <= 1e-5, `${spec.kind}: stage ${j + 1}`));
   }
 });
+
+test("F13, CHEPTA-Lab's column SCDS15 at its phase boundary (VLL, total condenser, a reflux ratio of 2, 99.99 mass % water in the bottoms): the MESH form from the profile, the outer loop cold, and the three-phase reference agree", async () => {
+  const { solveCase } = await import("../validation/columns_vll_engine_starts.mjs");
+  const id = "F13-scds15-water-column-lab-boundary";
+  const c = JSON.parse(readFileSync(new URL(`../validation/data/columns/vll/${id}.json`, import.meta.url)));
+  const q = read("../validation/fixtures/columns-vll-mesh.json").cases[id].three_phase, tol = c.tolerances.numerical.engine_against_reference;
+  const H = q.feed_enthalpy_J_mol[0], f = c.column.feed;
+  const cold = solveCase(c, undefined, H);
+  assert.ok(!isMesh(cold), cold.solver.specifications.method);
+  const sys = system({ components: c.components, model: c.thermo.model, vapour: c.thermo.vapour });
+  const inp = { sys, P_kPa: c.pressure_kPa, stages: c.column.stages, phases: "VLL", ends: { condenser: "total" },
+    feeds: [{ stage: f.stage, flows: f.z.map(z => z * f.flow_mol_s), H_W: f.flow_mol_s * H }], specs: [{ kind: "reflux_ratio", value: 2 }, { ...c.specs[1] }] };
+  const warm = solveCascade({ ...inp, start: perturbed(cold, 0.01) });
+  assert.ok(isMesh(warm), warm.solver.specifications.tried.join("; "));
+  assert.equal(warm.solver.specifications.column_solves, 1);
+  // (the outer loop meets the purity to its SPEC_TOLERANCE only: the specification cases' wider tolerances)
+  const loose = meshDoc.tolerances.numerical.engine_against_reference;
+  for (const [name, r, t] of [["MESH form", warm, tol], ["outer loop", cold, { ...loose, duties_relative: 10 * loose.flows_relative }]]) {
+    const tol = t;
+    r.stages.forEach((s, j) => {
+      const p = q.stages[j];
+      assert.ok(Math.abs(s.T_K - p.T_K) <= tol.T_K_absolute, `${name} stage ${j + 1}: T ${s.T_K} vs ${p.T_K}`);
+      assert.ok(Math.abs(s.L_mol_s - p.L_mol_s) <= tol.flows_relative * p.L_mol_s, `${name} stage ${j + 1}: L`);
+      s.x.forEach((v, i) => assert.ok(Math.abs(v - p.x[i]) <= tol.mole_fractions_absolute, `${name} stage ${j + 1}: x ${i}`));
+    });
+    assert.ok(Math.abs(sum(r.products.distillate.flows) - q.D_mol_s) <= tol.flows_relative * q.D_mol_s, `${name}: D`);
+    assert.ok(Math.abs(r.duties.reboiler_W - q.Q_reboiler_W) <= tol.duties_relative * Math.abs(q.Q_reboiler_W), `${name}: reboiler duty`);
+  }
+  const w = warm.products.bottoms.flows.map((v, i) => v * sys.MW[i]);
+  assert.ok(Math.abs(w[1] / sum(w) - 0.9999) <= 1e-12, `bottoms water ${w[1] / sum(w)}`);
+});

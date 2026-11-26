@@ -1,0 +1,73 @@
+{
+ "chepta_column_case": 1,
+ "thermo": {
+  "kind": "chepta",
+  "model": "UNIQUAC",
+  "vapour": "ideal",
+  "sets": "default"
+ },
+ "components": [
+  "ethanol",
+  "water",
+  "ethyl-acetate"
+ ],
+ "pressure_kPa": 100.0,
+ "id": "F13-scds15-water-column-lab-boundary",
+ "title": "Ethanol + water + ethyl acetate, UNIQUAC, 18 stages, a reflux ratio of 2 and 99.99 mass % water in the bottoms: CHEPTA-Lab's column SCDS15 at its phase boundary",
+ "purpose": "Proposal 0028, item 1: the column that took most of CHEPTA-Lab's design-specification run (public repository FaireDose/CHEPTA-Lab, cases/ethyl-acetate-piotrowski-2021, results-chepta-main-415da41/new-plant-ds-ethanol0.0004.request.json, block SCDS15: 18 stages, feed on 9, total condenser, reflux ratio 2, bottoms_purity water 0.9999 mass, phases VLL, 100 kPa), with its feed S28 as CHEPTA computed it in that flowsheet with the ethanol feed F1 fixed at 6503.5 kg/h (the phase boundary named by the maintainer, 2026-11-26), on PR #269's code: ethanol 148.629305, water 6492.807130, ethyl acetate 139.026044 kmol/h at 343.15 K and 100 kPa (vapour fraction 0.0115). The feed's 2.9e-6 kmol/h of acetic acid is left out, as in F5, so that the reference's three components describe it. A simulated feed, not data.",
+ "method_choice": "CHEPTA-Lab's: UNIQUAC with the default sets, ideal-gas vapour (docs/METHOD_SELECTION.md rules 3 and 7: polar, below 10 bar, two liquids possible: an activity model).",
+ "phases": "VLL",
+ "column": {
+  "configuration": "distillation",
+  "stages": 18,
+  "condenser": "total",
+  "reboiler": "partial",
+  "feed": {
+   "stage": 9,
+   "flow_mol_s": 1883.4617997744847,
+   "z": [
+    0.021920231215622338,
+    0.9575758512247086,
+    0.020503917559669026
+   ],
+   "T_K": 343.15
+  }
+ },
+ "specs": [
+  {
+   "kind": "reflux_ratio",
+   "value": 2.0
+  },
+  {
+   "kind": "bottoms_purity",
+   "component": "water",
+   "value": 0.9999,
+   "basis": "mass"
+  }
+ ],
+ "tolerances": {
+  "numerical": {
+   "engine_against_reference": {
+    "flows_relative": 1e-06,
+    "mole_fractions_absolute": 1e-07,
+    "T_K_absolute": 1e-05,
+    "duties_relative": 1e-06,
+    "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+   },
+   "balances_on_every_stage": {
+    "material_relative_to_feed": 1e-08,
+    "summation": 1e-10,
+    "equilibrium": 1e-10,
+    "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+    "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+   }
+  },
+  "stability": {
+   "tpd_stable_above": -1e-09,
+   "why": "one-liquid stages: no trial liquid on a grid has a tangent-plane distance below -1e-9"
+  },
+  "agreement_with_data": {
+   "note": "The three NRTL sets are fitted to vapour-liquid data; their liquid-liquid split is W1's work (joint fits, M2b) and not a test of the column."
+  }
+ }
+}

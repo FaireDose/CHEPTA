@@ -40,6 +40,11 @@ bottoms, on the mole and the mass basis), on the same three-phase stage with the
 ln(w_i / value) = 0, w_i the bottoms' mole or mass fraction (the bottoms: both liquids leaving the reboiler), written
 here from the definition, not from the engine. Writes validation/fixtures/columns-vll-purity.json, which
 test/columns-purity-mesh.test.js reads. First: node validation/columns_vll_engine_starts.mjs --purity.
+
+With --mesh (proposal 0028, item 1): the case F13 (CHEPTA-Lab's column SCDS15 at its phase boundary: a total condenser, a
+reflux ratio of 2 and 99.99 mass % water in the bottoms) on the same three-phase stage with the same purity row, written
+to validation/fixtures/columns-vll-mesh.json, which test/columns-specs-in-mesh.test.js reads. First:
+node validation/columns_vll_engine_starts.mjs --mesh.
 """
 import json
 import math
@@ -718,6 +723,25 @@ def main_entrainer():
     (ROOT / "validation" / "fixtures" / "columns-vll-entrainer.json").write_text(json.dumps(out, indent=1) + "\n")
 
 
+def main_mesh():
+    """Proposal 0028, item 1: F13 on ChemSep's three-phase stage with the purity row, started from the engine's profile
+    (validation/fixtures/columns-vll-mesh-starts.json), perturbed. Writes validation/fixtures/columns-vll-mesh.json."""
+    data = ROOT / "validation" / "data" / "columns" / "vll"
+    starts = json.loads((ROOT / "validation" / "fixtures" / "columns-vll-mesh-starts.json").read_text())["cases"]
+    out = {"_about": "Written by validation/python/reference_mesh_vll.py --mesh: the column of proposal 0028, item 1 (a reflux ratio "
+                     "and a bottoms purity among the MESH equations) on ChemSep's full three-phase stage (The ChemSep Book, 2nd ed., "
+                     "eqs. 13.35-13.44) with the purity row ln(w / value) = 0, the independent check. Converged reference profiles "
+                     "are not validated against data.", "H_scale_J_mol": H_SCALE, "cases": {}}
+    for cid, start in starts.items():
+        print(cid, flush=True)
+        case = json.loads((data / f"{cid}.json").read_text())
+        th = TwoLiquids(case["components"], case["pressure_kPa"], case["thermo"]["model"])
+        prof = three_phase(case, start, th)
+        print("  ", prof["solver"], prof["check"], flush=True)
+        out["cases"][cid] = {"case": f"validation/data/columns/vll/{cid}.json", "three_phase": prof}
+    (ROOT / "validation" / "fixtures" / "columns-vll-mesh.json").write_text(json.dumps(out, indent=1) + "\n")
+
+
 def main_purity():
     """The cases of proposal 0025, step 2 (F9, F10: a bottoms purity) on ChemSep's three-phase stage with the purity row,
     each started from the engine's profile (validation/fixtures/columns-vll-purity-starts.json), perturbed. Writes
@@ -770,5 +794,7 @@ if __name__ == "__main__":
         main_entrainer()
     elif "--purity" in sys.argv:
         main_purity()
+    elif "--mesh" in sys.argv:
+        main_mesh()
     else:
         main()
