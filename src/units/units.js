@@ -449,7 +449,7 @@ function rateHeater(sys, inlet, dP, A, z) {
 /** What a block reports of a sizing (exchangerArea without its streams). */
 const summary = hx => ({
   duty_kW: hx.duty_kW, area_m2: hx.area_m2, U_W_m2K: hx.U_W_m2K, U_how: hx.U_how, UA_kW_K: hx.UA_kW_K, dT_mean_K: hx.dT_mean_K,
-  dT_min_K: hx.dT_min_K, pinch: hx.pinch, F: hx.F, arrangement: hx.arrangement, shells: hx.shells, zones: hx.zones, hot: hx.hot, cold: hx.cold, notes: hx.notes,
+  dT_min_K: hx.dT_min_K, dT_min_zones_K: hx.dT_min_zones_K, pinch: hx.pinch, F: hx.F, arrangement: hx.arrangement, shells: hx.shells, zones: hx.zones, hot: hx.hot, cold: hx.cold, notes: hx.notes,
   ...(hx.hot.kind !== "process" ? { utility: hx.hot } : hx.cold.kind !== "process" ? { utility: hx.cold } : {}),
   ...(hx.rating ? { rating: hx.rating } : {}),
 });

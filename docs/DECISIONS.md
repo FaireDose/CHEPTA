@@ -10,6 +10,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **The minimum approach along the whole exchanger, CHEPTA-Lab M4 "still open"**
+  (docs/decisions/2026-11-25-04-minimum-approach-along-exchanger.md): built: the smallest temperature difference is
+  taken along the whole exchanger (the zone boundaries, each side's bubble and dew points inside a zone, golden-section
+  refinement between the boundaries), not only at the zone boundaries; a cross is refused at its deepest point, named
+  "inside the exchanger". Lab's HE5 with the plant's streams 20 and 28 now solves at 93,483 kW (2 K at the cold side's
+  bubble point) instead of ending on a cross; checked against CoolProp (n-butane against boiling n-butane). Open: (1)
+  keep the refinement as it is (recommended) or search denser; (2) split the area at the phase boundaries too, with
+  proposal 0013's next step (recommended there, not here); (3) Lab drops its `zones: 10` workaround and reruns its plant.
 - **CO2 in the methanol + water condensate of CHEPTA-Lab's separator** (docs/decisions/2026-11-20-01-co2-methanol-water.md):
   measured ternary data (Xia 2004, Bezanehtak 2004, Xie 2005; ThermoML) show the paper's 18.5 mol % CO2 is not
   physical and CHEPTA's PR with k_ij (3.4 %) is too high (+77 % in solubility in a 1:1 solvent); PR + gE (MHV1) is
