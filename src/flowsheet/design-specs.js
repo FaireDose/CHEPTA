@@ -48,6 +48,7 @@ import { fail } from "../util/errors.js";
 import { findComponent } from "../thermo/components.js";
 import { molarMasses } from "../stream/stream.js";
 import { reportProgress, progressWanted, setProgressContext, timeUp } from "../util/progress.js";
+import { variableColumnKeys, COLUMN_ENTRY_FIELDS } from "../units/columns/column.js";
 
 export const DESIGN_SPEC_DEFAULTS = Object.freeze({ tolerance: 1e-6, bracket: 8, solve: 50 });
 /** How much tighter than a specification the recycles must be converged (the maintainer, 2026-11-13). */
@@ -61,6 +62,19 @@ export const VARIABLES = Object.freeze({
   heater: { T_K: "number", duty_kW: "number" },
   flash: { T_K: "number", P_kPa: "number", duty_kW: "number" },
 });
+/** A column's numbers (CHEPTA-Lab's request 16): those its mode and configuration use (variableColumnKeys in
+ *  src/units/columns/column.js), each given in its specification: "column" a key of the specification (reflux_ratio,
+ *  distillate_kmol_h, ...), "entry" one entry of side_draws (its flow_kmol_h) or stage_duties_kW (its duty_kW). */
+const COLUMN_KINDS = { number: "column", entry: "entry" };
+const variablesOf = b => (b.type === "column"
+  ? Object.fromEntries(Object.entries(variableColumnKeys(b.spec ?? {})).map(([k, v]) => [k, COLUMN_KINDS[v]]))
+  : VARIABLES[b.type]);
+const COLUMN_LABEL = { reflux_ratio: "reflux ratio", boilup_ratio: "boil-up ratio", distillate_kmol_h: "distillate flow", bottoms_kmol_h: "bottoms flow",
+  condenser_duty_kW: "condenser duty", reboiler_duty_kW: "reboiler duty", condenser_T_K: "condenser temperature",
+  vapour_distillate_kmol_h: "vapour distillate flow", vapour_share: "vapour share of the distillate", reflux_over_minimum: "reflux over the minimum",
+  recovery_light_key_in_distillate: "light key's recovery in the distillate", recovery_heavy_key_in_bottoms: "heavy key's recovery in the bottoms" };
+/** Column numbers between 0 and 1 (a share or a recovery). */
+const COLUMN_FRACTIONS = new Set(["vapour_share", "recovery_light_key_in_distillate", "recovery_heavy_key_in_bottoms"]);
 /** The quantities a target may name. */
 export const STREAM_QUANTITIES = ["flow_kmol_h", "flow_kg_h", "component_flow_kmol_h", "component_flow_kg_h", "mole_fraction", "mass_fraction", "T_K", "VF"];
 export const BLOCK_QUANTITIES = ["duty_kW"];
@@ -69,7 +83,8 @@ const ABSOLUTE = new Set(["mole_fraction", "mass_fraction", "VF"]);
 const SPEC_KEYS = ["id", "vary", "target", "tolerance", "label"];
 const VARY_KEYS = ["block", "key", "component", "index", "min", "max", "guess"];
 const TARGET_KEYS = ["stream", "block", "quantity", "component", "value", "ratio_of"];
-const UNIT = { flow_kmol_h: "kmol/h", flow_kg_h: "kg/h", component_flow_kmol_h: "kmol/h", component_flow_kg_h: "kg/h", T_K: "K", P_kPa: "kPa", duty_kW: "kW", fractions: "" };
+const UNIT = { distillate_kmol_h: "kmol/h", bottoms_kmol_h: "kmol/h", vapour_distillate_kmol_h: "kmol/h", condenser_duty_kW: "kW",
+  reboiler_duty_kW: "kW", condenser_T_K: "K", side_draws: "kmol/h", stage_duties_kW: "kW", flow_kmol_h: "kmol/h", flow_kg_h: "kg/h", component_flow_kmol_h: "kmol/h", component_flow_kg_h: "kg/h", T_K: "K", P_kPa: "kPa", duty_kW: "kW", fractions: "" };
 
 const fmt = v => (Number.isFinite(v) ? String(+v.toPrecision(6)) : "no value");
 const isNum = v => typeof v === "number" && Number.isFinite(v);
@@ -193,11 +208,11 @@ export function checkDesignSpecs(sys, fs, inspected, defaultRecycleTolerance = 1
     const v = d.vary;
     const b = blocks.get(v.block);
     if (!b) throw fail("BAD_INPUT", `${name}: vary.block ${JSON.stringify(v.block)} is not a block of the flowsheet.`, { where: [{ field: `${at}.vary.block` }] });
-    const kinds = VARIABLES[b.type];
+    const kinds = variablesOf(b);
     const kind = kinds?.[v.key];
     if (!kind) {
       const can = kinds ? Object.keys(kinds).join(", ") : "none yet";
-      throw fail("BAD_INPUT", `${name}: ${b.unit.label} ${b.id}'s ${JSON.stringify(v.key)} cannot be varied by a design specification (${b.unit.label}: ${can}). Variables that may be varied: ${Object.entries(VARIABLES).map(([t, ks]) => `${t} ${Object.keys(ks).join(", ")}`).join("; ")}.`, { where: [{ field: `${at}.vary.key` }] });
+      throw fail("BAD_INPUT", `${name}: ${b.unit.label} ${b.id}'s ${JSON.stringify(v.key)} cannot be varied by a design specification (${b.unit.label}: ${can}). Variables that may be varied: ${Object.entries(VARIABLES).map(([t, ks]) => `${t} ${Object.keys(ks).join(", ")}`).join("; ")}; column: the numbers of its specification that its mode uses (rigorous distillation: ${Object.keys(variableColumnKeys({ mode: "rigorous" })).join(", ")}; with condenser "vapour_liquid" also condenser_T_K, vapour_distillate_kmol_h, vapour_share; shortcut: ${Object.keys(variableColumnKeys({ mode: "shortcut" })).join(", ")}; absorber or stripper: stage_duties_kW, and a reboiled stripper's own specification), each given in the column's specification.`, { where: [{ field: `${at}.vary.key` }] });
     }
     if (!isNum(v.min) || !isNum(v.max)) throw fail("BAD_INPUT", `${name}: give vary.min and vary.max, the bounds of ${b.id} ${v.key} (a design specification without bounds is refused: the bounds are what lets the solver bracket the answer and say when there is none).`, { where: [{ field: `${at}.vary.min` }, { field: `${at}.vary.max` }] });
     if (!(v.min < v.max)) throw fail("BAD_INPUT", `${name}: vary.min (${v.min}) must be below vary.max (${v.max}).`, { where: [{ field: `${at}.vary.min` }] });
@@ -232,6 +247,31 @@ export function checkDesignSpecs(sys, fs, inspected, defaultRecycleTolerance = 1
       vr.label = `${v.key === "fractions" ? "the fraction" : "the flow"} of outlet ${v.index} of ${b.id}`;
       if (v.min < 0) throw fail("BAD_INPUT", `${name}: vary.min cannot be negative (got ${v.min}).`, { where: [{ field: `${at}.vary.min` }] });
       if (v.key === "fractions" && v.max > 1) throw fail("BAD_INPUT", `${name}: vary.max of a fraction cannot be above 1 (got ${v.max}).`, { where: [{ field: `${at}.vary.max` }] });
+    } else if (kind === "column") {
+      // a column's number: it must be given in the column's specification, since adding one would change the column's
+      // degrees of freedom (the column refuses three specifications where it takes two)
+      if (v.component != null || v.index != null) throw fail("BAD_INPUT", `${name}: ${v.key} takes no component or index.`, { where: [{ field: `${at}.vary` }] });
+      if (spec[v.key] == null || spec[v.key] === "") {
+        throw fail("BAD_INPUT", `${name}: Column ${b.id} gives no ${v.key}; a design specification varies a number the column's specification already gives (here: ${Object.keys(kinds).filter(k => kinds[k] === "column" && spec[k] != null && spec[k] !== "").join(", ") || "none of them"}), since adding one would change the column's specifications. Give ${v.key} in place of another of the column's specifications, then vary it.`, { where: [{ field: `${at}.vary.key` }] });
+      }
+      current = Number(spec[v.key]);
+      const signed = v.key === "condenser_duty_kW" || v.key === "reboiler_duty_kW";
+      if (!signed && v.min <= 0) throw fail("BAD_INPUT", `${name}: vary.min of Column ${b.id}'s ${v.key} must be above 0 (got ${v.min}).`, { where: [{ field: `${at}.vary.min` }] });
+      if (COLUMN_FRACTIONS.has(v.key) && v.max > 1) throw fail("BAD_INPUT", `${name}: vary.max of Column ${b.id}'s ${v.key} cannot be above 1 (got ${v.max}).`, { where: [{ field: `${at}.vary.max` }] });
+      vr.label = `the ${COLUMN_LABEL[v.key] ?? v.key} of ${b.id}`;
+    } else if (kind === "entry") {
+      const field = COLUMN_ENTRY_FIELDS[v.key];
+      const arr = spec[v.key];
+      if (!Array.isArray(arr) || !arr.length) throw fail("BAD_INPUT", `${name}: Column ${b.id} gives no ${v.key}.`, { where: [{ field: `${at}.vary.key` }] });
+      if (v.component != null) throw fail("BAD_INPUT", `${name}: ${v.key} takes no component; give vary.index, the position of the entry.`, { where: [{ field: `${at}.vary.component` }] });
+      if (!(Number.isInteger(v.index) && v.index >= 0 && v.index < arr.length)) throw fail("BAD_INPUT", `${name}: vary.index must be the position of the entry in Column ${b.id}'s ${v.key}, from 0 to ${arr.length - 1} (got ${JSON.stringify(v.index)}).`, { where: [{ field: `${at}.vary.index` }] });
+      const entry = arr[v.index];
+      if (entry?.[field] == null || entry[field] === "") {
+        throw fail("BAD_INPUT", `${name}: ${v.key}[${v.index}] of Column ${b.id} gives no ${field}${v.key === "side_draws" ? " (its flow is found by the column for one of its own specifications)" : ""}; a design specification varies a number that is given.`, { where: [{ field: `${at}.vary.index` }] });
+      }
+      if (v.key === "side_draws" && v.min <= 0) throw fail("BAD_INPUT", `${name}: vary.min of a side draw's flow must be above 0 (got ${v.min}).`, { where: [{ field: `${at}.vary.min` }] });
+      vr.index = v.index; vr.field = field; current = Number(entry[field]);
+      vr.label = v.key === "side_draws" ? `the flow of side draw ${v.index + 1} of ${b.id}` : `the duty of stage ${entry.stage} of ${b.id}`;
     } else {
       if (v.component != null || v.index != null) throw fail("BAD_INPUT", `${name}: ${v.key} takes no component or index.`, { where: [{ field: `${at}.vary` }] });
       if (v.key === "duty_kW" && b.qin) throw fail("BAD_INPUT", `${name}: the duty of ${b.unit.label} ${b.id} comes from the energy stream ${b.qin.id}, so it cannot also be varied.`, { where: [{ field: `${at}.vary.key` }] });
@@ -247,7 +287,7 @@ export function checkDesignSpecs(sys, fs, inspected, defaultRecycleTolerance = 1
     // two specifications on one input
     for (const o of varied) {
       if (o.block !== vr.block || o.key !== vr.key) continue;
-      const same = vr.kind === "flows" ? (o.i == null || vr.i == null || o.i === vr.i) : vr.kind === "list" ? o.index === vr.index : true;
+      const same = vr.kind === "flows" ? (o.i == null || vr.i == null || o.i === vr.i) : vr.kind === "list" || vr.kind === "entry" ? o.index === vr.index : true;
       if (same) throw fail("BAD_INPUT", `Design specifications ${o.id} and ${id} both vary ${vr.label}; a varied input belongs to one specification.`, { where: [{ field: `${at}.vary` }] });
     }
     vr.id = id;
@@ -288,7 +328,8 @@ export function checkDesignSpecs(sys, fs, inspected, defaultRecycleTolerance = 1
 /** Set the varied input of `ds` to x in a copy of the block's spec. */
 function setVaried(spec, vr, x, sys) {
   const s = JSON.parse(JSON.stringify(spec ?? {}));
-  if (vr.kind === "number") { s[vr.key] = x; return s; }
+  if (vr.kind === "number" || vr.kind === "column") { s[vr.key] = x; return s; }
+  if (vr.kind === "entry") { s[vr.key][vr.index][vr.field] = x; return s; }
   if (vr.kind === "list") { const arr = Array.isArray(s[vr.key]) ? s[vr.key] : [s[vr.key]]; arr[vr.index] = x; s[vr.key] = arr; return s; }
   // a feed's flows
   const fl = s[vr.key];
@@ -535,6 +576,14 @@ function solveOne(d, evaluate, limits, undefinedAt, solves, trail) {
     // aimed a tenth beyond the root it estimates, so that a good estimate brackets the target and Brent's method
     // finishes inside the bracket (where the secant lands on the target, it is met there)
     let dx = -1.1 * a.r[0] / slope;
+    // where the root it estimates lies beyond a bound, that bound itself (CHEPTA-Lab's request 16: a target out of
+    // reach is said after the two bounds, not after the doubling steps towards one of them; each solve of a plant
+    // can take many minutes)
+    const root = a.x[0] - a.r[0] / slope;
+    if (root > hi || root < lo) {
+      const xb = root > hi ? hi : lo;
+      return pts.some(p => p.x[0] === xb) ? null : xb;
+    }
     const cap = 0.25 * (hi - lo);
     if (Math.abs(dx) > cap) dx = Math.sign(dx) * cap;
     const xs = Math.min(hi, Math.max(lo, a.x[0] + dx));
@@ -555,6 +604,11 @@ function solveOne(d, evaluate, limits, undefinedAt, solves, trail) {
   }
   while (!br && pts.length < limits.bracket) {
     const xn = Math.min(hi, Math.max(lo, best.x[0] + dir * step));
+    if (pts.some(p => p.x[0] === xn) && (xn === lo || xn === hi) && Math.abs(best.r[0]) < Math.abs(p0.r[0])) {
+      // the target came closer all the way to a bound and did not cross there: the other bound, which decides
+      // whether the target is reachable between them (below), rather than doubling steps back from the start
+      break;
+    }
     if (pts.some(p => p.x[0] === xn)) {   // at a bound already evaluated: try the other side once
       if (flipped) break;
       flipped = true; dir = -dir; best = p0; step = 2 * h; continue;
@@ -580,9 +634,10 @@ function solveOne(d, evaluate, limits, undefinedAt, solves, trail) {
     const at = x => pts.find(p => p.x[0] === x);
     const u = d.target.unit ? ` ${d.target.unit}` : "", vu = vr.unit ? ` ${vr.unit}` : "";
     const side = Math.sign(at(lo).r[0]) > 0 ? "above" : "below";
+    const near = pts.reduce((p, q) => (Math.abs(q.r[0]) < Math.abs(p.r[0]) ? q : p));
     throw fail("NO_CONVERGENCE",
-      `${d.name}: ${d.target.label} is ${fmt(at(lo).reached[0])}${u} at ${vr.label} = ${fmt(lo)}${vu}, ${fmt(p0.reached[0])}${u} at the start value ${fmt(vr.start)}${vu} and ${fmt(at(hi).reached[0])}${u} at ${fmt(hi)}${vu}; ${fmt(d.target.value)}${u} is not reachable with ${vr.label} between ${fmt(lo)} and ${fmt(hi)}${vu} (the target stays ${side} it at every value tried). Widen the bounds if the block allows it, vary another input, or ask for a value the flowsheet can reach.`,
-      { reason: "unreachable", designSpec: d.id, at_bounds: { min: { x: lo, reached: at(lo).reached[0] }, start: { x: vr.start, reached: p0.reached[0] }, max: { x: hi, reached: at(hi).reached[0] } }, solves: solves(), trail });
+      `${d.name}: ${fmt(d.target.value)}${u} is not reachable with ${vr.label} in [${fmt(lo)}, ${fmt(hi)}]${vu}: the nearest is ${fmt(near.reached[0])}${u} at ${fmt(near.x[0])}${vu}. ${d.target.label[0].toUpperCase()}${d.target.label.slice(1)} is ${fmt(at(lo).reached[0])}${u} at ${vr.label} = ${fmt(lo)}${vu}, ${fmt(p0.reached[0])}${u} at the start value ${fmt(vr.start)}${vu} and ${fmt(at(hi).reached[0])}${u} at ${fmt(hi)}${vu} (it stays ${side} ${fmt(d.target.value)}${u} at every value tried). Widen the bounds if the block allows it, vary another input, or ask for a value the flowsheet can reach.`,
+      { reason: "unreachable", designSpec: d.id, nearest: { x: near.x[0], reached: near.reached[0] }, at_bounds: { min: { x: lo, reached: at(lo).reached[0] }, start: { x: vr.start, reached: p0.reached[0] }, max: { x: hi, reached: at(hi).reached[0] } }, solves: solves(), trail });
   }
   // Brent's method (Brent 1973, chapter 4; as scipy.optimize.brentq)
   let a = br.a.x[0], fa = br.a.r[0], b = br.b.x[0], fb = br.b.r[0], pb = br.b;
