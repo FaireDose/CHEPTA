@@ -35,6 +35,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   feed by a design specification and column 11 by its distillate or a purity; the growth limit stays 10^6; an absolute
   per-component balance check follows in PR #257; the numbers are kept; Lab's plant tests stay opt-in. Closed once
   merged.
+- **Proposal 0028 built: column specifications among the MESH equations, cheaper second-liquid tests, a faster
+  design-specification search** (docs/decisions/2026-11-26-01-column-specs-in-mesh.md; proposals/0028-column-specs-in-mesh.md,
+  accepted by the maintainer 2026-11-26): a column on purity, recovery or component-flow specifications with a restart
+  profile solves them among its MESH equations (any condenser, VL and VLL; the outer loop cold and as the fallback); a
+  clearly stable second-liquid verdict reused at a stage's Jacobian points, the full test kept at the answer; one
+  secant step and the nearest solved point as the start in a design specification; the tolerance warning of a fraction
+  relative to its target. Open: three questions in the decision file (the MESH form for a start given by a person; the
+  default tolerance of a fraction; free side-draw rates).
 - **Proposal 0027 built: faster flowsheet and design-specification runs** (docs/decisions/2026-11-25-03-solve-speed-build.md;
   the proposal and the maintainer's seven answers: docs/decisions/2026-11-25-02-solve-speed-proposal.md): the rigorous
   columns restarted from their last answer (`solver.columnRestart`), the two-liquid stage's failed old K-values
