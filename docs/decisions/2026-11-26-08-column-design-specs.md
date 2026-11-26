@@ -90,7 +90,8 @@ With items 1 to 6:
 - **Distillate and F1 together**: not met, 27 solves, 1,350 s. It ended at Broyden's 20 iterations (before item 6, so
   with the plain limit message) at the distillate's upper bound, 260 kmol/h, and 6,504.07 kg/h: 99.79 % ester and
   0.023 % ethanol. Before item 5 it "stalled" after 14 solves and 320 s, at 99.36 % ester; those solves read loops that
-  had not moved. With item 6 the rerun's message is in the PR.
+  had not moved. Rerun with item 6 (alone): not met, 28 solves, 1,181 s, reason "unreachable": "with the distillate flow of
+  SCDS11 held at its bound 260 kmol/h and the next step going beyond it", the same point and values.
 
 CHEPTA finds what Lab's hand scan found: 99.90 % ester cannot be reached by column 11's distillate in [235, 260]
 kmol/h, alone or with the ethanol feed. Together they come closer (99.79 % at the bound) than the distillate alone at
