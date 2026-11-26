@@ -17,8 +17,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   nearest value. The first step is at least 100 times the recycle tolerance. A design specification's solve accepts a slow recycle
   only once the error left is below the tolerance. At Broyden's limit, an input held at its bound is named. On Lab's
   plant, 99.90 % ester is not reachable with column 11's distillate in [235, 260] kmol/h: 99.19 % at 260 alone, 99.79 %
-  at 260 with the ethanol feed varied too. Open: three questions in the decision file (the two-specification message;
-  the step rule; the convergence test for every flowsheet).
+  at 260 with the ethanol feed varied too. The maintainer agreed the three answers (2026-11-26): the two-specification message
+  is kept for 0.6.3; the step rule is kept. Open: the convergence test of a design specification's solves for every
+  flowsheet, as a separate, later change.
 - **CHEPTA-Lab's requests 17 and 19, and the rest of 8, 13 and M2** (docs/decisions/2026-11-20-03-lab-requests-17-19.md):
   built: the strict range mode refuses a block outside every loop at once, and a loop that stops names its last pass's
   records outside their ranges (17); a purity every column exceeds is refused as exceeded, the scan going to 1e-6 of the

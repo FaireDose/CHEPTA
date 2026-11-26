@@ -107,3 +107,9 @@ F1 = 6,511 kg/h (99.19 %), because less ethanol also lowers the water. Nothing w
 3. **The convergence test of item 5 for every flowsheet**, not only in design specifications. A plain solve from a
    good guess can stop early the same way. Recommended: a separate change. Every flowsheet's pass count would change,
    with the suite's timings and Lab's results.
+
+## The maintainer's answers (2026-11-26: "Agree with the points 1-3")
+
+1. Broyden's "stalled ... may not be reachable together" message is kept for 0.6.3.
+2. The first step stays tied to the recycle tolerance (item 4).
+3. The convergence test of item 5 is to be applied to every flowsheet, as a separate, later change. Open.
