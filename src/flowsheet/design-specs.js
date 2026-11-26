@@ -11,15 +11,19 @@
  *
  * Solved as an outer loop around the sequential solver (src/flowsheet/flowsheet.js; the maintainer, 2026-11-13: the
  * outer loop, not inside the recycle loop): every evaluation is a whole flowsheet solve with its recycles converged, its
- * tear streams started from the previous solve's converged values (a warm start; retried once from the document's own
- * start when the warm start fails).
+ * tear streams and its columns' profiles started from the converged solve NEAREST to the values asked (proposal 0028,
+ * item 3: each solve's tear streams and column restarts are kept; before, only the last solve's), a warm start retried
+ * once from the document's own start when it fails.
  *
  * One specification: the residual r(x) = target(x) - value is bracketed (the guess, a step of 1 % of max - min, then
- * doubling steps towards the side where |r| falls, at most `bracket` solves; then the bounds themselves, which also give
- * the message when there is no sign change), then Brent's method inside the bracket: inverse quadratic interpolation and
- * secant steps, bisection when they would leave the bracket (R. P. Brent, Algorithms for Minimization without
- * Derivatives, Prentice-Hall 1973, chapter 4; the same algorithm as scipy.optimize.brentq, BSD). It never leaves the
- * bracket, so never the bounds. At most `solve` solves.
+ * one secant step from these two points, aimed a tenth beyond the root it estimates so that a good estimate brackets
+ * the target, inside the bounds and at most a quarter of the range: Aspen Plus's default for one specification is
+ * the secant method (proposal 0028, item 3); where it does not bracket, doubling steps towards the side where |r|
+ * falls, from the secant step's length where it brought the target closer; at most `bracket` solves; then the bounds
+ * themselves, which also give the message when there is no sign change), then
+ * Brent's method inside the bracket: inverse quadratic interpolation and secant steps, bisection when they would leave
+ * the bracket (R. P. Brent, Algorithms for Minimization without Derivatives, Prentice-Hall 1973, chapter 4; the same
+ * algorithm as scipy.optimize.brentq, BSD). It never leaves the bracket, so never the bounds. At most `solve` solves.
  *
  * Several specifications: Broyden's method (Math. Comp. 19 (1965) 577) on the residuals scaled by their values, the
  * variables scaled to their bounds, started with a finite-difference Jacobian (one solve per specification, a step of
@@ -359,6 +363,17 @@ export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleT
   const MW = specs[0].MW;
   let warm = null, solves = 0;
   const trail = [];   // every solve: x and reached
+  // every converged solve's x, result and columns' last answers (proposal 0028, item 3): the next solve starts from the
+  // nearest of them, the distance scaled by each variable's bounds
+  const solved = [];
+  const span = specs.map(d => d.vary.max - d.vary.min);
+  const startNearest = xs => {
+    if (!solved.length) return;
+    const dist = q => Math.hypot(...q.x.map((v, k) => (v - xs[k]) / span[k]));
+    const q = solved.reduce((a, b) => (dist(b) < dist(a) ? b : a));
+    warm = q.result;
+    if (ctx?.restarts && q.restarts) { ctx.restarts.clear(); for (const [k, v] of q.restarts) ctx.restarts.set(k, v); }
+  };
   const describeX = xs => specs.map((d, k) => `${d.vary.label} = ${fmt(xs[k])}${d.vary.unit ? ` ${d.vary.unit}` : ""}`).join(", ");
   if (ctx) ctx.evaluations = [];
   const now = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
@@ -406,6 +421,7 @@ export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleT
     setProgressContext({ designSpec: { ids: specs.map(d => d.id), solve: solves, at: describeX(xs), bracket: bracketSoFar(), best: bestSoFar() } });
     if (progressWanted()) reportProgress({ kind: "flowsheet", loops: [] });
     const record = outcome => { if (ctx) ctx.evaluations.push({ ...evaluation, outcome, passes: ctx.loops.map(l => l.passes.length), ms: now() - t0 }); };
+    startNearest(xs);
     try {
       result = solveInner(sys, warm ? { ...doc, ...warmGuesses(doc, warm) } : doc);
     } catch (e) {
@@ -430,6 +446,7 @@ export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleT
     }
     record(solves > evaluation.solve ? "solved from the document's own start" : "solved");
     warm = result;
+    solved.push({ x: xs.slice(), result, restarts: ctx?.restarts ? new Map(ctx.restarts) : null });
     const reached = specs.map(d => targetOf(d.target, result, MW));
     const r = reached.map((v, k) => v - specs[k].target.value);
     const point = { x: xs.slice(), reached, r, result };
@@ -502,6 +519,33 @@ function solveOne(d, evaluate, limits, undefinedAt, solves, trail) {
   let best = Math.abs(p1.r[0]) < Math.abs(p0.r[0]) ? p1 : p0;
   let dir = Math.sign(x1 - vr.start) * (best === p1 ? 1 : -1);
   let step = 2 * h, flipped = false;
+  // the secant step from the two points (proposal 0028, item 3), inside the bounds and at most a quarter of the range;
+  // null where it cannot be taken (no slope, or no move)
+  const secant = () => {
+    const [a, b] = pts.slice().sort((p, q) => Math.abs(p.r[0]) - Math.abs(q.r[0]));
+    const slope = (b.r[0] - a.r[0]) / (b.x[0] - a.x[0]);
+    if (!(Number.isFinite(slope) && slope !== 0)) return null;
+    // aimed a tenth beyond the root it estimates, so that a good estimate brackets the target and Brent's method
+    // finishes inside the bracket (where the secant lands on the target, it is met there)
+    let dx = -1.1 * a.r[0] / slope;
+    const cap = 0.25 * (hi - lo);
+    if (Math.abs(dx) > cap) dx = Math.sign(dx) * cap;
+    const xs = Math.min(hi, Math.max(lo, a.x[0] + dx));
+    return pts.some(p => Math.abs(p.x[0] - xs) <= 1e-12 * (hi - lo)) ? null : xs;
+  };
+  // one secant step from the first two points; where it does not bracket the target but brings it closer, the
+  // doubling steps go on from it, from the length of that step
+  const xsec = pts.length < limits.bracket ? secant() : null;
+  if (xsec != null) {
+    const ps = add(f(xsec, ", bracketing (secant)"));
+    if (ok(ps)) return done(ps);
+    br = signChange();
+    if (!br && Math.abs(ps.r[0]) < Math.abs(best.r[0])) {
+      dir = Math.sign(ps.x[0] - best.x[0]) || dir;
+      step = Math.max(2 * h, Math.abs(ps.x[0] - best.x[0]));
+      best = ps;
+    }
+  }
   while (!br && pts.length < limits.bracket) {
     const xn = Math.min(hi, Math.max(lo, best.x[0] + dir * step));
     if (pts.some(p => p.x[0] === xn)) {   // at a bound already evaluated: try the other side once
