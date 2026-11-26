@@ -157,7 +157,8 @@ point. It is a list in the flowsheet document, `designSpecs`, not a block:
 | Limits | `solver.designSpecIterations`: a number (Brent's or Broyden's solves) or `{ bracket: 8, solve: 50 }` |
 
 How it is solved: an **outer loop of whole solves** around the sequential solver, each with its recycles converged and its
-tear streams started from the previous solve's answer. One specification: the guess and a step of 1 % of the range,
+tear streams started from the previous solve's answer. One specification: the guess and a step of 1 % of the range (at least 100 times `solver.tolerance` of the input's
+value, at most a quarter of the range; the same for the finite-difference Jacobian of several),
 then one secant step (a bound itself where the root it estimates lies beyond it), then doubling steps towards the side
 where the residual falls (at most 8 solves), then the bounds (the other bound at once when the target came closer all
 the way to one bound without crossing); inside the bracket,

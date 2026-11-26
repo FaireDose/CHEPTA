@@ -15,7 +15,8 @@
  * item 3: each solve's tear streams and column restarts are kept; before, only the last solve's), a warm start retried
  * once from the document's own start when it fails.
  *
- * One specification: the residual r(x) = target(x) - value is bracketed (the guess, a step of 1 % of max - min, then
+ * One specification: the residual r(x) = target(x) - value is bracketed (the guess, a step of 1 % of max - min, or
+ * of 100 times the recycle tolerance of the input's value where that is larger (at most a quarter of the range), then
  * one secant step from these two points, aimed a tenth beyond the root it estimates so that a good estimate brackets
  * the target, inside the bounds and at most a quarter of the range: Aspen Plus's default for one specification is
  * the secant method (proposal 0028, item 3); where the root it estimates lies beyond a bound, that bound instead
@@ -28,8 +29,8 @@
  * algorithm as scipy.optimize.brentq, BSD). It never leaves the bracket, so never the bounds. At most `solve` solves.
  *
  * Several specifications: Broyden's method (Math. Comp. 19 (1965) 577) on the residuals scaled by their values, the
- * variables scaled to their bounds, started with a finite-difference Jacobian (one solve per specification, a step of
- * 1 % of each range) and kept inside the bounds by projection; a step that does not lower the residual is halved up to
+ * variables scaled to their bounds, started with a finite-difference Jacobian (one solve per specification, the
+ * same step as one specification's) and kept inside the bounds by projection; a step that does not lower the residual is halved up to
  * three times, then the Jacobian is recomputed by finite differences once; at most `solve` iterations.
  *
  * Every failure throws (proposal 0022, section 3): BAD_INPUT for a malformed or conflicting specification, before
