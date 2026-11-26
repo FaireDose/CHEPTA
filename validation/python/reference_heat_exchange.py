@@ -87,6 +87,53 @@ def counterflow(Q, Th, Tc, U):
     return A, pts
 
 
+def approach_case(MW, F_h, T_h, P_h, F_c, T_c, P_c, dT, steps=4000):
+    """Two n-butane streams in counterflow (PR::n-Butane): the largest duty whose temperature difference is dT at its
+    smallest point along the exchanger, the pinch, and the outlets."""
+    B = "PR::n-Butane"
+
+    def side(F, T, P_kPa):
+        P = P_kPa * 1000
+        return {"P": P, "m": F * MW / 3600, "h": CP.PropsSI("H", "T", T, "P", P, B),
+                "hL": CP.PropsSI("H", "P", P, "Q", 0, B), "hV": CP.PropsSI("H", "P", P, "Q", 1, B)}
+    H, C = side(F_h, T_h, P_h), side(F_c, T_c, P_c)
+
+    def profile(Q, n):
+        """(dT, q, Th, Tc) at n equal heat steps and at the phase boundaries of both sides; q has left the hot side."""
+        qs = [Q * k / n for k in range(n + 1)]
+        for hb in (H["hL"], H["hV"]):
+            q = (H["h"] - hb) * H["m"] / 1000
+            if 0 < q < Q:
+                qs.append(q)
+        for hb in (C["hL"], C["hV"]):
+            q = Q - (hb - C["h"]) * C["m"] / 1000
+            if 0 < q < Q:
+                qs.append(q)
+        out = []
+        for q in sorted(qs):
+            th = T_of_h(B, H["P"], H["h"] - q * 1000 / H["m"])
+            tc = T_of_h(B, C["P"], C["h"] + (Q - q) * 1000 / C["m"])
+            out.append((th - tc, q, th, tc))
+        return out
+    qmax = min(H["m"] * (H["h"] - CP.PropsSI("H", "T", T_c, "P", H["P"], B)),
+               C["m"] * (CP.PropsSI("H", "T", T_h, "P", C["P"], B) - C["h"])) / 1000
+    lo, hi = 1e-6 * qmax, qmax
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        if min(profile(mid, 400))[0] > dT:
+            lo = mid
+        else:
+            hi = mid
+    Q = lo
+    pts = profile(Q, steps)
+    d, q, th, tc = min(pts)
+    return {"name": "n-butane against boiling n-butane, minimum approach", "component": "n-butane", "model": "PR",
+            "hot": {"flow_kmol_h": F_h, "T_K": T_h, "P_kPa": P_h}, "cold": {"flow_kmol_h": F_c, "T_K": T_c, "P_kPa": P_c},
+            "dTmin_K": dT, "duty_kW": Q, "pinch": {"q_kW": q, "Th_K": th, "Tc_K": tc, "dT_K": d},
+            "cold_Tsat_K": CP.PropsSI("T", "P", C["P"], "Q", 0, B),
+            "hot_T_out_K": pts[-1][2], "cold_T_out_K": pts[0][3], "steps": steps}
+
+
 def main():
     cases = []
     # 1. n-butane vapour at 500 kPa, superheated, condensed and subcooled by cooling water (Peng-Robinson)
@@ -112,6 +159,13 @@ def main():
                   "T_in_K": 300.0, "P_kPa": 1000.0, "VF_out": 0.8, "steam_P_kPa": 500.0, "U_W_m2K": 1500.0,
                   "duty_kW": Q, "area_m2": A, "steam_kg_h": Q * 1000 / hfg * 3600,
                   "Tc_K": [p[2] for p in pts]})
+    # 3. the minimum approach with a pinch inside the exchanger (decision 2026-11-25-04; CHEPTA-Lab M4): n-butane vapour
+    #    at 1500 kPa, 420 K, condensed by n-butane liquid at 300 kPa, 270 K, which boils; counterflow, minimum approach
+    #    5 K. The temperature difference is taken at 4000 equal heat steps plus the four points where a side reaches
+    #    its dew or bubble enthalpy (CoolProp's saturation states, not a zone grid), and the duty is the largest whose
+    #    smallest difference is 5 K, by bisection. The pinch sits at the bubble point of the cold side, inside the
+    #    exchanger, between the zone boundaries of a 10- or 20-zone grid.
+    cases.append(approach_case(MWb, F_h=10.0, T_h=420.0, P_h=1500.0, F_c=10.0, T_c=270.0, P_c=300.0, dT=5.0))
     OUT.write_text(json.dumps({
         "_about": "Counterflow heat exchangers sized by %d equal heat steps from CoolProp %s (PR::n-Butane, IF97::Water); "
                   "validation/python/reference_heat_exchange.py, for test/heat-exchange.test.js." % (ZONES, CoolProp.__version__),

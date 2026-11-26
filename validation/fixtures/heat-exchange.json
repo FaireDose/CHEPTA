@@ -103,6 +103,33 @@
     307.68357637776944,
     299.9999999999999
    ]
+  },
+  {
+   "name": "n-butane against boiling n-butane, minimum approach",
+   "component": "n-butane",
+   "model": "PR",
+   "hot": {
+    "flow_kmol_h": 10.0,
+    "T_K": 420.0,
+    "P_kPa": 1500.0
+   },
+   "cold": {
+    "flow_kmol_h": 10.0,
+    "T_K": 270.0,
+    "P_kPa": 300.0
+   },
+   "dTmin_K": 5.0,
+   "duty_kW": 102.04072246474867,
+   "pinch": {
+    "q_kW": 88.68858619810993,
+    "Th_K": 310.181359186545,
+    "Tc_K": 305.1813591865449,
+    "dT_K": 5.000000000000114
+   },
+   "cold_Tsat_K": 305.1813591865449,
+   "hot_T_out_K": 275.32513982438593,
+   "cold_T_out_K": 402.34090696285057,
+   "steps": 4000
   }
  ]
 }

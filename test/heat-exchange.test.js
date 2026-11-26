@@ -8,9 +8,10 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { system, stream } from "../src/index.js";
 import {
-  exchangerArea, effectiveness, ntuFor, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER, ARRANGEMENTS,
+  exchangerArea, exchangerApproach, effectiveness, ntuFor, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER, ARRANGEMENTS,
 } from "../src/units/heat-exchange.js";
 import { withRangePolicy } from "../src/util/ranges.js";
+import { run } from "../src/api/dispatcher.js";
 // the strict range mode (the maintainer, 2026-11-13; docs/decisions/2026-11-13-03-extrapolation-policy.md)
 const strictly = fn => withRangePolicy({ strictRanges: true }, fn);
 
@@ -155,4 +156,64 @@ test("Lamé's thick cylinder: the hoop stress at the inner wall equals S E; thin
   assert.equal(w.t_mm, w.t_pressure_mm + 1);
   assert.ok(Math.abs(w.t_pressure_mm / w.thin_wall_mm - 1) < 0.011, "thin wall: within 1 % at P/S = 0.02");
   assert.throws(() => wallThickness({ P_kPa: 90000, D_in_mm: 20, S_MPa: 100, E: 0.85 }), /not below the allowable stress times the joint efficiency/);
+});
+
+// The minimum approach along the whole exchanger (decision 2026-11-25-04; CHEPTA-Lab M4): the smallest temperature
+// difference is taken between the zone boundaries too (the phase boundaries inside a zone, refined minima), so a pinch
+// inside the exchanger is met, never crossed.
+test("minimum approach with a pinch inside the exchanger: n-butane boiling against condensing n-butane, against CoolProp", () => {
+  // validation/python/reference_heat_exchange.py, case 3: the duty whose smallest difference along 4000 heat steps and
+  // the four phase boundaries is 5 K; the pinch is the cold side's bubble point, between the boundaries of 10 or 20 zones
+  const c = ref.cases.find(x => x.dTmin_K != null);
+  const sys = system({ components: [c.component], model: c.model });
+  const mk = s => stream(sys, { flow_kmol_h: { [c.component]: s.flow_kmol_h }, T_K: s.T_K, P_kPa: s.P_kPa });
+  const hot = mk(c.hot), cold = mk(c.cold);
+  const r = exchangerApproach(sys, { hot: { stream: hot }, cold: { stream: cold }, dTmin_K: c.dTmin_K });
+  close(r.duty_kW, c.duty_kW, 0.002, "duty");
+  assert.ok(Math.abs(r.dT_min_K - c.dTmin_K) < 0.01, `dT_min ${r.dT_min_K}`);
+  assert.ok(r.pinch.inside, "the pinch is inside the exchanger");
+  assert.ok(Math.abs(r.pinch.Tc_K - c.pinch.Tc_K) < 0.05, `pinch, cold side ${r.pinch.Tc_K} vs ${c.pinch.Tc_K} (its bubble point)`);
+  assert.ok(Math.abs(r.pinch.Th_K - c.pinch.Th_K) < 0.05, `pinch, hot side ${r.pinch.Th_K} vs ${c.pinch.Th_K}`);
+  close(r.pinch.q_kW, c.pinch.q_kW, 0.003, "pinch, heat");
+  assert.ok(Math.abs(r.hot.T_out_K - c.hot_T_out_K) < 0.1 && Math.abs(r.cold.T_out_K - c.cold_T_out_K) < 0.1, `outlets ${r.hot.T_out_K}, ${r.cold.T_out_K}`);
+  // a fine grid of its own (500 zones) at the duty found: the approach holds everywhere, within the refinement
+  const fine = exchangerArea(sys, { hot: { stream: hot }, cold: { stream: cold }, duty_kW: r.duty_kW, zones: 500 });
+  assert.ok(fine.dT_min_zones_K >= c.dTmin_K - 0.01, `500 zones: ${fine.dT_min_zones_K}`);
+  // the 10 zone boundaries alone do not see the pinch: the difference there is larger
+  const coarse = exchangerArea(sys, { hot: { stream: hot }, cold: { stream: cold }, duty_kW: r.duty_kW, zones: 10 });
+  assert.ok(coarse.dT_min_zones_K > c.dTmin_K + 0.05 && Math.abs(coarse.dT_min_K - r.dT_min_K) < 0.01, `10 zones: ${coarse.dT_min_zones_K} at the boundaries, ${coarse.dT_min_K} along`);
+  assert.ok(coarse.notes.some(n => /lies between the zone boundaries/.test(n)));
+});
+
+test("CHEPTA-Lab M4 (2026-11-25): HE5 with the plant's streams 20 and 28 meets 2 K inside the exchanger, never a cross", () => {
+  // validation/data/heat-exchange/lab-requests/he5-a6streams-dTmin2.request.json, unchanged from Lab: on main the
+  // 10-zone search ended at 96,640 kW, which the 20 zones then refused as a cross at 72 °C (the cold side boiling)
+  const req = JSON.parse(readFileSync(new URL("../validation/data/heat-exchange/lab-requests/he5-a6streams-dTmin2.request.json", import.meta.url)));
+  const r = run(req);
+  assert.equal(r.outcome, "ok", r.error?.message);
+  const hx = r.value.blocks.HE5.sizing;
+  assert.equal(hx.arrangement, "counterflow");
+  assert.ok(Math.abs(hx.dT_min_K - 2) <= 0.01, `dT_min ${hx.dT_min_K}`);
+  assert.ok(hx.duty_kW < 96640, `duty ${hx.duty_kW}`);
+  assert.ok(hx.pinch.inside && hx.pinch.cold_VF > 0 && hx.pinch.cold_VF < 0.1, `pinch ${JSON.stringify(hx.pinch)}`);
+  assert.ok(Math.abs(r.value.blocks.HE5.balance.energy_kW) <= 1e-6 * hx.duty_kW);
+  // the same exchanger at that duty, on a fine grid of its own: no point below the approach
+  const fs = req.input.flowsheet, sys = system({ components: fs.components, model: fs.thermo.model });
+  const feed = id => { const s = fs.blocks.find(b => b.id === id).spec; return stream(sys, { flow_kmol_h: s.flow_kmol_h, T_K: s.T_K, P_kPa: s.P_kPa }); };
+  const fine = exchangerArea(sys, { hot: { stream: feed("F0") }, cold: { stream: feed("F1") }, duty_kW: hx.duty_kW, zones: 400 });
+  assert.ok(fine.dT_min_zones_K >= 2 - 0.01, `400 zones: ${fine.dT_min_zones_K}`);
+});
+
+test("CHEPTA-Lab M4: at the duty main's 10 zones accepted (96,640 kW), the cross inside the exchanger is refused and named, whatever the zones", () => {
+  // on main, 10 zones gave 2.003 K at this duty and 20 zones a cross: the ends are apart (126 °C against the cold
+  // outlet, the hot outlet against 30 °C), but the curves cross where the cold side has started to boil
+  const req = JSON.parse(readFileSync(new URL("../validation/data/heat-exchange/lab-requests/he5-a6streams-dTmin2.request.json", import.meta.url)));
+  const fs = req.input.flowsheet, sys = system({ components: fs.components, model: fs.thermo.model });
+  const feed = id => { const s = fs.blocks.find(b => b.id === id).spec; return stream(sys, { flow_kmol_h: s.flow_kmol_h, T_K: s.T_K, P_kPa: s.P_kPa }); };
+  for (const zones of [10, 20, 40]) {
+    assert.throws(() => exchangerArea(sys, { hot: { stream: feed("F0") }, cold: { stream: feed("F1") }, duty_kW: 96640, zones }),
+      e => e.code === "BAD_INPUT" && e.details.at.cVF > 0 && e.details.at.hVF > 0.5
+        && /^Temperature cross: .*\(vapour fraction 0\.8\d+\) and the cold side at .*\(vapour fraction 0\.0\d+\), inside the exchanger \(the cold side [\d.]+ K above the hot, the deepest point of the cross\)/.test(e.message),
+      `zones ${zones}`);
+  }
 });
