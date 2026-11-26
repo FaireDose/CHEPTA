@@ -1,0 +1,89 @@
+{
+  "capability": "solve_flowsheet",
+  "input": {
+    "flowsheet": {
+      "components": [
+        "carbon-dioxide",
+        "hydrogen",
+        "carbon-monoxide",
+        "methanol",
+        "water",
+        "nitrogen"
+      ],
+      "thermo": {
+        "model": "PR"
+      },
+      "blocks": [
+        {
+          "id": "F0",
+          "type": "feed",
+          "spec": {
+            "flow_kmol_h": {
+              "carbon-dioxide": 11516.440362,
+              "hydrogen": 37865.855106,
+              "carbon-monoxide": 1127.684364,
+              "methanol": 4753.164641,
+              "water": 4618.633959,
+              "nitrogen": 3618.0368
+            },
+            "T_K": 399.6014,
+            "P_kPa": 7000
+          }
+        },
+        {
+          "id": "F1",
+          "type": "feed",
+          "spec": {
+            "flow_kmol_h": {
+              "carbon-dioxide": 22.230147,
+              "hydrogen": 0.003611,
+              "carbon-monoxide": 0.000389,
+              "methanol": 4559.835628,
+              "water": 4585.827041,
+              "nitrogen": 0.001241
+            },
+            "T_K": 303.15,
+            "P_kPa": 100
+          }
+        },
+        {
+          "id": "HE5",
+          "type": "hx",
+          "spec": {
+            "dTmin_K": 2
+          }
+        },
+        {
+          "id": "P0",
+          "type": "product"
+        },
+        {
+          "id": "P1",
+          "type": "product"
+        }
+      ],
+      "streams": [
+        {
+          "id": "in0-20",
+          "from": "F0.out",
+          "to": "HE5.hot"
+        },
+        {
+          "id": "in1-28",
+          "from": "F1.out",
+          "to": "HE5.cold"
+        },
+        {
+          "id": "out-hot",
+          "from": "HE5.hot",
+          "to": "P0.in"
+        },
+        {
+          "id": "out-cold",
+          "from": "HE5.cold",
+          "to": "P1.in"
+        }
+      ]
+    }
+  }
+}

@@ -10,6 +10,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **The minimum approach along the whole exchanger, CHEPTA-Lab M4 "still open"**
+  (docs/decisions/2026-11-25-04-minimum-approach-along-exchanger.md): built: the smallest temperature difference is
+  taken along the whole exchanger (the zone boundaries, each side's bubble and dew points inside a zone, golden-section
+  refinement between the boundaries), not only at the zone boundaries; a cross is refused at its deepest point, named
+  "inside the exchanger". Lab's HE5 with the plant's streams 20 and 28 now solves at 93,483 kW (2 K at the cold side's
+  bubble point) instead of ending on a cross; checked against CoolProp (n-butane against boiling n-butane). Decided
+  (the maintainer, 2026-11-26): the refinement stays as it is. Open: split the area at the phase boundaries too, with
+  proposal 0013's next step. Note for Lab: drop the `zones: 10` workaround on HE5 and rerun the plant runs.
 - **Speed of flowsheet and design-specification runs, Lab's priority 1 for 0.6.3 and request 18** (proposal 0027;
   docs/decisions/2026-11-25-02-solve-speed-proposal.md): every loop pass and design-specification evaluation starts
   every rigorous column cold (74 % of the time is the columns' cold start); proposed: columns restarted from their last

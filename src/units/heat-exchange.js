@@ -23,8 +23,11 @@
  *    every zone looks feasible and the temperature cross of a multipass exchanger would be hidden. With a side that
  *    changes phase the terminal F is an approximation (stated in the result); one side at constant temperature gives
  *    R = 0 and F = 1;
- *  - a temperature cross (ΔT <= 0 at any zone boundary) or a zone that the arrangement cannot reach (ε above its
- *    limit) is an error that names where, never an area;
+ *  - a temperature cross (ΔT <= 0 anywhere along the exchanger: at a zone boundary, at a side's bubble or dew point
+ *    inside a zone, or at a minimum between the boundaries; profileMinimum, decision 2026-11-25-04) or a zone that the
+ *    arrangement cannot reach (ε above its limit) is an error that names where, never an area; dT_min_K and the pinch
+ *    are the smallest difference along the exchanger (dT_min_zones_K: at the zone boundaries only), so the minimum
+ *    approach (exchangerApproach) holds everywhere, not only where the zones are cut;
  *  - U: a service's typical range (Table 2.2; the low end by default, the larger area), or film coefficients
  *    (Table 1.1), fouling resistances (Table 2.3; the high end by default) and a plane wall of a metal (Table A.1,
  *    k interpolated linearly in temperature; outside the table its end value with a warning, refused in the strict
@@ -350,6 +353,61 @@ function utilitySide(u, role) {
 
 // ---------------------------------------------------------------------------------------
 
+const phaseWord = v => (v <= 1e-9 ? "liquid" : v >= 1 - 1e-9 ? "vapour" : `vapour fraction ${+v.toFixed(4)}`);
+const phaseClass = v => (v == null ? null : v <= 1e-9 ? 0 : v >= 1 - 1e-9 ? 2 : 1);
+
+/**
+ * The smallest temperature difference along the whole exchanger, not only at the zone boundaries. Lienhard and
+ * Lienhard (6th ed., § 3.2, eqn. 3.2) write the heat balance dQ = U ΔT dA at every point of the exchanger, so ΔT > 0
+ * must hold at every point, and a part where a side changes phase is an exchanger of its own in series with the rest
+ * (p. 115, Fig. 3.11). Between equal heat steps the two curves may cross unseen where one side starts or ends boiling
+ * or condensing, because the curves bend there (CHEPTA-Lab's HE5: a pinch at the bubble point of the cold side). So:
+ *  1. the zone boundaries (`pts`);
+ *  2. in a zone where a process side changes its phase count (liquid / two phases / vapour), the point where it does,
+ *     by bisection on the heat to 1e-6 of the duty (the bubble or dew point inside the exchanger, where the
+ *     difference has a corner);
+ *  3. around the three smallest local minima of 1-2, golden-section search on the heat between the neighbouring
+ *     points, to 1e-4 of the duty (a smooth minimum is flat, so its error in ΔT is of second order).
+ * DWSIM's "Pinch Point" mode (HeatExchanger.vb, branch windows, commit 1abf72d) checks its MITA at 26 equal heat steps
+ * only; this is the same profile, refined. Returns { min, extra } (extra: the points of 2-3, for the cross check).
+ */
+function profileMinimum(H, C, Q, pts, co) {
+  const T = (s, q) => (s.kind === "process" ? s.at(q, Q) : { T_K: s.T(q, Q), VF: null });
+  const at = q => { const h = T(H, q), c = T(C, co ? q : Q - q); return { q, Th: h.T_K, Tc: c.T_K, hVF: h.VF, cVF: c.VF }; };
+  const d = p => p.Th - p.Tc;
+  const extra = [];
+  // 2. the phase boundaries inside a zone
+  for (let k = 0; k + 1 < pts.length; k++) {
+    for (const key of ["hVF", "cVF"]) {
+      const ca = phaseClass(pts[k][key]), cb = phaseClass(pts[k + 1][key]);
+      if (ca == null || cb == null || ca === cb) continue;
+      let lo = pts[k], hi = pts[k + 1];
+      for (let i = 0; i < 40 && hi.q - lo.q > 1e-6 * Q; i++) {
+        const m = at((lo.q + hi.q) / 2);
+        if (phaseClass(m[key]) === ca) lo = m; else hi = m;
+      }
+      extra.push(lo, hi);
+    }
+  }
+  const all = [...pts, ...extra].sort((a, b) => a.q - b.q);
+  // 3. golden-section search around the smallest local minima
+  const mins = all.map((p, i) => i).filter(i => (i === 0 || d(all[i]) <= d(all[i - 1])) && (i === all.length - 1 || d(all[i]) <= d(all[i + 1])))
+    .sort((i, j) => d(all[i]) - d(all[j])).slice(0, 3);
+  const g = (Math.sqrt(5) - 1) / 2;
+  for (const i of mins) {
+    let a = all[Math.max(0, i - 1)].q, b = all[Math.min(all.length - 1, i + 1)].q;
+    if (!(b - a > 1e-4 * Q)) continue;
+    let x1 = at(b - g * (b - a)), x2 = at(a + g * (b - a));
+    for (let it = 0; it < 60 && b - a > 1e-4 * Q; it++) {
+      if (d(x1) <= d(x2)) { b = x2.q; x2 = x1; x1 = at(b - g * (b - a)); }
+      else { a = x1.q; x1 = x2; x2 = at(a + g * (b - a)); }
+    }
+    extra.push(x1, x2);
+  }
+  const min = [...pts, ...extra].reduce((m, p) => (d(p) < d(m) ? p : m));
+  return { min, extra };
+}
+
 /**
  * Pre-size an exchanger: the duty, the temperature-heat curves of both sides by zones, and with U the area.
  * @param {object} sys   the system of the process streams (any side may be a utility instead, or carry its own `sys`)
@@ -397,9 +455,17 @@ export function exchangerArea(sys, o = {}) {
   // the hot side at k meets the cold side that has still to take Q - q; cocurrent: both from their inlets
   const co = arr === "cocurrent";
   const pts = hc.map((p, k) => ({ q: Q * k / N, Th: p.T, Tc: cc[co ? k : N - k].T, hVF: p.VF, cVF: cc[co ? k : N - k].VF }));
-  for (const p of pts) {
+  // the temperature difference everywhere along the exchanger, not only at the zone boundaries (decision
+  // 2026-11-25-04): the grid, the points where a side starts or ends a phase change between two boundaries (the
+  // curves bend there, so a pinch often sits there), and the smallest grid points refined by golden-section search
+  const along = profileMinimum(H, C, Q, pts, co);
+  {
+    // a cross is named at its deepest point (the smallest difference found along the exchanger)
+    const p = along.min;
     if (!(p.Th - p.Tc > 1e-6)) {
-      throw fail("BAD_INPUT", `Temperature cross: where ${+p.q.toPrecision(4)} kW of ${+Q.toPrecision(4)} kW has left the hot side, the hot side is at ${fmtK(p.Th)} and the cold side at ${fmtK(p.Tc)}${co ? " (cocurrent)" : ""}. Heat cannot flow there: lower the duty, change an outlet${co ? ", or use counterflow" : ""}.`, { at: p });
+      const inside = p.q > 1e-9 * Q && p.q < Q * (1 - 1e-9);
+      const vf = v => (v == null ? "" : ` (${phaseWord(v)})`);
+      throw fail("BAD_INPUT", `Temperature cross: where ${+p.q.toPrecision(4)} kW of ${+Q.toPrecision(4)} kW has left the hot side, the hot side is at ${fmtK(p.Th)}${vf(p.hVF)} and the cold side at ${fmtK(p.Tc)}${vf(p.cVF)}${co ? " (cocurrent)" : ""}${inside ? ", inside the exchanger" : ""}${p.Th - p.Tc < -1e-6 ? ` (the cold side ${+(p.Tc - p.Th).toFixed(2)} K above the hot, the deepest point of the cross)` : ""}. Heat cannot flow there: lower the duty, change an outlet${co ? ", or use counterflow" : ""}.`, { at: p });
     }
   }
   let U = null, how = null, parts = [];
@@ -437,12 +503,13 @@ export function exchangerArea(sys, o = {}) {
     zones.push({ q0_kW: a.q, q1_kW: b.q, Th0_K: a.Th, Th1_K: b.Th, Tc0_K: a.Tc, Tc1_K: b.Tc, dT_lm_K: lm, UA_W_K: ua, area_m2: dA, hotVF: b.hVF, coldVF: b.cVF });
   }
   const Fmin = F;
-  const dTmin = Math.min(...pts.map(p => p.Th - p.Tc));
-  const at = pts.find(p => p.Th - p.Tc === dTmin);
+  const dTminZones = Math.min(...pts.map(p => p.Th - p.Tc));
+  const at = along.min, dTmin = at.Th - at.Tc;
   const side = (s, c, role) => s.kind === "process"
     ? { kind: "process", T_in_K: c[0].T, T_out_K: c[N].T, P_in_kPa: c[0].P, P_out_kPa: c[N].P, VF_out: c[N].VF, flow_kg_h: s.st.mass_kg_h }
     : { kind: s.kind, T_in_K: c[0].T, T_out_K: c[N].T, P_kPa: s.P_in, flow_kg_h: s.flow(Q), describe: s.describe(Q) };
   const notes = [];
+  if (dTminZones - dTmin > 0.01) notes.push(`The smallest temperature difference, ${+dTmin.toFixed(3)} K, lies between the zone boundaries (${+dTminZones.toFixed(3)} K at the boundaries), where ${+at.q.toPrecision(5)} kW has left the hot side${at.hVF != null || at.cVF != null ? ` (hot side ${at.hVF != null ? phaseWord(at.hVF) : "utility"}, cold side ${at.cVF != null ? phaseWord(at.cVF) : "utility"})` : ""}; the area is from the zones.`);
   if (arr === "shell-and-tube" || arr === "crossflow-unmixed") {
     notes.push(`LMTD correction F = ${F.toFixed(3)} for the ${arr === "shell-and-tube" ? `${shells}-shell exchanger` : "crossflow exchanger"}, from the terminal temperatures${linear ? "" : "; a side changes phase, so its temperature is not linear in its heat and F from the terminal temperatures is an approximation"}${F < 0.75 ? ". F is below 0.75: the arrangement is far from counterflow; more shells in series would help" : ""}.`);
   }
@@ -450,8 +517,8 @@ export function exchangerArea(sys, o = {}) {
   return {
     duty_kW: Q, arrangement: arr, shells: arr === "shell-and-tube" ? shells : null,
     U_W_m2K: U, U_how: how, U_parts: parts,
-    area_m2: U ? A : null, UA_kW_K: UA / 1000, dT_mean_K: Q * 1000 / UA, dT_min_K: dTmin,
-    pinch: { q_kW: at.q, Th_K: at.Th, Tc_K: at.Tc }, F, F_min: Fmin,
+    area_m2: U ? A : null, UA_kW_K: UA / 1000, dT_mean_K: Q * 1000 / UA, dT_min_K: dTmin, dT_min_zones_K: dTminZones,
+    pinch: { q_kW: at.q, Th_K: at.Th, Tc_K: at.Tc, hot_VF: at.hVF ?? null, cold_VF: at.cVF ?? null, inside: at.q > 1e-9 * Q && at.q < Q * (1 - 1e-9) }, F, F_min: Fmin,
     zones, hot: side(H, hc, "hot"), cold: side(C, cc, "cold"),
     outlets: { hot: H.kind === "process" ? hc[N].st : null, cold: C.kind === "process" ? cc[N].st : null },
     notes,
@@ -496,9 +563,21 @@ export function exchangerApproach(sys, o = {}) {
     return lo;
   };
   const near = hx => Math.abs(hx.dT_min_K - dT) <= Math.max(0.05, 0.01 * dT);
-  let hx = exchangerArea(sys, { ...rest, duty_kW: search(dminWith(10), qMax * 1e-6, qMax) });
+  // the approach is the smallest difference along the whole exchanger (exchangerArea, profileMinimum), so the 10-zone
+  // search and the full-zone result agree; if the full zones still find a tighter pinch, or a cross, at the duty found
+  // (a pinch the coarser grid missed), the search is repeated with the full zones (CHEPTA-Lab, M4, 2026-11-14 and
+  // 2026-11-25: the plant's streams 20 and 28 ended on a cross at the cold side's bubble point)
+  const crossed = e => e.code === "BAD_INPUT" && /^Temperature cross/.test(e.message);
+  const solve = zones => {
+    try { return exchangerArea(sys, { ...rest, duty_kW: search(dminWith(zones), qMax * 1e-6, qMax) }); }
+    catch (e) { if (crossed(e)) return e; throw e; }
+  };
+  let hx = solve(10);
   const full = o.zones == null ? 20 : o.zones;
-  if (!near(hx) && full !== 10 && dminWith(full)(qMax * 1e-6) > dT) hx = exchangerArea(sys, { ...rest, duty_kW: search(dminWith(full), qMax * 1e-6, qMax) });
+  if ((hx instanceof Error || !near(hx)) && full !== 10 && dminWith(full)(qMax * 1e-6) > dT) hx = solve(full);
+  if (hx instanceof Error) {
+    throw fail("BAD_INPUT", `Heat exchanger: no duty meets the minimum approach of ${dT} K along the whole exchanger with ${full} zones: at the duty the search found, ${hx.message.replace(/^Temperature cross: where/, "the curves cross where")} Give more zones (zones), or a larger minimum approach.`, hx.details);
+  }
   if (!near(hx)) {
     const a = o.arrangement ?? "counterflow";
     const arr = a === "shell-and-tube" ? `${o.shells ?? 1}-shell exchanger` : a === "crossflow-unmixed" || a.startsWith("crossflow") ? "crossflow exchanger" : `${a} exchanger`;
