@@ -472,3 +472,9 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - #270's questions for the maintainer: (1) keep the refinement as it is (recommended); (2) split the area at phase boundaries later, with proposal 0013's next step (recommended); (3) Lab drops its `zones: 10` workaround on HE5.
 - A pushed #267 at b3833c6 and #269 at 03539ac (main merged) and was re-running the two Lab benchmarks when it stopped. G has not pushed its branch yet; asked it to push.
 - Merge order: #267 → #269, then #268, then #270, then G's PR.
+
+### 2026-11-26 12:25 — #267 and #269 verified after A's merges
+- A's report (2 messages, 11:53): both bench2 runs finished before the limit. On 03539ac: new-plant-ds-ethanol0.0004 ok in 968 s (894 s before merging main; SCDS15 782 s), same answer F1 6506.2318 kg/h, 7 solves, ester 99.474 %; plant62-R-bottoms-col5-14stages ok in 654 s (624 s before), 46 iterations, ester 99.931 %, no balance warning. About 5-8 % slower after the merge, not separated from noise.
+- Verified locally: #267 b3833c6 1824 pass / 0 fail / 5 skipped; #269 03539ac 1832 pass / 0 fail / 5 skipped. No removed test lines. Both merge cleanly with main.
+- Merging in order #267 → #269 → #268 is clean; #270 then conflicts only in docs/DECISIONS.md (F merges main after #268).
+- G pushed claude/proposal-0028-column-specs-in-mesh at acbe439 (proposal + items 1-4). Told G to merge #269's new head 03539ac before its after-benchmarks.
