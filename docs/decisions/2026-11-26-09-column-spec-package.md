@@ -1,0 +1,108 @@
+# 2026-11-26-09: the full set of column specifications (proposal 0029); step 1, CHEPTA-Lab M6
+
+## What was asked
+
+The maintainer (2026-11-26): "About the condenser, before that have a quick research on more possibilities as what we
+can put as specs inside the column and here I mean to take it together with reboiler and condenser, side streams and
+everything else so we have a full package; in fact make this also part of M6 and start it."
+
+Three parts:
+
+1. A quick survey of what the open simulators offer: research_notes/column-specifications/README.md.
+2. Proposal 0029 (proposals/0029-full-column-specifications.md): the whole package in seven steps.
+3. Step 1, Lab's M6, built now. The other steps wait for the maintainer's answers (below).
+
+## The survey in short
+
+- ChemSep (The ChemSep Book, public domain) writes every specification among its Newton equations. That covers product
+  flows, a mole fraction, a component flow, a reflux or reboil ratio or rate, the condenser's or reboiler's temperature
+  and duty, and non-standard specifications on any stage. For the rows outside the band it uses a sparse solver.
+- DWSIM's Newton solver writes one specification per end, also inside the equations. Its bubble-point solver meets
+  compositions and temperatures by an outer loop.
+- IDAES puts every specification in its one equation-oriented model.
+- Aspen Plus and HYSYS: no open documentation was found, so nothing is said about them.
+- What CHEPTA lacks:
+  - at the condenser: the reflux flow, subcooling, and the temperature of a total or partial condenser among the MESH
+    equations;
+  - at the reboiler: its temperature among the MESH equations;
+  - on side streams: a draw as a share of the stage's flow, side heaters and coolers on a distillation column, and
+    pumparounds;
+  - for the whole column: a stage temperature among the MESH equations, and ratios of two components or of two flows.
+
+## Step 1 as built (M6)
+
+Lab's column: 30 stages, feed on stage 24, 100 kPa. The condenser is "vapour_liquid" at 326.15 K, with a reflux ratio
+of 2 and bottoms of 4581 kmol/h, on PR. It is fed with Lab's converged plant's column feed (CO2 0.2425 %). On main at
+415da41 it ended with `NO_CONVERGENCE`, and the continuation stopped at 0 %.
+
+1. **The temperature reached from a vapour share.** This comes after every earlier attempt has failed
+   (`src/units/columns/engine.js`, `viaShare`):
+   - the same column is solved at a vapour share (from a flash of the start's top vapour at the given temperature:
+     0.57 % here);
+   - then the temperature is given in place of the share, from that column's temperature, in one step or in halved
+     steps.
+   
+   On Lab's column it takes one step and gives 38.54 kmol/h of vapour at 326.15 K, in about 8 s. Lab's own runs with
+   the vapour distillate's flow (38.56) or the vapour share gave 53.005 C. Columns that converged before keep their
+   path: the new attempt is the last before the decanter's.
+2. **The column's start with an equation of state.** A stage liquid of the start whose bubble point fails the
+   liquid-stability test is now taken without the test. This is a start value only: the answer's own test of every
+   stage is unchanged. With PR + MHV1, every column of this case stopped there before (a CO2-rich start liquid on the
+   condenser at 185 K).
+3. **The message.** "A large vapour share" now appears only where the last iterate's share is above one half, and
+   says the share. For a condenser given by its temperature, the message suggests giving the share or the vapour flow
+   instead.
+4. **The checks.**
+   - Case H4 in the independent reference, `validation/python/reference_mesh_condenser.py`, solved from the engine's
+     profile (perturbed). The engine agrees within 1e-5 K and 1e-6 in the flows. The reference's column at that
+     answer's vapour share is at 326.15 K.
+   - The paper's feed (H3, CO2 1.285 %) keeps its old path.
+   - Lab's request file is copied unchanged and runs with PR and with PR + MHV1.
+   - Tests: `test/columns-condenser-temperature.test.js`.
+
+## CHEPTA-Lab's runs on this branch (inputs unchanged)
+
+| Run | main 415da41 (Lab) | this branch |
+|---|---|---|
+| the column alone, 53 C, a6 feed (PR) | NO_CONVERGENCE | ok, 7 s; 38.54 kmol/h of vapour |
+| the column alone, 53 C, a6 feed (PR + MHV1, the thermo's mixing set to MHV1) | (not run) | ok, 20 s; 38.28 kmol/h of vapour, share 0.83 % |
+| the column alone, the vapour share, a6 feed (PR + MHV1) | (not run) | ok, 8 s; 326.21 K |
+| the column alone, paper's feed (PR + MHV1) | (not run) | ok, 7 s; 297.2 kmol/h of vapour |
+| plant-vl (the paper's start) | NO_CONVERGENCE in the column | ok, 31 loop iterations, 384 s |
+| plant-vl-warm | NO_CONVERGENCE | ok, 8 iterations, 68 s |
+| plant-vl-warm-direct | NO_CONVERGENCE | ok, 7 iterations, 41 s |
+| plant-vl-nobypass | NO_CONVERGENCE | ok, 431 s |
+| plant-vl-purity | NO_CONVERGENCE | ok, 131 s |
+| plant-vl-recovery | NO_CONVERGENCE | ok, 657 s |
+| plant-vl-R2.1273 | NO_CONVERGENCE | ok, 374 s |
+| plant-vl-boilup | NO_CONVERGENCE | NO_CONVERGENCE: on a Broyden guess the temperature steps reached 325.5 of 326.15 K and stopped (open) |
+| plant-vl-he5-nozones | NO_CONVERGENCE (column) | NO_CONVERGENCE in HE5, a temperature cross (Lab's M4, not a column fault) |
+| plant-vl-share-warm (control) | ok | ok, 2 iterations, 13 s |
+| plant-vl and plant-vl-share-warm with PR + MHV1 | (not run) | refused before solving: methanol + nitrogen has no MHV1 set (the nitrogen sets of decision 2026-11-25-01, another worker) |
+
+In every converged plant the condenser is at 53.0 C, with 38.5-38.6 kmol/h of vapour (a share of 0.84 %).
+
+## Questions for the maintainer (proposal 0029, each with the recommendation)
+
+1. **Order and scope of steps 2-7.** Recommended: condenser, reboiler, side streams, the whole column, pumparounds,
+   then the workbench, each its own pull request.
+2. **Subcooling.** Recommended: a total condenser's `subcooling_K`, as DWSIM does: the reflux and the distillate
+   leave at the bubble temperature less dT. Not on the decanter or the vapour + liquid condenser for now.
+3. **A total condenser's temperature.** This is its liquid's bubble point, so it fixes a composition. Recommended: as
+   a purity, among the MESH equations from a profile and the outer loop cold. A partial condenser's temperature and the
+   reboiler's go among the MESH equations always, cold included.
+4. **Pumparounds.** Recommended: in the package, as the last engine step. Given by their rate and a duty or a return
+   temperature. Cold, the column is solved without them first and the rate brought up in steps (ChemSep's advice).
+5. **Property specifications (a density, a boiling point) and Q/F.** Recommended: left out. No open source read
+   documents them, and a flowsheet design specification (proposal 0022) can meet them now.
+6. **The new keys.** Recommended: `reflux_kmol_h`, `condenser_T_K` on total and partial condensers too,
+   `reboiler_T_K`, `subcooling_K`, `distillate_to_feed`, `side_draws[k].share`, `stage_duties_kW` on distillation
+   columns, the design specifications `component_ratio` and `flow_ratio`, and `pumparounds`.
+7. **M6's path.** Kept last, so no converged column changes its path. The alternative is to put the vapour-share path
+   first for every condenser given by its temperature: about half the time on Lab's column (4 s against 8 s), but it
+   changes the path of columns that converged before. Recommended: keep it last.
+
+## What the person must check
+
+No new data. The H4 case's feed is Lab's stream, copied from Lab's request file (unchanged). The survey's citations
+are the files and pages named in the research note.

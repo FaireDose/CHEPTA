@@ -10,6 +10,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Proposal 0029: the full set of column specifications; step 1, CHEPTA-Lab M6, built**
+  (docs/decisions/2026-11-26-09-column-spec-package.md; proposals/0029-full-column-specifications.md; the survey in
+  research_notes/column-specifications/). The vapour + liquid condenser given by its temperature is reached from a
+  column at a vapour share, the start's bubble point of an equation of state is taken without its stability test, and
+  the message names the share. Lab's column at 53 C converges with PR and with PR + MHV1, and so do 8 of the 10 closed
+  plant runs. Open: plant-vl-boilup, and the seven questions of the decision file, which decide steps 2-7
+  (condenser, reboiler, side streams, the whole column, pumparounds, workbench).
 - **CHEPTA-Lab's request 16: a design specification varies a column's numbers**
   (docs/decisions/2026-11-26-08-column-design-specs.md): built. The numbers are the distillate or bottoms flow, the
   reflux or boil-up ratio, the duties, the vapour + liquid condenser's own number, a side draw's flow and an absorber's
