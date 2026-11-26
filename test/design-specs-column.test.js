@@ -68,8 +68,7 @@ test("a target out of reach: said after the start, one step and the two bounds, 
   const e = (() => { try { solveFlowsheet(sys, plant({ reflux_ratio: 1.5, distillate_kmol_h: 48 }, [{ id: "DS1", vary: { block: "C1", key: "distillate_kmol_h", min: 40, max: 50 }, target: { stream: "S2", quantity: "mole_fraction", component: "methanol", value: 0.99 } }])); } catch (err) { return err; } })();
   assert.equal(e?.code, "NO_CONVERGENCE");
   assert.equal(e.details.reason, "unreachable");
-  assert.match(e.message, /0\.99 is not reachable with the distillate flow of C1 in \[40, 50\] kmol\/h: the nearest is 0\.975\d* at 50 kmol\/h\./);
-  assert.match(e.message, /it stays below 0\.99 at every value tried/);
+  assert.match(e.message, /0\.99 is not reachable with the distillate flow of C1 between 40 and 50 kmol\/h \(the target stays below it at every value tried; the nearest it came is 0\.975\d*, at 50 kmol\/h\)/);
   assert.equal(e.details.solves, 4);
   assert.deepEqual(e.details.trail.map(t => t.x[0]), [48, 48.1, 50, 40]);
   assert.equal(e.details.nearest.x, 50);

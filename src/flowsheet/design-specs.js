@@ -327,7 +327,13 @@ export function checkDesignSpecs(sys, fs, inspected, defaultRecycleTolerance = 1
       const what = scale === 1 ? `${DESIGN_SPEC_TOLERANCE_RATIO} times the recycle tolerance (solver.tolerance ${recycleTol})` : `${DESIGN_SPEC_TOLERANCE_RATIO} times the recycle tolerance (solver.tolerance ${recycleTol}) times the target ${t.value}, ${+noiseFloor.toPrecision(6)}`;
       warnings.push(`${name}: its tolerance ${tol} is tighter than ${what}; the recycles' own convergence noise may then be as large as the tolerance, so the solver may stop at the limit or close the bracket on noise. If it does, loosen the tolerance to ${+noiseFloor.toPrecision(6)} or tighten solver.tolerance to ${+(tol / DESIGN_SPEC_TOLERANCE_RATIO / scale).toPrecision(6)}.`);
     }
-    return { id, vary: vr, target: tg, tolerance: tol, toleranceGiven: d.tolerance != null, warnings, absolute, tolAbs: absolute ? tol : tol * Math.abs(t.value), MW, name };
+    // the first step (bracketing, or the finite-difference Jacobian), as a share of the range: 1 %, or where that moves
+    // the input by less than 100 times the recycle tolerance relative to its value, that much (at most a quarter of the
+    // range). A smaller change can stay inside the recycles' own convergence noise: on CHEPTA-Lab's plant (recycle
+    // tolerance 1e-5) 0.25 kg/h of a 6,511 kg/h ethanol feed moved the product's ethanol by 4e-10 where the slope of
+    // the converged solves gives 2e-5, and Broyden's method went the wrong way (request 16)
+    const step = Math.min(0.25, Math.max(0.01, DESIGN_SPEC_TOLERANCE_RATIO * recycleTol * Math.abs(vr.start) / (v.max - v.min)));
+    return { id, vary: vr, target: tg, tolerance: tol, step, toleranceGiven: d.tolerance != null, warnings, absolute, tolAbs: absolute ? tol : tol * Math.abs(t.value), MW, name };
   });
 }
 
@@ -552,7 +558,7 @@ function solveOne(d, evaluate, limits, undefinedAt, solves, trail) {
   const done = (p, bracket = null) => ({ point: p, method: "brent", bracket });
   const p0 = add(f(vr.start, ", the start value"));
   if (ok(p0)) return done(p0);
-  const h = 0.01 * (hi - lo);
+  const h = d.step * (hi - lo);
   const x1 = vr.start + h <= hi ? vr.start + h : vr.start - h;
   const p1 = add(f(x1, ", bracketing"));
   if (ok(p1)) return done(p1);
@@ -642,7 +648,7 @@ function solveOne(d, evaluate, limits, undefinedAt, solves, trail) {
     const side = Math.sign(at(lo).r[0]) > 0 ? "above" : "below";
     const near = pts.reduce((p, q) => (Math.abs(q.r[0]) < Math.abs(p.r[0]) ? q : p));
     throw fail("NO_CONVERGENCE",
-      `${d.name}: ${fmt(d.target.value)}${u} is not reachable with ${vr.label} in [${fmt(lo)}, ${fmt(hi)}]${vu}: the nearest is ${fmt(near.reached[0])}${u} at ${fmt(near.x[0])}${vu}. ${d.target.label[0].toUpperCase()}${d.target.label.slice(1)} is ${fmt(at(lo).reached[0])}${u} at ${vr.label} = ${fmt(lo)}${vu}, ${fmt(p0.reached[0])}${u} at the start value ${fmt(vr.start)}${vu} and ${fmt(at(hi).reached[0])}${u} at ${fmt(hi)}${vu} (it stays ${side} ${fmt(d.target.value)}${u} at every value tried). Widen the bounds if the block allows it, vary another input, or ask for a value the flowsheet can reach.`,
+      `${d.name}: ${d.target.label} is ${fmt(at(lo).reached[0])}${u} at ${vr.label} = ${fmt(lo)}${vu}, ${fmt(p0.reached[0])}${u} at the start value ${fmt(vr.start)}${vu} and ${fmt(at(hi).reached[0])}${u} at ${fmt(hi)}${vu}; ${fmt(d.target.value)}${u} is not reachable with ${vr.label} between ${fmt(lo)} and ${fmt(hi)}${vu} (the target stays ${side} it at every value tried; the nearest it came is ${fmt(near.reached[0])}${u}, at ${fmt(near.x[0])}${vu}). Widen the bounds if the block allows it, vary another input, or ask for a value the flowsheet can reach.`,
       { reason: "unreachable", designSpec: d.id, nearest: { x: near.x[0], reached: near.reached[0] }, at_bounds: { min: { x: lo, reached: at(lo).reached[0] }, start: { x: vr.start, reached: p0.reached[0] }, max: { x: hi, reached: at(hi).reached[0] } }, solves: solves(), trail });
   }
   // Brent's method (Brent 1973, chapter 4; as scipy.optimize.brentq)
@@ -718,7 +724,7 @@ function solveMany(specs, evaluate, limits, undefinedAt, met, solves, trail) {
   const jacobian = () => {
     const J = Array.from({ length: n }, () => new Array(n).fill(0));
     for (let j = 0; j < n; j++) {
-      const h = u[j] + 0.01 <= 1 ? 0.01 : -0.01;
+      const s0 = specs[j].step, h = u[j] + s0 <= 1 ? s0 : -s0;
       const uj = u.slice(); uj[j] += h;
       const pj = evaluate(toX(uj), `, the Jacobian (${specs[j].id})`);
       const fj = fOf(pj);
