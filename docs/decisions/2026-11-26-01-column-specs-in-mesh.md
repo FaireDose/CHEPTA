@@ -117,6 +117,11 @@ time). Before: PR #269's head 9eb2312; after: this branch with main merged. Time
 | `plant62-R-bottoms-col5-14stages` (Lab's request 8) | 843 s | 671 s | the same streams (largest difference 0) |
 | Lab's plant with F1 fixed at 6,503.5 kg/h (the phase boundary; no design specification) | 598 s | 102 s | largest stream difference 5e-6 of its flow |
 
+Repeated with "before" at 03539ac (#269 with main merged, the coordinator's base; this branch merged it, no content
+change), the same four-at-a-time load: design specification 1,179 s before, 184 s after (SCDS15 958 and 69 s, the same
+answers as above); 14 stages 828 and 663 s (the same streams). The coordinator's own figures on 03539ac, two at a time:
+968 s and 654 s.
+
 By block (seconds; calls):
 
 | Run | SCDS15 | SCDS11 | SCDS5 |
