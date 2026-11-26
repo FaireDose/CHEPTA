@@ -41,7 +41,7 @@ for (const model of ["PR", "SRK"]) {
 
   test(`${model} + gE (MHV1) nitrogen + water: written with a fit-quality warning; Chapoy et al. (2004) alone within the gate`, () => {
     const p = set(model, "water");
-    assert.ok(p && p.quality_warning && /maintainer to confirm/.test(p.quality_warning), JSON.stringify(p));
+    assert.ok(p && p.quality_warning && /the maintainer, 2026-11-26/.test(p.quality_warning), JSON.stringify(p));
     const s = sysOf(model, "water");
     const e = errors(["nitrogen", "water"], model, { system: s }, articles("nitrogen", "water"));
     assert.ok(e.pooled.P_pct.aad > 5 && e.pooled.P_pct.aad < 6, JSON.stringify(e.pooled));

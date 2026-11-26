@@ -585,7 +585,7 @@
      363.02
     ]
    },
-   "quality_warning": "AAD 5.6 % in P (max 23.2 %), 5.3 % in the gas solubility, 0.6 points over the gate of 5 %; written by the decision of the coordinating session's proposal of 2026-11-25 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md), for the maintainer to confirm"
+   "quality_warning": "AAD 5.6 % in P (max 23.2 %), 5.3 % in the gas solubility, 0.6 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-26 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md: the ThermoML fit confirmed)"
   },
   {
    "model": "PR",
@@ -615,7 +615,7 @@
      363.02
     ]
    },
-   "quality_warning": "AAD 5.4 % in P (max 23.2 %), 5.1 % in the gas solubility, 0.4 points over the gate of 5 %; written by the decision of the coordinating session's proposal of 2026-11-25 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md), for the maintainer to confirm"
+   "quality_warning": "AAD 5.4 % in P (max 23.2 %), 5.1 % in the gas solubility, 0.4 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-26 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md: the ThermoML fit confirmed)"
   },
   {
    "model": "SRK",

@@ -54,9 +54,9 @@ const D07 = "the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)";
 // docs/DATA_RULES.md section 3 holds the pair for the maintainer's choice; CH4 is not in the separator's mixture.
 // N2 + water (2026-11-25): fitted to its two ThermoML articles with liquid compositions, 0.4-0.6 points over the gate,
 // and only because Muromachi et al. (2017) print x to one significant figure (12 % AAD, bias -1 %); Chapoy et al. (2004)
-// alone 4.2-4.5 %. Written with a fit-quality known issue so that MHV1 runs Lab's separator with N2, for the maintainer
-// to confirm; its G7-04 fit (HENRY_PAIRS, 6.6-6.8 % in H, 9.3-9.8 % in P on the articles) is recorded, not written.
-const D25 = "the coordinating session's proposal of 2026-11-25 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md), for the maintainer to confirm";
+// alone 4.2-4.5 %. Written with a fit-quality known issue so that MHV1 runs Lab's separator with N2 (confirmed by the
+// maintainer, 2026-11-26); its G7-04 fit (HENRY_PAIRS, 6.6-6.8 % in H, 9.3-9.8 % in P on the articles) is recorded, not written.
+const D25 = "the maintainer, 2026-11-26 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md: the ThermoML fit confirmed)";
 export const WARNED = { "hydrogen+methanol": D07, "carbon-dioxide+methanol": D07, "methane+methanol": D07, "nitrogen+water": D25 };
 /** The Henry's-constant fits written outside GATE (the maintainer, 2026-11-07: IAPWS G7-04 confirmed as source rule 1;
  *  CH4 + water to G7-04, its nine ThermoML articles kept as a check). */

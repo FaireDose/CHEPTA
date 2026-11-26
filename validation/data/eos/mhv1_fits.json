@@ -5144,7 +5144,7 @@
     ]
    },
    "ok": false,
-   "warned": "the coordinating session's proposal of 2026-11-25 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md), for the maintainer to confirm",
+   "warned": "the maintainer, 2026-11-26 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md: the ThermoML fit confirmed)",
    "errors": {
     "pooled": {
      "P_pct": {
@@ -5292,7 +5292,7 @@
     ]
    },
    "ok": false,
-   "warned": "the coordinating session's proposal of 2026-11-25 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md), for the maintainer to confirm",
+   "warned": "the maintainer, 2026-11-26 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md: the ThermoML fit confirmed)",
    "errors": {
     "pooled": {
      "P_pct": {
