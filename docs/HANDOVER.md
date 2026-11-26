@@ -503,3 +503,10 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - Distillate + F1 together, alone: "unreachable" in 1369 s (H: 1181 s beside another run), distillate held at its bound 260, F1 6504.07: ester 99.787 %, ethanol 0.0229 %. The old "stalled at 99.36 %" came from stale loops.
 - H's questions: (1) keep the "stalled" message for 0.6.3; (2) keep the step tied to the recycle tolerance; (3) apply the new recycle test to all flowsheets as a separate change (it changes all pass counts). Recommend yes to all three.
 - H done. Running: none. M6 still waits for the maintainer.
+
+### 2026-11-26 19:15 — maintainer's answers; I started (M6 + proposal 0029)
+- Maintainer (this chat): "Agree with the points 1-3" (#272's three: keep the "stalled" message; keep the step tied to the recycle tolerance; apply the new recycle test to all flowsheets later, separately). Sent to H to record (docs only).
+- Maintainer: "for 268 ok with your recommendation": (a) ThermoML fit for N2+water (replaces the 11-25 wording "IAPWS G7-04"); (b) SDS-10 + Boyer 1960 confirmed; (c) SRK+MHV1 stays refused for CO2+water; (d) no action for ethylene. Rule-4 check of the copied rows NOT yet confirmed. Sent to D to record (docs only).
+- Maintainer on M6: "before that have a quick research on more possibilities as what we can put as specs inside the column ... together with reboiler and condenser, side streams and everything else so we have a full package; in fact make this also part of M6 and start it". Started I: session_01FPbeWUFxhYBosa1Co2MEb2, branch claude/lab-m6-column-spec-package, from #272's branch. Plan: research note → proposal 0029 (full column-spec package, M6 as step 1) → PR + questions → build step 1 (M6, also PR+MHV1) at once, the rest after the answers.
+- Still open: #270's three points and #271's three points ("points 1-3" was read as #272's); #268 rule-4 check.
+- Workers: I running; D and H on short docs-only recording tasks (three at once for a few minutes, above the 2-worker rule).
