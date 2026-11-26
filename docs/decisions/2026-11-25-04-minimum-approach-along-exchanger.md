@@ -76,15 +76,16 @@ approach; 10 zones alone do not see the pinch, and the note says so); Lab's HE5 
 holds); the 96,640 kW duty refused as a cross inside the exchanger with 10, 20 and 40 zones. All three fail on main.
 No existing test was changed.
 
-## For the maintainer
+## What the maintainer decided (2026-11-26, relayed by the coordinating session: "agree with all the other 6 points")
 
-1. The pinch search refines the three smallest local minima and every phase boundary of the grid. A dip narrower than
-   a zone, with no phase boundary in it and no local minimum of the grid beside it, could still be missed. With
-   smooth curves between phase boundaries this does not happen in the cases tried. Recommendation: keep it so. A
-   denser search would cost more flashes everywhere.
-2. The area is still the sum over equal heat steps, not split at the phase boundaries. Splitting there (Lienhard's
-   "exchangers in series") would make the area more accurate for a side that changes phase. But it would change
-   every stored area slightly, so it is left for a separate step. Recommendation: do it with proposal 0013's next
-   step, against the CoolProp reference.
-3. Lab may now drop its `zones: 10` workaround on HE5. The plant runs (`plant-vl-he5-nozones` and the others) are
-   Lab's to repeat.
+1. **The refinement stays as it is.** It covers the zone boundaries, every phase boundary inside a zone, and
+   golden-section refinement around the three smallest minima. A dip narrower than one zone, with no phase boundary
+   in it and no grid minimum beside it, could still be missed. With smooth curves between phase boundaries this does
+   not happen in the cases tried, and a denser search would cost more flashes everywhere.
+2. **Open: split the area at the phase boundaries, later.** The area is still the sum over equal heat steps.
+   Splitting it at each side's bubble and dew points (Lienhard's "exchangers in series") makes it more accurate for a
+   side that changes phase, but it changes every stored area slightly. It is done with proposal 0013's next step,
+   against the CoolProp reference, not in this pull request.
+3. **Note for CHEPTA-Lab:** drop the `zones: 10` workaround on HE5 and rerun the plant runs (`plant-vl-he5-nozones`,
+   `plant-vl-share-warm-nobypass-nozones` and the others that stopped on HE5). This is Lab's to do; nothing in CHEPTA
+   waits on it.

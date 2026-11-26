@@ -15,9 +15,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   taken along the whole exchanger (the zone boundaries, each side's bubble and dew points inside a zone, golden-section
   refinement between the boundaries), not only at the zone boundaries; a cross is refused at its deepest point, named
   "inside the exchanger". Lab's HE5 with the plant's streams 20 and 28 now solves at 93,483 kW (2 K at the cold side's
-  bubble point) instead of ending on a cross; checked against CoolProp (n-butane against boiling n-butane). Open: (1)
-  keep the refinement as it is (recommended) or search denser; (2) split the area at the phase boundaries too, with
-  proposal 0013's next step (recommended there, not here); (3) Lab drops its `zones: 10` workaround and reruns its plant.
+  bubble point) instead of ending on a cross; checked against CoolProp (n-butane against boiling n-butane). Decided
+  (the maintainer, 2026-11-26): the refinement stays as it is. Open: split the area at the phase boundaries too, with
+  proposal 0013's next step. Note for Lab: drop the `zones: 10` workaround on HE5 and rerun the plant runs.
 - **CHEPTA-Lab's requests 17 and 19, and the rest of 8, 13 and M2** (docs/decisions/2026-11-20-03-lab-requests-17-19.md):
   built: the strict range mode refuses a block outside every loop at once, and a loop that stops names its last pass's
   records outside their ranges (17); a purity every column exceeds is refused as exceeded, the scan going to 1e-6 of the
