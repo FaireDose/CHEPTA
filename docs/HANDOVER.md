@@ -478,3 +478,12 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - Verified locally: #267 b3833c6 1824 pass / 0 fail / 5 skipped; #269 03539ac 1832 pass / 0 fail / 5 skipped. No removed test lines. Both merge cleanly with main.
 - Merging in order #267 → #269 → #268 is clean; #270 then conflicts only in docs/DECISIONS.md (F merges main after #268).
 - G pushed claude/proposal-0028-column-specs-in-mesh at acbe439 (proposal + items 1-4). Told G to merge #269's new head 03539ac before its after-benchmarks.
+
+### 2026-11-26 12:55 — #271 (proposal 0028) verified; H started; M6 start refused
+- G opened #271 (proposal 0028 + build), head 7cb4b96. It contains main and the OLD #269 head 9eb2312 (not 03539ac); it merges cleanly with 03539ac, #268 and #270; conflicts with #267 only in proposals/README.md.
+- Verified locally on #271 merged with #269's 03539ac: build clean, 1857 tests, 1851 pass, 0 fail, 5 skipped, 1 todo. No removed test/data lines.
+- My timing of new-plant-ds-ethanol0.0004 on that tree: ok in 208 s (3.5 min; 968 s on #269), 4 solves, F1 6506.2211 kg/h, ethanol 0.039938 % (asked 0.04 %). SCDS15 82 s, SCDS11 76 s, SCDS5 37 s.
+- G's questions: (1) MESH form also for a user-given start outside a flowsheet (rec. yes); (2) default fraction tolerance relative to target, as a separate change (rec. yes, separately: it changes answers); (3) free side-draw rates stay on the outer loop for now (rec. yes).
+- Started H (Lab request 16: a design spec varying a column spec): session_01FPbeWWrDHFFeAZug8nDpfW, branch claude/lab-request-16-column-spec-design-spec, from #271's branch.
+- Starting I (M6, vapour+liquid condenser by temperature on Lab's methanol feed, also tried with PR+MHV1) was REFUSED by the permission classifier. Asked the maintainer whether to start it. Running: H.
+- Merge order: #267 → #269 → #268 → #270 → #271, then H's (and M6's).
