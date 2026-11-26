@@ -475,7 +475,7 @@ export function solveCascade(opts = {}) {
   if (!TWO_LIQUID_STAGES.includes(stageForm)) throw fail("BAD_INPUT", `Column: two_liquid_stage must be ${TWO_LIQUID_STAGES.map(v => `"${v}"`).join(" or ")} (got ${JSON.stringify(opts.twoLiquidStage)}).`);
   if (phases === "VLL" && !th.twoLiquids) {
     if (!opts.sys) throw fail("BAD_INPUT", "Column: two liquids on the stages need the property system (sys), or an adapter made by twoLiquidThermo.");
-    th = twoLiquidThermo(th, opts.sys, { smooth: stageForm === "smooth" });
+    th = twoLiquidThermo(th, opts.sys, { smooth: stageForm === "smooth", ...(opts.stableReuse === false ? { reuse: false } : {}) });
   }
   if (th.smooth && !opts.epsStep) {
     // the smooth two-liquid stage (proposal 0024, (c)): solved with the largest smoothing parameter, then with each
@@ -958,6 +958,24 @@ export function solveCascade(opts = {}) {
     }
     throw fail("NO_CONVERGENCE", `Column: the rigorous column did not converge. Tried: ${tried.join("; ")}.${g ? ` Last residuals: material ${fmt(g.material)} mol/s, equilibrium ${fmt(g.equilibrium)}, energy ${fmt(g.energy)} W, specifications ${fmt(g.specifications)}.` : ""}${hint} This does not show that the column has no solution: ${cap < Infinity ? "raise the iteration limit, or " : ""}${hasCondenser ? "try other specifications (a larger reflux, another product flow), more stages, or another feed stage" : hasReboiler ? "try another specification (another boil-up or bottoms flow), more stages, or other feed stages" : "try other feeds (more liquid or less gas), more stages, other feed stages, or stage duties that remove the heat of absorption"}.`,
       { tried, residuals: g, tolerances: { ...limits, units: { material: "mol/s", energy: "W", equilibrium: "mole fraction", summation: "mole fraction", specifications: "relative" } } });
+  }
+
+  // ---- the full second-liquid test at the answer (proposal 0028, item 2): during Newton a stage's clearly stable
+  // verdict may be reused at points next to its last full test (two-liquids.js, TM_MARGIN); at the answer every stage is
+  // tested again in full, the reuse off. Where a verdict changes, Newton goes on from there with the reuse off
+  if (th.setReuse && !th.smooth && th.reuses() && opts.homotopy !== "step" && opts.epsStep !== "intermediate") {
+    th.setReuse(false);
+    try {
+      let P1 = allProps(result.u);
+      P1.res = residualOf(P1);
+      if (meets(groups(P1).g)) result = { ...result, P: P1 };
+      else {
+        const r = newton(result.u, { dTmax: 20, maxIt: 40, patient: true });
+        tried.push(`the full second-liquid test at the answer changed a stage's liquids; Newton went on with the test at every point (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
+        if (!r.converged) throw fail("NO_CONVERGENCE", `Column: the rigorous column did not converge: at the answer the full second-liquid test changed a stage's liquids, and Newton did not converge from there. Tried: ${tried.join("; ")}.`, { tried });
+        result = { ...result, ...r, iterations: result.iterations + r.iterations };
+      }
+    } finally { th.setReuse(true); }
   }
 
   // ---- the solution
