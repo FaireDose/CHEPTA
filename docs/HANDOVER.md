@@ -513,3 +513,7 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - 19:19 H recorded #272's answers (head 9580b53; docs only: decision 2026-11-26-08 and DECISIONS.md; checked the diff). H done.
 - 19:21 D recorded #268's answers (head 0450446, docs only; 1837 pass, 0 fail). Leftover: the N2+water sets' quality_warning and known-issue text still say "for the maintainer to confirm" (from WARNED in fit_mhv1_high_pressure.mjs; a test checks the wording). Asked D to update the wording only, rerun --from-results --write, update the test's wording, and check that no number in mhv1.json moved.
 - 19:30 D: #268 head 7a8fc2e. Checked the diff from 8a72e1b: in mhv1.json only the two quality_warning strings changed (numbers the same); the test changed only its expected wording; the rest is docs and the WARNED text. D reports 1837 pass, 0 fail. D done. Running: I only.
+
+### 2026-11-26 19:40 — maintainer: #268 data check deferred; #270 and #271 answers
+- Maintainer (this chat): "I will not check data now but agree" (the rule-4 check of #268's transcribed rows is deferred; they agree to #268 as it stands). "agree with all the other 6 points": #270 (keep the refinement; split the area later with 0013; Lab drops zones: 10 on HE5) and #271 (MESH form also for user-given starts; target-relative default tolerance as a separate change; free side-draw rates stay on the outer loop).
+- Recording, one worker at a time to stay within 2 running (I is running): F (#270) now, then G (#271), then D (#268: rule-4 check deferred by the maintainer).
