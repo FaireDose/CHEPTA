@@ -115,3 +115,22 @@ test("the Column block: the new keys in a flowsheet, the energy balance closed w
     if (col.pumparounds) assert.ok(Math.abs(r.value.blocks.C.state.pumparounds[0].duty_kW + 80) < 1e-9);
   }
 });
+
+test("project files: a column with a key of proposal 0029 is written in format 12, read back, and refused by format 11 naming format 12", async () => {
+  const { projectOf, readProject, stateFromProject, PROJECT_FORMAT } = await import("../src/ui/project.js");
+  const { initialState } = await import("../src/ui/app-logic.js");
+  assert.equal(PROJECT_FORMAT, 12);
+  const fs = { components: ["benzene", "toluene"], thermo: { model: "PR" },
+    blocks: [{ id: "F", type: "feed", spec: { flow_kmol_h: { benzene: 21.15, toluene: 21.15 }, T_K: 368, P_kPa: 111.4575 } },
+      { id: "C", type: "column", spec: { mode: "rigorous", stages: 10, feed_stage: 5, reflux_ratio: 3, distillate_kmol_h: 20.88, pumparounds: [{ from_stage: 6, to_stage: 3, flow_kmol_h: 28.8, duty_kW: -80 }] } },
+      { id: "D", type: "product" }, { id: "B", type: "product" }],
+    streams: [{ id: "f", from: "F.out", to: "C.in" }, { id: "d", from: "C.distillate", to: "D.in" }, { id: "b", from: "C.bottoms", to: "B.in" }] };
+  const doc = projectOf(initialState({ components: [], flowsheet: fs }), { version: "test", now: new Date("2026-11-27T00:00:00Z") });
+  assert.equal(doc.fugacity_project, 12);
+  const back = stateFromProject(readProject(JSON.parse(JSON.stringify(doc)))).flowsheet;
+  assert.deepEqual(back.blocks.find(b => b.id === "C").spec.pumparounds, fs.blocks[1].spec.pumparounds);
+  assert.throws(() => readProject({ ...doc, fugacity_project: 11 }), /need format 12 \(this file says format 11\)/);
+  // without such a key the format is unchanged
+  const plain = { ...fs, blocks: fs.blocks.map(b => (b.id === "C" ? { ...b, spec: { ...b.spec, pumparounds: undefined } } : b)) };
+  assert.ok(projectOf(initialState({ components: [], flowsheet: plain }), { version: "test" }).fugacity_project < 12);
+});

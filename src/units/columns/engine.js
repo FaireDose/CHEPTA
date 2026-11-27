@@ -1467,6 +1467,10 @@ function solvePumparounds(opts, th) {
 const SHARE_PASSES = 3;
 function solveShares(opts, th) {
   const tried = [];
+  opts.draws.forEach((d, k) => {
+    if (d?.share != null && !(Number(d.share) > 0 && Number(d.share) < 1)) throw fail("BAD_INPUT", `Column: side draw ${k + 1}: its share is the part of the stage's ${d.phase ?? "liquid"} that is drawn, between 0 and 1, both excluded (got ${JSON.stringify(d.share)}).`);
+    if (d?.share != null && d.rate != null) throw fail("BAD_INPUT", `Column: side draw ${k + 1}: give its rate or its share of the stage's ${d.phase ?? "liquid"}, not both.`);
+  });
   if (opts.start) {
     try { return solveCascade({ ...opts, __direct: true }); } catch (e) {
       if (e?.code !== "NO_CONVERGENCE") throw e;
