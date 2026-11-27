@@ -38,16 +38,26 @@ import { henry } from "../src/thermo/henry.js";
 
 const ROOT = new URL("../", import.meta.url);
 export const ALPHA = 0.3;
-/** The pairs fitted to ThermoML P-x data: those of the k_ij fits, and CH4 + water for the separator (2026-11-07). */
-export const PAIRS = [...KIJ_PAIRS, ["methane", "water"]];
+/** The pairs fitted to measured P-x data: those of the k_ij fits, CH4 + water for the separator (2026-11-07), and N2 +
+ *  water (ThermoML) and N2 + methanol (IUPAC SDS Vol. 10; the Archive has none) for Lab's separator with nitrogen
+ *  (2026-11-25: Campos 2022 holds N2). */
+export const PAIRS = [...KIJ_PAIRS, ["methane", "water"], ["nitrogen", "water"], ["nitrogen", "methanol"]];
+/** Fitted to ThermoML P-x data and checked (not fitted) against the Henry's law constants of IAPWS G7-04, as H2, CO and
+ *  CH4 + water were fitted to them (2026-11-25). */
+export const HENRY_CHECK = [["nitrogen", "water"]];
 /** Fitted to the IAPWS G7-04 Henry's law constants (no ThermoML liquid + gas set). */
-export const HENRY_PAIRS = [["hydrogen", "water"], ["carbon-monoxide", "water"], ["methane", "water"]];
+export const HENRY_PAIRS = [["hydrogen", "water"], ["carbon-monoxide", "water"], ["methane", "water"], ["nitrogen", "water"]];
 const D07 = "the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)";
 /** Written outside GATE with a fit-quality known issue. */
 // CH4 + water is held, not written: its nine ThermoML articles disagree (Campos et al. 2010 +33 % and Kim et al. 2008
 // -43 % in P against NRTL parameters fitted to IAPWS G7-04, the other seven within about 15 %), so the pooling rule of
 // docs/DATA_RULES.md section 3 holds the pair for the maintainer's choice; CH4 is not in the separator's mixture.
-export const WARNED = { "hydrogen+methanol": D07, "carbon-dioxide+methanol": D07, "methane+methanol": D07 };
+// N2 + water (2026-11-25): fitted to its two ThermoML articles with liquid compositions, 0.4-0.6 points over the gate,
+// and only because Muromachi et al. (2017) print x to one significant figure (12 % AAD, bias -1 %); Chapoy et al. (2004)
+// alone 4.2-4.5 %. Written with a fit-quality known issue so that MHV1 runs Lab's separator with N2 (confirmed by the
+// maintainer, 2026-11-26); its G7-04 fit (HENRY_PAIRS, 6.6-6.8 % in H, 9.3-9.8 % in P on the articles) is recorded, not written.
+const D25 = "the maintainer, 2026-11-26 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md: the ThermoML fit confirmed)";
+export const WARNED = { "hydrogen+methanol": D07, "carbon-dioxide+methanol": D07, "methane+methanol": D07, "nitrogen+water": D25 };
 /** The Henry's-constant fits written outside GATE (the maintainer, 2026-11-07: IAPWS G7-04 confirmed as source rule 1;
  *  CH4 + water to G7-04, its nine ThermoML articles kept as a check). */
 export const WARNED_HENRY = { "hydrogen+water": D07, "carbon-monoxide+water": D07, "methane+water": D07 };
@@ -107,7 +117,9 @@ export function fitPair(pair, model, { freeAlpha = false, start = null } = {}) {
     + `${arts.filter(a => a.rows.some(fitted)).length} articles; P AAD ${p.P_pct.aad} % (max ${p.P_pct.max}), x AAD ${p.x_pct.aad} % (max ${p.x_pct.max})`
     + `${p.y ? `, y AAD ${p.y.aad} (max ${p.y.max})` : ""}${p.no_bubble_pressure ? `, ${p.no_bubble_pressure} without a bubble pressure` : ""}${ok ? "  within GATE" : "  outside GATE"}`);
   const warned = !ok && !freeAlpha && WARNED[pair.join("+")] ? WARNED[pair.join("+")] : null;
-  return { model, pair, ...(freeAlpha ? { variant: "alpha" } : {}), NRTL: params, points: pts.length, articles: arts.filter(a => a.rows.some(fitted)).length, range, ok,
+  const hc = HENRY_CHECK.some(q => q.join() === pair.join()) ? henryCheck(pair, s) : null;
+  if (hc) console.log(`   check against IAPWS G7-04 Henry's constants, ${HENRY_T[0]}-${HENRY_T.at(-1)} K: AAD ${hc.aad} % (max ${hc.max} %); deviations ${hc.deviations.join(", ")} %`);
+  return { model, pair, ...(freeAlpha ? { variant: "alpha" } : {}), ...(hc ? { check_henry: hc } : {}), NRTL: params, points: pts.length, articles: arts.filter(a => a.rows.some(fitted)).length, range, ok,
     ...(warned ? { warned } : {}), errors: e, files: arts.filter(a => a.rows.some(fitted)).map(a => a.file) };
 }
 
@@ -118,6 +130,13 @@ export function henryOf(s, T) {
 }
 
 export const HENRY_T = Array.from({ length: 13 }, (_, k) => 278.15 + 10 * k);
+
+/** The Henry's law constant of a set against IAPWS G7-04 at HENRY_T: relative deviations in %, a check, not a fit. */
+export function henryCheck(pair, s) {
+  const d = HENRY_T.map(T => 100 * (henryOf(s, T) / henry(pair[0], "water", T) - 1));
+  return { aad: round(d.reduce((a, v) => a + Math.abs(v), 0) / d.length, 1), max: round(Math.max(...d.map(Math.abs)), 1),
+    T_K: HENRY_T, deviations: d.map(v => round(v, 2)), source: "src/data/henry.json (IAPWS G7-04)" };
+}
 
 /** H2 or CO + water to the IAPWS G7-04 Henry's law constants (tau_12 = 0, tau_21 = a_21 + b_21 / T). */
 export function fitHenry(pair, model) {
