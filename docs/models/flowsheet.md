@@ -150,15 +150,20 @@ point. It is a list in the flowsheet document, `designSpecs`, not a block:
 
 | | |
 |---|---|
-| Varied (`vary.key`) | feed: `flow_kmol_h`, `flow_kg_h` (with `component`: that component's flow; without: the total flow, the composition kept), `T_K`, `P_kPa`; splitter: `fractions`, `flow_kmol_h`, `flow_kg_h`, one outlet (`index`, from 0; not the "rest"); heater: `T_K`, `duty_kW`; flash drum: `T_K`, `P_kPa`, `duty_kW` |
+| Varied (`vary.key`) | feed: `flow_kmol_h`, `flow_kg_h` (with `component`: that component's flow; without: the total flow, the composition kept), `T_K`, `P_kPa`; splitter: `fractions`, `flow_kmol_h`, `flow_kg_h`, one outlet (`index`, from 0; not the "rest"); heater: `T_K`, `duty_kW`; flash drum: `T_K`, `P_kPa`, `duty_kW`; column (CHEPTA-Lab's request 16): a number its specification gives and its mode uses: rigorous distillation `reflux_ratio`, `boilup_ratio`, `distillate_kmol_h`, `bottoms_kmol_h`, `condenser_duty_kW`, `reboiler_duty_kW`, with the vapour + liquid condenser also `condenser_T_K`, `vapour_distillate_kmol_h`, `vapour_share`, and `side_draws` (`index`: that draw's `flow_kmol_h`); shortcut `reflux_ratio`, `reflux_over_minimum`, the two key recoveries; absorber or stripper `stage_duties_kW` (`index`) and a reboiled stripper's own specification. A number the column does not give is refused (varying it would add a specification); each solve starts the column from its answer at the nearest solved point |
 | Bounds | `min` and `max` are required; `guess` is the start (default: the value in the spec; a key left out of the spec is then given by the guess) |
 | Target (`target.quantity`) | a stream's `flow_kmol_h`, `flow_kg_h`, `component_flow_kmol_h`, `component_flow_kg_h`, `mole_fraction`, `mass_fraction`, `T_K`, `VF`; a block's `duty_kW`; `ratio_of` (another quantity of the same form) makes the value a ratio |
 | Tolerance | relative to the value (absolute for a mole or mass fraction and VF, and for a value of 0); by default 1e-6, or 100 times `solver.tolerance` where that is looser; a tolerance you give is used as given, with a warning in the result when it is tighter than 100 times `solver.tolerance` (the maintainer, 2026-11-14) |
 | Limits | `solver.designSpecIterations`: a number (Brent's or Broyden's solves) or `{ bracket: 8, solve: 50 }` |
 
 How it is solved: an **outer loop of whole solves** around the sequential solver, each with its recycles converged and its
-tear streams started from the previous solve's answer. One specification: the guess and a step of 1 % of the range,
-then doubling steps towards the side where the residual falls (at most 8 solves), then the bounds; inside the bracket,
+tear streams started from the previous solve's answer. In these solves a recycle is accepted from its second pass on,
+and only where the error left, estimated from the rate of the last two passes, is below `solver.tolerance` too: a slow
+loop started from a nearby answer would otherwise stop at once with the old answer. One specification: the guess and a step of 1 % of the range (at least 100 times `solver.tolerance` of the input's
+value, at most a quarter of the range; the same for the finite-difference Jacobian of several),
+then one secant step (a bound itself where the root it estimates lies beyond it), then doubling steps towards the side
+where the residual falls (at most 8 solves), then the bounds (the other bound at once when the target came closer all
+the way to one bound without crossing); inside the bracket,
 Brent's method (Brent 1973, chapter 4; as scipy.optimize.brentq), which never leaves it. Several: Broyden's method on
 the residuals, the variables scaled to their bounds and kept inside them, started with a finite-difference Jacobian.
 
@@ -171,7 +176,7 @@ Failures (every one throws; no partial answer):
 
 | Case | Code | The message says |
 |---|---|---|
-| no sign change between the bounds | NO_CONVERGENCE, `reason: "unreachable"` | the target at both bounds and at the start, e.g. "DS1: the total flow of S6 is 262.404 kmol/h at the flow of Water in F2 = 0 kmol/h, ... and 1890.06 kmol/h at 500 kmol/h; 100 kmol/h is not reachable ..." |
+| no sign change between the bounds | NO_CONVERGENCE, `reason: "unreachable"` | "not reachable in [min, max]" with the nearest value and where (`details.nearest`), then the target at both bounds and at the start, e.g. "DS1: the total flow of S6 is 262.404 kmol/h at the flow of Water in F2 = 0 kmol/h, ... and 1890.06 kmol/h at 500 kmol/h; 100 kmol/h is not reachable ..." |
 | an inner solve fails (a recycle, a block refusing) | the inner error's code | the specification, the varied value where it happened, the solve |
 | Brent's or Broyden's limit | NO_CONVERGENCE, `reason: "limit"` | the bracket and the residual reached |
 | the target has no value (a fraction of a stream with no flow) | NO_CONVERGENCE, `reason: "undefined"` | where; narrow the bounds |

@@ -10,6 +10,16 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **CHEPTA-Lab's request 16: a design specification varies a column's numbers**
+  (docs/decisions/2026-11-26-08-column-design-specs.md): built. The numbers are the distillate or bottoms flow, the
+  reflux or boil-up ratio, the duties, the vapour + liquid condenser's own number, a side draw's flow and an absorber's
+  stage duty, each one that the column already gives. A target out of reach is said after the two bounds, with the
+  nearest value. The first step is at least 100 times the recycle tolerance. A design specification's solve accepts a slow recycle
+  only once the error left is below the tolerance. At Broyden's limit, an input held at its bound is named. On Lab's
+  plant, 99.90 % ester is not reachable with column 11's distillate in [235, 260] kmol/h: 99.19 % at 260 alone, 99.79 %
+  at 260 with the ethanol feed varied too. The maintainer agreed the three answers (2026-11-26): the two-specification message
+  is kept for 0.6.3; the step rule is kept. Open: the convergence test of a design specification's solves for every
+  flowsheet, as a separate, later change.
 - **The minimum approach along the whole exchanger, CHEPTA-Lab M4 "still open"**
   (docs/decisions/2026-11-25-04-minimum-approach-along-exchanger.md): built: the smallest temperature difference is
   taken along the whole exchanger (the zone boundaries, each side's bubble and dew points inside a zone, golden-section
