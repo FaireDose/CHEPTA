@@ -31,8 +31,15 @@ CHEPTA-Lab `cases/ethyl-acetate-piotrowski-2021/results-chepta-main-415da41/new-
 35 warnings of the full result are in it. Of the summary, the block notes are 4,633 bytes and the range warnings
 5,192 bytes: both are kept in full by the rule "every warning and qualification verbatim".
 
-## Open
+## The maintainer's answers (2026-11-27, through the coordinator)
 
-- Whether the block notes (method descriptions, for example "Rigorous column: 18 stages ...") should stay in the
-  summary in full or move to `left_out`. Some notes carry a qualification (a parameter set used outside its data
-  range), so they are kept for now.
+1. The block notes stay in the summary, in full, for 0.6.3. Some notes carry a qualification (a parameter set used
+   outside its data range), so they are not left out.
+2. `chepta summary` exits 0 when the summary is made. The saved run's outcome is in the JSON, not in the exit code.
+3. The engine's commit is read with git only when the command line runs from a clone (with `local_changes`). A summary
+   of a saved result has `commit: null`. The commit is not added to the result itself.
+
+## Open (0.6.4)
+
+- The engine may tag the notes that carry a qualification as warnings. The plain method descriptions could then move
+  to `left_out`, which would take Lab's summary from 17 KB to about 12 KB.
