@@ -525,3 +525,4 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 
 ### 2026-11-26 20:15 — maintainer merged #267, #269, #268 (main 4af9dd3)
 - #270 conflicts with main in docs/DECISIONS.md: F asked to merge main. #271, #272 and #273 also conflict with main now (docs). Plan: once F has pushed, G merges main + #270's new head into #271, then H merges #271 into #272, then I merges #272 into #273, one at a time. After that the whole stack merges cleanly in order.
+- 11-27: Maintainer merged #270 and #271 ("all others are ok so do not check if not needed": skip re-verifying PRs whose only change is a docs merge). #272 conflicts with main: H told to merge origin/main. #273 waits for the maintainer's answers to 0029's 7 questions.
