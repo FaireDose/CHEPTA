@@ -10,6 +10,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **A short run summary from the command line** (docs/decisions/2026-11-27-02-cli-run-summary.md): built:
+  `chepta request FILE --summary [--out FULL.json]` writes the full result unchanged to a file and prints a short
+  summary; `chepta summary RESULT.json` summarises a saved one. Lab's 379,266-byte result gives a 17,222-byte summary
+  with all 35 warnings. Open: keep the block notes in the summary in full, or move them to `left_out`.
 - **CHEPTA-Lab's request 16: a design specification varies a column's numbers**
   (docs/decisions/2026-11-26-08-column-design-specs.md): built. The numbers are the distillate or bottoms flow, the
   reflux or boil-up ratio, the duties, the vapour + liquid condenser's own number, a side draw's flow and an absorber's

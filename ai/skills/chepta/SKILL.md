@@ -184,6 +184,14 @@ it does so on the user's computer at no cost to the chat. So:
   or the page cannot download files here, say so in one sentence and ask the user before you
   build it yourself. Missing features can be asked for with the workbench's Feedback button.
 
+## Running CHEPTA from the command line
+
+When you run CHEPTA from a clone or the npm package (`node bin/chepta.mjs request request.json`), add `--summary`
+by default. The full result is written to a file (`--out FILE`, or `<input>.result.json` next to the input), and only
+a short summary is printed: outcome, timing, the error, design specifications, loops, balance, and every warning and
+qualification verbatim. Open the full file only to accept a result (its streams and blocks) or to diagnose a failure.
+For a result saved earlier: `node bin/chepta.mjs summary result.json`. Details: docs/models/tools.md.
+
 ## Calculate numbers directly
 
 When the user wants values rather than a diagram, use the calculation functions
