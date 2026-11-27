@@ -550,3 +550,4 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - 09:15 #275 merged by the maintainer. Asked K to merge main into #276.
 - 09:20 K merged main into #276, head ddb6dd1, 1900 pass 0 fail; merges cleanly with main, no removed lines. Ready to merge. Next: 0.6.3 release.
 - 09:35 0.6.3 approved on npm (tag v0.6.3 = b6598a5). Wrote reports/lab-notes-0.6.3.md (what Lab can now do, 14 features with examples; CO2 answer with sources; advice; known limits). Maintainer: Lab must NOT re-run the 0.6.2 tests to compare. Sent to the Lab coordinator.
+- 09:40 Sent the 0.6.3 notes to the Lab coordinator (pin 0.6.3; no 0.6.2 re-runs; CO2 answer; advice 1-4; known limits). Lab phase starts; CHEPTA does no engine work until Lab reports. Gave the maintainer the 0.6.4 list.
