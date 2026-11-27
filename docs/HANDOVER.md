@@ -548,3 +548,4 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - 09:05 K recorded the answers (2026-11-27-02 + DECISIONS open item), #276 head b01e1c4, docs only; waits to merge main after #275. Waiting for J.
 - 09:10 J merged main into #275, head 95aa6c9, 1895 pass 0 fail; merges cleanly with main. Ready to merge; then K merges main into #276.
 - 09:15 #275 merged by the maintainer. Asked K to merge main into #276.
+- 09:20 K merged main into #276, head ddb6dd1, 1900 pass 0 fail; merges cleanly with main, no removed lines. Ready to merge. Next: 0.6.3 release.
