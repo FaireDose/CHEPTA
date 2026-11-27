@@ -1,6 +1,6 @@
 ---
 name: chepta-contributor
-description: Help a contributor develop the CHEPTA process simulator (equations of state, activity models, algorithms, unit operations, roadmap proposals) or add open data, following the repository's AGENTS.md rules.
+description: Help a contributor develop the CHEPTA process simulator (equations of state, activity models, algorithms, unit operations, roadmap proposals) or add open data, following the repository's AGENTS.md rules. Two short cards for common questions - cards/refit-or-not.md (do conflicting measurements justify a refit?) and cards/missing-property.md (which calculations still work when a property is missing?).
 ---
 
 # Contributing to CHEPTA
@@ -12,6 +12,10 @@ with AI assistants.
 1. Read the project's rules first:
    https://fairedose.github.io/CHEPTA/agents.md
    In a clone of the repository, read `AGENTS.md` there. It overrides this skill.
+   Then read only the guide the task needs: `docs/DATA_RULES.md` in full before adding or
+   changing data; `docs/METHOD_SELECTION.md` for a model choice, tests or numerical changes;
+   `docs/UI_GUIDE.md` for workbench views. Combine them when a task overlaps, and read the
+   next one when the task grows into another kind.
 2. Follow them exactly. In short: open sources only, tried in the order AGENTS.md gives
    (standards, CoolProp, NIST WebBook, ChemSep and the open libraries, taken as they are,
    then the ThermoML Archive and open articles only for what those do not have, free books;
@@ -31,3 +35,13 @@ with AI assistants.
    `https://cdn.jsdelivr.net/npm/chepta@0.6.2/dist/chepta.js` and calls
    `CHEPTA.checkPackage(pkg)` to show the package check, or `CHEPTA.mount` to compare
    the current model with the new data visually.
+
+## Cards
+
+Open only the card the question needs. Each has its trigger, inputs, steps, output and a
+worked case from the repository's history.
+
+- [cards/refit-or-not.md](cards/refit-or-not.md): measured sets disagree with a record or
+  with each other; refit, keep with a known issue, or hold?
+- [cards/missing-property.md](cards/missing-property.md): a property is missing or out of
+  range; which operations are supported, qualified or blocked, and the smallest remedy.

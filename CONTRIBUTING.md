@@ -38,7 +38,8 @@ A maintainer or a coding agent turns it into a pull request, and a reviewer chec
 Anyone can join the project as a contributor. Contributors open pull requests directly:
 the natural way for development work (equations of state, algorithms, unit operations,
 reactors, views), with Claude Code, OpenAI Codex, GitHub Copilot's coding agent, Cursor or
-another agent. They read AGENTS.md automatically.
+another agent. They read AGENTS.md automatically, and from it the one guide the task needs
+(data: docs/DATA_RULES.md; methods and tests: docs/METHOD_SELECTION.md; views: docs/UI_GUIDE.md).
 
 1. Connect the agent to your GitHub account.
 2. Ask it, for example: *"Follow AGENTS.md. Implement proposal NNNN (or roadmap item
