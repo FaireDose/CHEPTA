@@ -7,12 +7,18 @@
  *   npx chepta run project.chepta.json      solve a project's flowsheet (capability solve_flowsheet)
  *   npx chepta capabilities                 what CHEPTA can calculate through this interface
  *   npx chepta request request.json         any request: { "capability": ..., "input": { ... }, "limits": { ... } }
+ *   npx chepta summary result.json          a short summary of a saved result (src/api/summary.js)
  *   (a file name "-" reads standard input)
  *
- * Options: --time-ms N (limits.time_ms; default 60000), --compact (one line of JSON), --help, --version.
+ * Options: --time-ms N (limits.time_ms; default 60000), --compact (one line of JSON), --summary (run or request: write
+ * the full result, unchanged, to a file and print only its short summary), --out FILE (with --summary: that file;
+ * default next to the input, <input>.result.json), --input FILE (summary: the input file to name), --help, --version.
  * Exit code: the outcome, below; Ctrl+C cancels the run (outcome "cancelled").
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { summarizeResult } from "../src/api/summary.js";
 import { startNodeRun, closeNodeWorkers } from "../src/runtime/node-worker.js";
 import pkg from "../package.json" with { type: "json" };
 
@@ -25,11 +31,18 @@ Usage:
   chepta run <project.chepta.json>   solve the project's flowsheet
   chepta capabilities                list the capabilities
   chepta request <request.json>      run any request { "capability", "input", "limits" }
+  chepta summary <result.json>       a short summary of a saved result
   ("-" as the file reads standard input)
 
 Options:
   --time-ms N   stop the calculation after N milliseconds (default 60000)
   --compact     print the result on one line
+  --summary     (run, request) write the full result, unchanged, to a file and
+                print only a short summary of it; open the full file to accept
+                a result or to diagnose a failure
+  --out FILE    with --summary: the file of the full result
+                (default: next to the input, <input>.result.json)
+  --input FILE  (summary) the input file the result came from, to name it
   --help, --version
 
 Exit codes: 0 ok, 2 invalid_input, 3 missing_data, 4 unsupported, 5 not_converged,
@@ -49,13 +62,20 @@ function readJson(file) {
 }
 
 const args = process.argv.slice(2);
-const opts = { compact: false, timeMs: null };
+const opts = { compact: false, timeMs: null, summary: false, out: null, input: null };
+const valueOf = (a, i) => (a.includes("=") ? a.slice(a.indexOf("=") + 1) : args[i]);
 const rest = [];
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
   if (a === "--help" || a === "-h") { process.stdout.write(HELP); process.exit(0); }
   else if (a === "--version" || a === "-v") { process.stdout.write(`${pkg.version}\n`); process.exit(0); }
   else if (a === "--compact") opts.compact = true;
+  else if (a === "--summary") opts.summary = true;
+  else if (a === "--out" || a.startsWith("--out=") || a === "--input" || a.startsWith("--input=")) {
+    const v = valueOf(a, a.includes("=") ? i : ++i);
+    if (!v) usage(`${a.split("=")[0]} needs a file name.`);
+    opts[a.startsWith("--out") ? "out" : "input"] = v;
+  }
   else if (a === "--time-ms" || a.startsWith("--time-ms=")) {
     const v = a.includes("=") ? a.split("=")[1] : args[++i];
     opts.timeMs = Number(v);
@@ -66,6 +86,29 @@ for (let i = 0; i < args.length; i++) {
 
 const [command, file, ...extra] = rest;
 if (extra.length) usage(`unexpected argument ${extra[0]}.`);
+const format = r => `${JSON.stringify(r, null, opts.compact ? 0 : 2)}\n`;
+/** The engine's git commit and whether its tracked files have local changes, when it runs from a clone; null
+ *  otherwise (never guessed). */
+function engineCommit() {
+  const git = a => execFileSync("git", a, { cwd: fileURLToPath(new URL("..", import.meta.url)), encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+  try {
+    const commit = git(["rev-parse", "HEAD"]).trim() || null;
+    let dirty = null;
+    try { dirty = git(["status", "--porcelain", "--untracked-files=no"]).trim() !== ""; } catch { /* not known */ }
+    return { commit, dirty };
+  } catch { return { commit: null, dirty: null }; }
+}
+if ((opts.out || opts.summary) && !["run", "request"].includes(command)) usage("--summary and --out go with run or request.");
+if (opts.out && !opts.summary) usage("--out goes with --summary: chepta request request.json --summary --out full.json");
+if (opts.input && command !== "summary") usage("--input goes with summary: chepta summary result.json --input request.json");
+if (command === "summary") {
+  if (!file) usage("summary needs a result file: chepta summary result.json");
+  const saved = readJson(file);
+  if (!saved || typeof saved !== "object" || saved.chepta_result === undefined) usage(`${file} is not a CHEPTA result (it has no "chepta_result").`);
+  process.stdout.write(format(summarizeResult(saved, { inputFile: opts.input, resultFile: file === "-" ? null : file })));
+  process.exit(0);
+}
+
 let request;
 if (command === "run") {
   if (!file) usage("run needs a project file: chepta run project.chepta.json");
@@ -86,5 +129,11 @@ const h = startNodeRun(request);
 process.once("SIGINT", () => h.cancel("Cancelled from the command line (Ctrl+C)."));
 const result = await h.result;
 closeNodeWorkers();
-process.stdout.write(`${JSON.stringify(result, null, opts.compact ? 0 : 2)}\n`);
+if (opts.summary) {
+  // the full result, byte for byte what the command prints without --summary, to its file; the summary on stdout
+  const out = opts.out ?? (file === "-" ? `chepta-${result.reproduction?.input_hash ?? "result"}.result.json` : `${file.replace(/\.json$/i, "")}.result.json`);
+  if (out === file) usage(`--out ${out} is the input file; give another file for the full result.`);
+  try { writeFileSync(out, format(result)); } catch (e) { usage(`cannot write ${out}: ${e.message}`); }
+  process.stdout.write(format(summarizeResult(result, { inputFile: file === "-" ? null : file, resultFile: out, ...engineCommit() })));
+} else process.stdout.write(format(result));
 process.exitCode = EXIT_CODES[result.outcome] ?? EXIT_CODES.error;

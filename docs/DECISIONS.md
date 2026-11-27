@@ -10,6 +10,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **A short run summary from the command line** (docs/decisions/2026-11-27-02-cli-run-summary.md): built:
+  `chepta request FILE --summary [--out FULL.json]` writes the full result unchanged to a file and prints a short
+  summary; `chepta summary RESULT.json` summarises a saved one. Lab's 379,266-byte result gives a 17,222-byte summary
+  with all 35 warnings. Decided (the maintainer, 2026-11-27): the block notes stay in full for 0.6.3; `chepta summary`
+  exits 0; the commit only from a clone. Open for 0.6.4: tag the notes that carry a qualification as warnings, so the
+  plain method descriptions can move to `left_out`.
 - **Agent start-up and status, for 0.6.3** (docs/decisions/2026-11-27-01-agent-startup-and-status.md): CLAUDE.md
   loads AGENTS.md only, with a routing paragraph to DATA_RULES.md, METHOD_SELECTION.md and UI_GUIDE.md; a short
   HANDOVER.md with the working rules, the release gate, the four states of an item and where things live (the old page

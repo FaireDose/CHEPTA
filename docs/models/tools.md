@@ -71,6 +71,49 @@ result JSON is printed on standard output. Ctrl+C cancels the run (outcome `canc
 | 8 | `error` (a bug in CHEPTA: please report it with the request) |
 | 1 | the command line itself: an unknown command or option, a file that cannot be read or is not JSON (message on standard error) |
 
+### A short run summary (`--summary`)
+
+A full flowsheet result can be very long: one saved CHEPTA-Lab result is 379,266 bytes (about 100,000 tokens when an
+agent reads it). Its summary is 17,222 bytes (13,963 with `--compact`). **Agents should use `--summary` by default**,
+and open the full file only to accept a result or to diagnose a failure (decision
+[2026-11-27-02](../decisions/2026-11-27-02-cli-run-summary.md)).
+
+```
+node bin/chepta.mjs request request.json --summary                 # full result to request.result.json; summary on stdout
+node bin/chepta.mjs run project.chepta.json --summary --out full.json
+node bin/chepta.mjs summary saved-result.json [--input request.json]   # the summary of a result saved earlier
+```
+
+- With `--summary`, the full result is written to `--out FILE`, or by default next to the input as
+  `<input>.result.json` (from standard input: `chepta-<input hash>.result.json`). The file is byte for byte what the
+  command prints without `--summary` (`--compact` too). Only the summary goes to standard output. The exit code is the
+  outcome's, as without it. Without `--summary` nothing changes.
+- `chepta summary RESULT.json` makes the same summary from a saved result (exit code 0 when the summary is made).
+  `--input FILE` names the input file in it. The engine's commit is known only when the run itself was made from a
+  clone, so a summary of a saved result has `commit: null`.
+- The summary changes no result: it only reads one (`src/api/summary.js`, `summarizeResult(result, options)`).
+
+What the summary holds (`chepta_summary: 1`):
+
+| Key | What |
+|---|---|
+| `which` | engine version (`library`), `commit` and `local_changes` when the CLI runs from a clone, capability, `input_hash`, `databank_hash`, method, components, run id, `input_file`, `full_result_file` |
+| `outcome`, `status`, `elapsed_ms`, `limits` | how the run ended and how long it took |
+| `timing` | `run.timing` totals, the 3 slowest blocks, each loop's passes and time, the design-specification evaluations |
+| `error` | for a failure: code, message, where, and from its details the reason, the design specification, loop and tears, the bracket, the best or nearest point, the values at the bounds, `last_residual` and `iterations` of a loop; `left_out` names the details only in the full file |
+| `design_specs` | each one: varied block, key, value, start and bounds; target asked and reached, residual, tolerance; met, method, solves, bracket |
+| `loops` | each recycle loop: tears, iterations, `last_change`, tolerance |
+| `balance` | the external balance: material (largest imbalance, kmol/h), energy (kW), the tolerance and limit, and the balance warnings |
+| `columns` | each column's `converged`, iterations and specifications (asked, achieved, met) |
+| `qualifications` | the result's qualifications in full, verbatim: parameter sets, missing and estimated pairs, every flowsheet- and block-level warning (with code and remedy) and note, two liquids, block methods |
+| `range_warnings` | the range mode; the flowsheet-level range warnings verbatim; the per-stream warnings as their count, the number of distinct messages, and each distinct message once with the streams it applies to |
+| `other_warnings` | any other warning found anywhere in the result (a loop's, a failure's details), verbatim, with its JSON path |
+| `left_out` | JSON paths to what is only in the full file: streams, blocks (states, profiles), energy streams, per-block checks, column residuals, the timing |
+
+A value the result does not hold stays missing (`null`, or the key is absent), never 0. The keys keep the engine's
+units (`T_K`, `duty_kW`, `flow_kmol_h`). No warning is dropped or shortened: `test/cli-summary.test.js` checks that
+every warning of the full result is in the summary, verbatim or in the de-duplicated list.
+
 ## The MCP server
 
 `bin/chepta-mcp.mjs` is a local [Model Context Protocol](https://modelcontextprotocol.io) server: the assistant's
@@ -180,6 +223,10 @@ and the message says the same in words. The worker sends a report after every it
 - `test/cli.test.js`: the command line on the saved example gives results identical to the library's (every number;
   only the run's id and times differ); notes survive; a missing-data request stays `missing_data` with no value; the
   exit codes, the time limit and the command line's own errors.
+- `test/cli-summary.test.js`: `--summary` and `chepta summary` on a successful flowsheet with a design specification,
+  failed ones (a loop's and a design specification's `NO_CONVERGENCE`, `OUT_OF_TIME`) and ones with many warnings;
+  every warning of the full result is in the summary; the full file is byte for byte the result printed without
+  `--summary`; a missing value stays missing.
 - `test/mcp.test.js`: the server spawned as a host would: `initialize`, `tools/list`, `tools/call` (2025-11-25) and the
   same with per-request `_meta` and `server/discover` (2026-07-28); the same numbers as the library and the command
   line; missing data a tool error with no value; invalid input naming its field; version errors; the host's
