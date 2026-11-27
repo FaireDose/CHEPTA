@@ -508,7 +508,7 @@ Book, section 13.2.1, eqs. 13.1 to 13.3, p. 192); the profile's liquid and vapou
 next stage. Each side draw needs one stream on the block's outlet `side`, in the same order. Without `flow_kmol_h`
 the flow is found, for one more specification (for example a recovery in the side draw). With two liquids on a
 stage a liquid draw takes both in their proportion. Not built: a side draw on an absorber or a stripper, a draw of
-one of two liquids, pumparounds. (A liquid distillate beside the vapour is the vapour + liquid condenser, below.)
+one of two liquids. Pumparounds and draws by share: the next section. (A liquid distillate beside the vapour is the vapour + liquid condenser, below.)
 
 **Validation.** Eight cases against the independent reference (flows within 2e-5 relative, mole fractions within
 2e-6, temperatures within 1e-4 K): two purities; a recovery at a given reflux; a stage temperature with a component
@@ -517,3 +517,42 @@ flow; The ChemSep Book's benzene + toluene column (case B2) asked for its publis
 constant molar overflow (an agreement between two property methods, limit 25 %, for the maintainer to confirm); mass
 fractions; ethanol + water with a purity below the azeotrope and a recovery; two side draws of given flows; a
 side-draw flow found for a recovery (the reference by Brent's method). Converged is not validated against plant data.
+
+## The full set of column specifications (proposal 0029)
+
+Code: `src/units/columns/engine.js`, `specifications.js`, `column.js`. Reference:
+`validation/python/reference_mesh_package.py`; cases: `validation/data/columns/specifications/package-cases.json`;
+tests: `test/columns-spec-package.test.js`, and for CHEPTA-Lab's condenser at 53 C `test/columns-condenser-temperature.test.js`.
+The survey of what other simulators offer: [research_notes/column-specifications/](../../research_notes/column-specifications/README.md).
+Proposal: [0029](../../proposals/0029-full-column-specifications.md); decision:
+[2026-11-26-09](../decisions/2026-11-26-09-column-spec-package.md).
+
+| Place | Key | Meaning | Solved |
+|---|---|---|---|
+| condenser | `reflux_kmol_h` | the reflux flow L1 | among the MESH equations, cold included |
+| condenser | `distillate_to_feed` | the distillate over the total feed (DWSIM's Feed_Recovery) | as a distillate flow of that share |
+| condenser | `condenser_T_K` (total or partial) | a stage temperature of stage 1 | MESH from a restart profile; the outer loop cold (it fixes a composition) |
+| condenser | `subcooling_K` (total) | the reflux and the distillate leave dT below their bubble point (DWSIM's subcooled total condenser) | their enthalpy in the balances; the distillate stream at that temperature |
+| condenser | `condenser_T_K` with `"vapour_liquid"` | as before (proposal 0026); cold, by way of a column at a vapour share where the other attempts fail | MESH |
+| reboiler | `reboiler_T_K` | a stage temperature of the last stage | as `condenser_T_K` |
+| side stream | `side_draws[k].share` | a draw of that part of the stage's liquid or vapour, U = share (L + U) | MESH; cold, the draw at a fixed rate first (a few passes) |
+| side stream | a draw without `flow_kmol_h` | its flow found for one more specification | MESH from a restart profile (its rate one more variable of its stage); the outer loop cold |
+| side stream | `pumparounds: [{ from_stage, to_stage, flow_kmol_h, duty_kW \| return_T_K }]` | a liquid drawn, cooled, returned to a stage above | MESH (the band of the matrix widens to the two stages); cold, the column without them and their flows brought up in steps (The ChemSep Book, pp. 215-216) |
+| stage | `stage_duties_kW` on a distillation column | side heaters and coolers (stages 2 to N - 1) | in the stage's energy balance |
+| column | `specifications: [{ kind: "stage_temperature", stage, T_K }]` | any stage's temperature | MESH from a restart profile (new); the outer loop cold |
+| column | `{ kind: "component_ratio", product, component, relative_to, value, basis }` | the ratio of two components' flows in a product | as a purity |
+| column | `{ kind: "flow_ratio", numerator, denominator, value }` | the ratio of two of the column's flows: reflux, distillate, vapour_distillate, bottoms, boilup, feed, `{ flow: "side_draw", draw }` | as a purity |
+
+Every temperature of a stage at its bubble point fixes a composition, as a purity does: the continuation in the
+volatilities, whose first column has no separation, cannot hold one (The ChemSep Book, section 13.5, p. 224). So the
+condenser's and the reboiler's temperatures take a purity's path: among the MESH equations from a restart profile,
+the outer loop for the cold first call. A pumparound returned above its bubble point is refused (`OUT_OF_RANGE`):
+part of it would boil. The block's duty includes the pumparounds' coolers and the stage duties, so the flowsheet's
+energy balance closes. Projects with these keys are written in format 12 (`docs/schema/project-12.json`).
+
+**Validation.** Ten cases against the independent reference (flows within 2e-5 relative, mole fractions within 2e-6,
+temperatures within 1e-4 K; from a perturbed profile within 1e-7, 1e-8 and 1e-6 K), on the benzene + toluene column of
+case M3 (Peng-Robinson): a reflux flow; the distillate's share with 8 K of subcooling; a partial condenser's and a
+reboiler's temperature; a side heater with a draw by share; two pumparounds (by duty, by return temperature); a ratio
+of two flows with a ratio of two components; a draw whose rate is found for its purity (the reference by Brent's
+method); a vapour draw by share. Converged is not validated against plant data.

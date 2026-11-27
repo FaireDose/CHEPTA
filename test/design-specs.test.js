@@ -254,7 +254,8 @@ test("request format: solve_flowsheet lists checks.design_specs; flowsheet_statu
 test("project files: design specifications are written as format 10 and solve again; format 9 refuses them, naming the format", () => {
   // the newest format: 11 since the vapour + liquid condenser (proposal 0026, 2026-11-19); a file with design
   // specifications and no newer content is still written as format 10
-  assert.equal(PROJECT_FORMAT, 11);
+  // (format 12 added by proposal 0029, 2026-11-26, for the column keys of its package; this feature is still written as format 11)
+  assert.ok(PROJECT_FORMAT >= 11);
   const fs = { components: ["methanol", "water"], thermo: { model: "NRTL", vapour: "ideal" }, ...loop([makeupDS()]) };
   const doc = projectOf({ inputs: {}, z: {}, flowsheet: fs }, { version: "test", now: new Date("2026-11-14T00:00:00Z") });
   assert.equal(doc.fugacity_project, 10);

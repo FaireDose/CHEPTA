@@ -10,6 +10,15 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Proposal 0029 built: the full set of column specifications** (docs/decisions/2026-11-26-09-column-spec-package.md;
+  proposals/0029-full-column-specifications.md, accepted 2026-11-26: all steps in one go; the survey in
+  research_notes/column-specifications/). Step 1 (CHEPTA-Lab M6): the vapour + liquid condenser given by its temperature
+  reached from a column at a vapour share; Lab's column at 53 C converges with PR and PR + MHV1, and so do 9 of the 10
+  closed plant runs with PR (with #270's exchanger fix); with PR + MHV1 the closed plant stops before the column (MIXER1,
+  CP3). Steps 2-7: reflux flow, distillate share, subcooling, end temperatures, side heaters, draws by
+  share or found among the MESH equations, pumparounds, stage temperature and two ratios among the MESH equations, the
+  workbench and project format 12. Open: plant-vl-boilup; the correction that the end temperatures fix a composition
+  (a purity's path, not MESH cold).
 - **CHEPTA-Lab's request 16: a design specification varies a column's numbers**
   (docs/decisions/2026-11-26-08-column-design-specs.md): built. The numbers are the distillate or bottoms flow, the
   reflux or boil-up ratio, the duties, the vapour + liquid condenser's own number, a side draw's flow and an absorber's

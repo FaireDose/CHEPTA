@@ -161,7 +161,10 @@ test("refusals: the condenser's keys, the outlets, the shortcut, the range of th
   bad({ condenser: "vapour_liquid" }, "BAD_INPUT", /missing: the condenser's specification \(its temperature, the vapour distillate's flow or the vapour's share of the distillate\)/);
   bad({ condenser: "vapour_liquid", condenser_T_K: 326.15, vapour_share: 0.1 }, "BAD_INPUT", /condenser_T_K, vapour_share: give one of them/);
   bad({ condenser: "vapour_liquid", vapour_share: 1 }, "BAD_INPUT", /vapour_share is the vapour's share of the distillate, between 0 and 1/);
-  bad({ condenser: "partial", condenser_T_K: 326.15 }, "BAD_INPUT", /condenser_T_K: the vapour \+ liquid condenser's \(condenser "vapour_liquid"\)/, false);
+  // (proposal 0029, accepted by the maintainer on 2026-11-26: condenser_T_K is now also a total or partial condenser's
+  // specification, a stage temperature of stage 1; with the reflux ratio and the bottoms flow it is one too many. This
+  // assertion changed for that decision, not to make a result pass; docs/decisions/2026-11-26-09-column-spec-package.md)
+  bad({ condenser: "partial", condenser_T_K: 326.15 }, "BAD_INPUT", /too many specifications: reflux_ratio, bottoms_kmol_h, condenser_T_K: give two/, false);
   bad({ condenser: "vapour_liquid", condenser_T_K: 326.15 }, "BAD_INPUT", /connect a stream to its outlet "vapour_distillate"/, false);
   bad({ condenser: "partial" }, "BAD_INPUT", /only the vapour \+ liquid condenser has/);
   bad({ condenser: "vapour_liquid", condenser_T_K: 326.15, mode: "shortcut", light_key: "methanol", heavy_key: "water", recovery_light_key_in_distillate: 0.99, recovery_heavy_key_in_bottoms: 0.99, stages: null, feed_stage: null, bottoms_kmol_h: null }, "BAD_INPUT", /rigorous column only/);   // (the block's NOT_AVAILABLE, reported by the flowsheet's check before solving)
