@@ -534,3 +534,7 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - #272 was merged by the maintainer into its base branch claude/proposal-0028-column-specs-in-mesh, NOT main (main still a2fe0c8). Request 16 is not on main. Fix: a new PR from claude/lab-request-16-column-spec-design-spec (8b13473, contains main, merges cleanly) to main; and #273's base must be changed to main before it is merged. Asked the maintainer.
 - Started J: session_01FPbeWUccvXrqq5unxweW8H, branch claude/agent-startup-and-status, from main: CLAUDE.md routing, short current-state HANDOVER.md (old moved to docs/history/), ROADMAP reconciled, deferred items marked, cards B and C, decision file. Running: I, J. Item 3 (CLI run summary) waits for a free slot.
 - Running the fixed-feed replay (F1 = 6506.3365 kg/h, no design spec, cold, tolerances 1e-5 and 1e-7) on #272's head.
+- 08:35 Fixed-feed replay (review item 4) on #272's head 8b13473, F1 = 6506.3365 kg/h, design spec removed, cold start, run alone side by side:
+  - recycle tolerance 1e-7: 61 s; S16 ethanol 0.0004086 (design-spec run 0.0004086), ester 0.99464; worst stream difference 1.8e-6 of its flow; largest temperature difference 0.03 K; balance 4e-7 kmol/h, -0.03 kW.
+  - recycle tolerance 1e-5 (the request's own): 57 s; ethanol 0.0004095; worst stream difference 2.8e-4 (S21 ethanol); 0.13 K; balance 2.4e-4 kmol/h, -7.0 kW. That is the recycle's own noise at 1e-5.
+  - Verdict: the design-spec answer is the converged plant (the tight replay matches it to 1.8e-6); no stale-recycle effect left.
