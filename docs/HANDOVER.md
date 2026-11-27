@@ -538,3 +538,4 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
   - recycle tolerance 1e-7: 61 s; S16 ethanol 0.0004086 (design-spec run 0.0004086), ester 0.99464; worst stream difference 1.8e-6 of its flow; largest temperature difference 0.03 K; balance 4e-7 kmol/h, -0.03 kW.
   - recycle tolerance 1e-5 (the request's own): 57 s; ethanol 0.0004095; worst stream difference 2.8e-4 (S21 ethanol); 0.13 K; balance 2.4e-4 kmol/h, -7.0 kW. That is the recycle's own noise at 1e-5.
   - Verdict: the design-spec answer is the converged plant (the tight replay matches it to 1.8e-6); no stale-recycle effect left.
+- 08:45 Maintainer: "yes, let's fix this". Opened #274 (head claude/lab-request-16-column-spec-design-spec at 8b13473 → main) to put #272 on main. Changed #273's base to main. Told I: merge origin/main next time; refresh #273's stale nitrogen text; re-run the closed plant with PR + MHV1.
