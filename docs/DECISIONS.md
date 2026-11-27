@@ -26,8 +26,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   changes in engineering units". Not started before the 4 plants pass.
 - **A faster solve target, later** (the maintainer, 2026-11-27: "we should aim later for even faster solutions"): the
   0.6.3 target is Lab's ethanol design-specification case under 10 minutes on the cloud machine, run alone, with a
-  fixed-feed re-run that agrees within the case's tolerances (ROADMAP.md, "The next gate", item 2). The later number
-  is still to be set.
+  fixed-feed re-run that agrees within the case's tolerances (ROADMAP.md, "The next gate", item 2): met today (about
+  5 minutes, and the re-run agrees). The later number is still to be set.
 
 - **The minimum approach along the whole exchanger, CHEPTA-Lab M4 "still open"**
   (docs/decisions/2026-11-25-04-minimum-approach-along-exchanger.md): built: the smallest temperature difference is

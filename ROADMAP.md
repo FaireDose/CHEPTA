@@ -186,14 +186,18 @@ history; where they differ, this section holds. The working rules for agent sess
 2. **Speed target for 0.6.3** (proposal 0027; the maintainer, 2026-11-27): Lab's ethanol design-specification case
    (`new-plant-ds-ethanol0.0004`) finishes in **under 10 minutes on the cloud machine, run alone**, and a re-run with the
    feed fixed at the value found agrees within the case's tolerances. Measured: 108 minutes before proposal 0027
-   ([decision 2026-11-25-02](docs/decisions/2026-11-25-02-solve-speed-proposal.md)); 179 s with the column
-   specifications inside MESH ([decision 2026-11-26-01](docs/decisions/2026-11-26-01-column-specs-in-mesh.md)); 297 s,
-   about 5 minutes, with request 16's change (PR #272, which no longer accepts loops that have not moved; the
-   coordinator's log, 2026-11-26). The fixed-feed re-run is still to be done.
+   ([decision 2026-11-25-02](docs/decisions/2026-11-25-02-solve-speed-proposal.md)); **today about 5 minutes** (297 s
+   on the cloud machine, run alone, with request 16's recycle correction, PR #274; the coordinator's log, 2026-11-26).
+   The 179 s of [decision 2026-11-26-01](docs/decisions/2026-11-26-01-column-specs-in-mesh.md) was partly fast because
+   some of its solves read recycles that had not moved (decision 2026-11-26-08). The fixed-feed re-run (2026-11-27, on
+   #274's head, F1 fixed at 6,506.34 kg/h, cold start, recycle tolerance 1e-7) matched the design-specification answer
+   within 1.8e-6 of each stream's flow (ethanol in S16 0.0004086 in both; the coordinator's log). The target as defined
+   is met.
 3. **Later, a faster target** (the maintainer, 2026-11-27: "we should aim later for even faster solutions"): open; the
    number is to be set (DECISIONS.md, open items).
 4. **Lab's phase: its 4 complete plants**, each simulated from its paper and compared stream by stream (the
-   maintainer, 2026-11-13). The plants and their status: Lab's case table.
+   maintainer, 2026-11-13). The plants and their status: Lab's case table,
+   [CANDIDATE_PROCESSES.md](https://github.com/FaireDose/CHEPTA-Lab/blob/main/docs/CANDIDATE_PROCESSES.md).
 5. **0.7.0**, only after the 4 plants pass.
 6. **After Lab's 4 plants: skills and manual** (the maintainer, 2026-11-27: "the learnings things we do after
    CHEPTA-lab 4 plants check ok, but mark it somewhere"):

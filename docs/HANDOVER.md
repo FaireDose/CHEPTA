@@ -63,8 +63,8 @@ Say which of these an item has reached, each with its evidence; one does not imp
 - [proposals/](../proposals/README.md): proposals and their status.
 - The coordinator's running log: `docs/HANDOVER.md` on branch `claude/trusting-euler-2prvu8` (not merged; who runs,
   which PRs wait, what was relayed).
-- Plant status: CHEPTA-Lab's case table ([CHEPTA-Lab](https://github.com/FaireDose/CHEPTA-Lab); the coordinator's
-  log names `docs/reference/CANDIDATE_PROCESSES.md` there for the 4 plants).
+- Plant status: CHEPTA-Lab's case table,
+  [CANDIDATE_PROCESSES.md](https://github.com/FaireDose/CHEPTA-Lab/blob/main/docs/CANDIDATE_PROCESSES.md).
 - Documents a person must download by hand: [missing-properties/TO_DOWNLOAD.md](missing-properties/TO_DOWNLOAD.md).
 
 ## Talking to the maintainer
