@@ -160,6 +160,27 @@ export const FEED_SECOND_LIQUID_LIMIT = 0.01;
 const RIGOROUS_SPECS = { reflux_ratio: "reflux_ratio", boilup_ratio: "boilup_ratio", distillate_kmol_h: "distillate_rate",
   bottoms_kmol_h: "bottoms_rate", condenser_duty_kW: "condenser_duty", reboiler_duty_kW: "reboiler_duty" };
 const KMOL_H = 1000 / 3600;   // mol/s per kmol/h
+/**
+ * The numbers of a column's specification that a flowsheet's design specification may vary (CHEPTA-Lab's request 16;
+ * src/flowsheet/design-specs.js): those the column's mode and configuration use, as { key: kind }. "number": a key of
+ * the specification (it must be given there, since varying it keeps the column's degrees of freedom); "entry": one
+ * entry of a list (side_draws[index].flow_kmol_h, stage_duties_kW[index].duty_kW), which must be given too. A key the
+ * column keeps but does not use (the other mode's) is left out, so that a design specification never varies a number
+ * that has no effect.
+ */
+export function variableColumnKeys(spec = {}) {
+  const configuration = spec.configuration ?? "distillation";
+  if (configuration !== "distillation") {
+    return { ...(spec.reboiler === "partial" ? Object.fromEntries(STRIPPER_SPECS.map(k => [k, "number"])) : {}), stage_duties_kW: "entry" };
+  }
+  if ((spec.mode ?? "shortcut") === "shortcut") {
+    return { reflux_ratio: "number", reflux_over_minimum: "number", recovery_light_key_in_distillate: "number", recovery_heavy_key_in_bottoms: "number" };
+  }
+  return { ...Object.fromEntries(Object.keys(RIGOROUS_SPECS).map(k => [k, "number"])),
+    ...(spec.condenser === "vapour_liquid" ? Object.fromEntries(Object.keys(CONDENSER_KEYS).map(k => [k, "number"])) : {}), side_draws: "entry" };
+}
+/** The field of a list entry varied by a design specification (variableColumnKeys' "entry"). */
+export const COLUMN_ENTRY_FIELDS = Object.freeze({ side_draws: "flow_kmol_h", stage_duties_kW: "duty_kW" });
 const PURITY = ["distillate_purity", "bottoms_purity"];
 /** The design specifications of the rigorous column (milestone M4), and the keys each may hold. */
 const DESIGN_KINDS = { purity: ["product", "draw", "component", "value", "basis"], recovery: ["product", "draw", "component", "value"],
