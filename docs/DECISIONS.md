@@ -10,6 +10,24 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Agent start-up and status, for 0.6.3** (docs/decisions/2026-11-27-01-agent-startup-and-status.md): CLAUDE.md
+  loads AGENTS.md only, with a routing paragraph to DATA_RULES.md, METHOD_SELECTION.md and UI_GUIDE.md; a short
+  HANDOVER.md with the working rules, the release gate, the four states of an item and where things live (the old page
+  in docs/history/); ROADMAP.md's section "The next gate"; two guidance cards in the contributor skill. To check:
+  that the new HANDOVER.md states the rules as the maintainer meant them (the decision file lists two places where an
+  older rule differs).
+- **After Lab's 4 plants: skills and manual** (the maintainer, 2026-11-27: "the learnings things we do after
+  CHEPTA-lab 4 plants check ok, but mark it somewhere"; ROADMAP.md, "The next gate", item 6): a
+  `fitting-model-parameters` skill in ai/skills; a `building-a-process-simulator` skill; a public user manual (first
+  run, flowsheet, warnings and failed solves, own data, save and share), checked in the browser; a browser test of the
+  workbench on a large plant (time, cancel, retry); a property-value cache, measured for hit rate and memory first;
+  Lab's side (property-method, slow-flowsheet and review entries in Lab's skills, its knowledge-rule corrections and
+  its reading queue, in Lab's phase); two more cards, "find the exact missing measurement" and "explain what an update
+  changes in engineering units". Not started before the 4 plants pass.
+- **A faster solve target, later** (the maintainer, 2026-11-27: "we should aim later for even faster solutions"): the
+  0.6.3 target is Lab's ethanol design-specification case under 10 minutes on the cloud machine, run alone, with a
+  fixed-feed re-run that agrees within the case's tolerances (ROADMAP.md, "The next gate", item 2): met today (about
+  5 minutes, and the re-run agrees). The later number is still to be set.
 - **Proposal 0029 built: the full set of column specifications** (docs/decisions/2026-11-26-09-column-spec-package.md;
   proposals/0029-full-column-specifications.md, accepted 2026-11-26: all steps in one go; the survey in
   research_notes/column-specifications/). Step 1 (CHEPTA-Lab M6): the vapour + liquid condenser given by its temperature
@@ -407,8 +425,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   better binary set (it would replace this one); (b) search the ThermoML Archive again for measured VLLE of
   water + acetic acid + ethyl acetate when its search interface answers (it returned 503 on 2026-11-12). Still to
   check against the sources: the 14 rows of Liu et al. 2013 and the quotation from Pirola et al. 2013.
-- **How the agents work** (docs/decisions/2026-11-10-01-working-method.md): a new coordinator starts from
-  [HANDOVER.md](HANDOVER.md); one task per session; at most two workers; Sonnet for routine work, Opus for engineering.
+- **How the agents work** (docs/decisions/2026-11-10-01-working-method.md, updated by
+  docs/decisions/2026-11-27-01-agent-startup-and-status.md): every session starts from [HANDOVER.md](HANDOVER.md), the
+  rules in force; one task per worker; at most two workers, CHEPTA and CHEPTA-Lab in turns; no Fable; Sonnet for
+  routine work, Opus for engineering; CLAUDE.md loads AGENTS.md only, and each task reads the guide it needs.
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
   (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive
   distillation and the rest after 1.0. Lab pins releases, files capability requests, and does G2 to G5.

@@ -8,7 +8,7 @@ by hand; the script is named at the top of each.
 | Page | What it is |
 |---|---|
 | [../README.md](../README.md) | What CHEPTA is, how to use it, licences |
-| [HANDOVER.md](HANDOVER.md) | For the coordinating agent session: the state, the queue and how agents work (short sessions, at most two workers, the lighter model for routine work) |
+| [HANDOVER.md](HANDOVER.md) | For agent sessions: the working rules now in force (at most two workers, CHEPTA and CHEPTA-Lab in turns, Opus or Sonnet only, one task per worker), the release gate, and where the state of each item is kept; the page up to 2026-11-27 is in [history/](history/HANDOVER-to-2026-11-27.md) |
 | [DECISIONS.md](DECISIONS.md) | What is pending, and the standing rules; the decisions of each pull request are in [decisions/](decisions/), one file each, by date |
 | [../ROADMAP.md](../ROADMAP.md) | Where the project is going: tracks and releases |
 | [../ARCHITECTURE.md](../ARCHITECTURE.md) | The layers (data, property package, equilibrium, stream, blocks, flowsheet, interface) |

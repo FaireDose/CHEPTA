@@ -30,8 +30,9 @@ it, and follow [CONTRIBUTING.md](CONTRIBUTING.md). The tracks and the release pl
   and links to other tools and simulators.
 - **Assistant compatibility track (C):** CHEPTA working in every AI chat.
 - **Data track (D):** more components and better parameters from open sources.
-- **Methods track (M):** the thermodynamic methods the method guide names but CHEPTA does not have yet (Wilson,
-  PSRK, CPA, PC-SAFT, electrolytes, ionic liquids).
+- **Methods track (M):** the thermodynamic methods the method guide names but CHEPTA did not have (Wilson and
+  PR/SRK + gE (MHV1), built; CPA, PC-SAFT, electrolytes, ionic liquids). PSRK's and MHV2's own parameters are not
+  open, so they are not available.
 - **Cost engineering track (E):** equipment sizing, capital and operating cost, cost of
   product.
 - **Agentic design track (G):** agents that turn literature into flowsheets and compare
@@ -124,6 +125,8 @@ have and we implement the add data yourself method"):
 - **M2 starts when M1 is merged.** Its first step is a source check: PSRK's own group tables are used only if they are
   open; otherwise the method is built on Modified UNIFAC 2.0 (CC BY 4.0, already in CHEPTA) inside the cubic equation
   of state, through the gE mixing rule the proposal chooses. It ships with the first release after it is done.
+  (Result, 2026-11-04 and 2026-11-06: PSRK's and MHV2's group tables are not open, so they are not available; M2 is
+  built as PR/SRK + gE (MHV1) with NRTL pairs fitted inside the rule.)
 - **M3 to M6, in that order** (PC-SAFT reuses CPA's association term): each ships with **the open parameters a search
   finds** (recorded as in docs/DATA_RULES.md) **and My data for the rest** (proposal 0012): the user adds the method's
   pure-component or pair parameters with their source and the tier "user", as for NRTL, UNIQUAC and k_ij today. A method
@@ -132,7 +135,7 @@ have and we implement the add data yourself method"):
 | Item | What | For | Open parameters known | Status |
 |---|---|---|---|---|
 | **M1** | **Wilson** activity model | polar mixtures with one liquid; the method guide's choice for many alcohol and hydrocarbon systems (it cannot predict two liquids) | ChemSep's Wilson set (`wilson.json`, Artistic License 2.0, as its NRTL and UNIQUAC sets); fits to ThermoML data by the same scripts | **Closed**: [proposal 0016](proposals/0016-wilson.md) (accepted, #192): the model, ChemSep's set (165 pairs), Wilson pairs in My data, the interface, two liquids refused or warned, tests against `thermo` and open data; Wilson fits to the ThermoML data of the NRTL/UNIQUAC fits, the default where they pass the same gates (docs/decisions/2026-11-04-06-wilson-fits.md) |
-| **M2** | **SRK/PR + gE (MHV1)** (an activity model inside a cubic equation of state; PSRK and MHV2 themselves are not open) | polar mixtures above 10 bar, gases dissolved in polar solvents | PSRK's and MHV2's group tables are **not open** (checked 2026-11-04); the MHV1 rule (PSRK form) with NRTL pairs fitted to ThermoML high-pressure data | **Built** (proposal 0018 reopened, the maintainer, 2026-11-06): CO + methanol and H2 + water within the gate; H2, CO2 and CH4 + methanol (5.6-6.3 % in P), CO + water (7 % in H) and, with PR, CO2 + water (11.4 % in P) written with fit-quality warnings; CHEPTA-Lab's separator runs under PR + gE (MHV1); CH4 + water held (its articles disagree) ([decision](docs/decisions/2026-11-06-02-mhv1.md)) |
+| **M2** | **PR/SRK + gE (MHV1)** (an activity model inside a cubic equation of state; PSRK and MHV2 themselves are not open, so not available) | polar mixtures above 10 bar, gases dissolved in polar solvents | PSRK's and MHV2's group tables are **not open** (checked 2026-11-04); the MHV1 rule (PSRK form) with NRTL pairs fitted to ThermoML high-pressure data | **Built** (proposal 0018 reopened, the maintainer, 2026-11-06): CO + methanol and H2 + water within the gate; H2, CO2 and CH4 + methanol (5.6-6.3 % in P), CO + water (7 % in H) and, with PR, CO2 + water (11.4 % in P) written with fit-quality warnings; CHEPTA-Lab's separator runs under PR + gE (MHV1); CH4 + water held (its articles disagree) ([decision](docs/decisions/2026-11-06-02-mhv1.md)) |
 | **M3** | **CPA** (cubic plus association) | water + hydrocarbons with two liquids, glycols and methanol in gas processing; the real fix of the P-H flash with two liquids (DECISIONS.md, Engineering, item 7) | open articles with CPA parameters for water, alcohols, glycols (to be searched) | **Open** |
 | **M4** | **PC-SAFT** (and Flory–Huggins for polymer solutions) | polymers, associating and high-pressure systems, ionic liquids with association | open articles and open libraries' parameter tables, where those tables are themselves open (DATA_RULES.md, source 4) | **Open** |
 | **M5** | **Electrolytes**: electrolyte NRTL, Pitzer (Debye–Hückel long-range term) | salts and ionized acids and bases in water (amine gas treating, brines, crystallization of salts) | open articles for the ion pairs; species and reactions of dissociation from the reactions layer (A13) | **Open** |
@@ -171,18 +174,58 @@ sources, assumptions) that anyone can re-run and check.
 | **G5** | Benchmarks: published open case studies with known answers (for example textbook processes and open techno-economic reports), used to measure how well agents do before anyone trusts them. Starts with G1 and G2 on small reviewed cases (the ethanol reactor, the benzene + toluene column), checking valid tool calls, numerical reproduction, missing information, unsupported capabilities and the reading of warnings; route-comparison benchmarks are added once G4 exists. Development and regression cases are kept apart from held-out evaluation cases, with related papers and process variants in the same group (Astra 6 review, 2026-11-04) | G1, G2 | **In CHEPTA-Lab** (2026-11-04; section "CHEPTA and CHEPTA-Lab"): **Open** |
 | **G6** | Design-study view: routes, flowsheets, costs and sources in one page an engineer can review, change and sign off | G4, A11, E6 | **Open** |
 
+## The next gate: 0.6.3, then Lab's 4 complete plants, then 0.7.0
+
+The current plan (the maintainer, 2026-11-13, 2026-11-20 and 2026-11-27). The dated sections below are kept as
+history; where they differ, this section holds. The working rules for agent sessions: [docs/HANDOVER.md](docs/HANDOVER.md).
+
+1. **0.6.3**, the release before CHEPTA-Lab's next phase. It holds Lab's requests of 2026-11-20 (the maintainer,
+   2026-11-20, in the coordinator's log: all eight in 0.6.3, with the rest of 8, 13, 14 and M2), the full set of column specifications (proposal 0029), and the
+   agent start-up and status changes of 2026-11-27. What is built, merged and still open: the open items of
+   [docs/DECISIONS.md](docs/DECISIONS.md).
+2. **Speed target for 0.6.3** (proposal 0027; the maintainer, 2026-11-27): Lab's ethanol design-specification case
+   (`new-plant-ds-ethanol0.0004`) finishes in **under 10 minutes on the cloud machine, run alone**, and a re-run with the
+   feed fixed at the value found agrees within the case's tolerances. Measured: 108 minutes before proposal 0027
+   ([decision 2026-11-25-02](docs/decisions/2026-11-25-02-solve-speed-proposal.md)); **today about 5 minutes** (297 s
+   on the cloud machine, run alone, with request 16's recycle correction, PR #274; the coordinator's log, 2026-11-26).
+   The 179 s of [decision 2026-11-26-01](docs/decisions/2026-11-26-01-column-specs-in-mesh.md) was partly fast because
+   some of its solves read recycles that had not moved (decision 2026-11-26-08). The fixed-feed re-run (2026-11-27, on
+   #274's head, F1 fixed at 6,506.34 kg/h, cold start, recycle tolerance 1e-7) matched the design-specification answer
+   within 1.8e-6 of each stream's flow (ethanol in S16 0.0004086 in both; the coordinator's log). The target as defined
+   is met.
+3. **Later, a faster target** (the maintainer, 2026-11-27: "we should aim later for even faster solutions"): open; the
+   number is to be set (DECISIONS.md, open items).
+4. **Lab's phase: its 4 complete plants**, each simulated from its paper and compared stream by stream (the
+   maintainer, 2026-11-13). The plants and their status: Lab's case table,
+   [CANDIDATE_PROCESSES.md](https://github.com/FaireDose/CHEPTA-Lab/blob/main/docs/CANDIDATE_PROCESSES.md).
+5. **0.7.0**, only after the 4 plants pass.
+6. **After Lab's 4 plants: skills and manual** (the maintainer, 2026-11-27: "the learnings things we do after
+   CHEPTA-lab 4 plants check ok, but mark it somewhere"):
+   - a `fitting-model-parameters` skill in `ai/skills`;
+   - a `building-a-process-simulator` skill;
+   - a public user manual (first run, flowsheet, warnings and failed solves, own data, save and share), checked in
+     the browser;
+   - a browser test of the workbench on a large plant (time, cancel, retry);
+   - a property-value cache, measured for hit rate and memory first;
+   - Lab's side, in Lab's phase: property-method, slow-flowsheet and review entries in Lab's skills, its
+     knowledge-rule corrections and its reading queue;
+   - two more guidance cards: "find the exact missing measurement" and "explain what an update changes in engineering
+     units".
+
 ## The program after M4 (v0.7 onward)
 
 Proposal 0015 ends at M4 (specifications, side draws, the first costs). What follows, agreed with the maintainer on
 2026-11-04 (docs/decisions/2026-11-04-08-program-after-m4.md). Versions stay 0.x: there is no 1.0 until the maintainer
-chooses to release CHEPTA officially (the maintainer, 2026-11-04: "i do not need to have 1.0. i can continue with 0.xxx"). Each phase runs two or three workstreams side by side,
-with at most four agent sessions open at a time, so no single track holds the others back.
+chooses to release CHEPTA officially (the maintainer, 2026-11-04: "i do not need to have 1.0. i can continue with 0.xxx"). Each phase runs two or three workstreams one after another or
+side by side, within the working rules of [docs/HANDOVER.md](docs/HANDOVER.md) (at most two worker sessions at a time,
+CHEPTA and CHEPTA-Lab in turns, no Fable sessions; the maintainer, 2026-11-05 and 2026-11-12, which replace the "four
+agent sessions" of 2026-11-04), so no single track holds the others back.
 
 | Phase | Release | What | Done when |
 |---|---|---|---|
 | **P5 Cost, bounded** | v0.7 | E2 purchased and installed cost of every sized unit, E3 utilities, E4 capital, operating cost and cost of production, E6 the cost view | every unit sized in E1 has a cost or a stated "no open data"; a flowsheet shows its cost of production with the accuracy range |
 | **P6 Agentic design with CHEPTA-Lab** | v0.8 | G1 frozen as a versioned tool contract; G6 the design-study view; E5 CO2 and safety indicators; Lab's capability requests (below) | one reviewed reaction-separation case of CHEPTA-Lab runs through the supported interface in a released CHEPTA, meets the product and operating constraints declared before the run (purity, impurities, recovery, limits), closes its material and energy balances, keeps its warnings and sources, and can be reproduced from its saved inputs; any substituted unit, opened recycle or relaxed target is recorded. Costs are shown with their coverage and missing items; a missing cost does not hold back the engineering demonstration |
-| **P7 Advanced thermodynamics** | v0.9 | the methods track M2 to M6 (PSRK or MHV2, CPA, PC-SAFT, electrolytes, ionic liquids); M2 runs alongside P5 | each method has its proposal, open parameters, My data for the rest, and tests against an independent implementation |
+| **P7 Advanced thermodynamics** | v0.9 | the methods track M2 to M6 (M2 PR/SRK + gE (MHV1), built, PSRK and MHV2 parameters not available; CPA, PC-SAFT, electrolytes, ionic liquids) | each method has its proposal, open parameters, My data for the rest, and tests against an independent implementation |
 | **P8 Stability and bridges** | v0.10 and later | A12 frozen interfaces and deprecation rules; A2 data packs; A3 the tier on every result; A9 speed and size budgets; B3 ThermoML import; B5 notebooks and spreadsheets; B6 other simulators; C2 to C6 | the public interface is frozen and documented; old project files open; then the maintainer decides on an official release |
 | **Later** | – | reactive distillation; sensitivity and optimization; batch and dynamic simulation; solids beyond crystallization; life-cycle assessment | – |
 
@@ -347,11 +390,12 @@ Needs A13 and D8.
 
 ### v0.7 – Cost engineering
 
-Needs E1–E4, E6.
+Needs E1–E4, E6. Released only after CHEPTA-Lab's 4 complete plants (section "The next gate").
 
 - [ ] Equipment sizing and cost for the units of v0.4 to v0.6
 - [ ] Operating cost and cost of production of a flowsheet; cost view
-- [ ] A cubic equation of state with UNIFAC in its mixing rule, PSRK or MHV2 (M2), if done by then
+- [x] A cubic equation of state with an activity model in its mixing rule (M2): PR/SRK + gE (MHV1), built and in the
+      interface (#216); PSRK and MHV2 not available (their parameters are not open)
 
 ### v0.8 – Agentic process design
 
