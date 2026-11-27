@@ -32,11 +32,11 @@ one; if you test twice (computer and phone), swap the order the second time, so 
 
    > Read https://fairedose.github.io/CHEPTA/use.md and open the CHEPTA workbench as an artefact in this chat.
 
-   For the **new** layout in a chat, ask for this instead. The released library (`chepta@0.6.2`, loaded from jsDelivr
+   For the **new** layout in a chat, ask for this instead. The released library (`chepta@0.6.3`, loaded from jsDelivr
    as [ai/instructions/use-chepta.md](../../ai/instructions/use-chepta.md) does) has the `layout` key:
 
    > Show an HTML artefact with exactly this page and nothing else:
-   > `<div id="app"></div><script src="https://cdn.jsdelivr.net/npm/chepta@0.6.2/dist/chepta.js"></script><script>CHEPTA.app("#app", { components: [], layout: "next" });</script>`
+   > `<div id="app"></div><script src="https://cdn.jsdelivr.net/npm/chepta@0.6.3/dist/chepta.js"></script><script>CHEPTA.app("#app", { components: [], layout: "next" });</script>`
 
    If the chat will not show the page (some block scripts from other addresses), write it down under "Stuck", and
    test the chat only in the current layout.
