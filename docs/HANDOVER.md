@@ -547,3 +547,4 @@ continuation only if needed; dehydration case by purity. Running: K (0026 engine
 - 09:00 #273 merged by the maintainer. Maintainer agrees with K's three recommendations. Asked J to merge main into #275 (DECISIONS.md conflict); asked K to record the answers in 2026-11-27-02 and the 0.6.4 open item (engine tags qualifying notes as warnings), and not to merge main until #275 is in. Running: J, K (recording/merge only).
 - 09:05 K recorded the answers (2026-11-27-02 + DECISIONS open item), #276 head b01e1c4, docs only; waits to merge main after #275. Waiting for J.
 - 09:10 J merged main into #275, head 95aa6c9, 1895 pass 0 fail; merges cleanly with main. Ready to merge; then K merges main into #276.
+- 09:15 #275 merged by the maintainer. Asked K to merge main into #276.
