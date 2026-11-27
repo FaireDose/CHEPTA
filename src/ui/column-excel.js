@@ -20,6 +20,9 @@ const SPEC_ROWS = [
   ["condenser", "Condenser", ""],
   // the vapour + liquid condenser's own specification (proposal 0026)
   ["condenser_T_K", "Condenser temperature", "K"], ["vapour_distillate_kmol_h", "Vapour distillate flow", "kmol/h"], ["vapour_share", "Vapour share of the distillate", "V/(V + liquid distillate)"],
+  // proposal 0029: the full set of column specifications
+  ["reflux_kmol_h", "Reflux flow", "kmol/h"], ["distillate_to_feed", "Distillate share of the feed", "D/F"], ["reboiler_T_K", "Reboiler temperature", "K"],
+  ["subcooling_K", "Subcooling of the total condenser", "K"],
   ["P_kPa", "Pressure", "kPa"], ["max_iterations", "Newton iterations at most", ""],
 ];
 
@@ -97,6 +100,7 @@ export function columnSheet(b, r, { comps, nameOf, model }) {
     rows.push([label, k === "light_key" || k === "heavy_key" ? nameOf(v) : v, unit]);
   }
   for (const d of spec.stage_duties_kW ?? []) rows.push([`Heat added to stage ${d.stage}`, d.duty_kW, "kW"]);
+  for (const [k, q] of (spec.pumparounds ?? []).entries()) rows.push([`Pumparound ${k + 1}: from stage ${q.from_stage} to stage ${q.to_stage}, ${q.flow_kmol_h} kmol/h`, q.duty_kW ?? q.return_T_K, q.duty_kW != null ? "kW added" : "K returned"]);
   if (spec.P_kPa == null) rows.push(["Pressure", val(st.P_kPa), "kPa (the feed's)"]);
   rows.push([`Method: ${model}`], []);
   rows.push([bold("Results"), bold("Value"), bold("Unit"), bold("Source")]);

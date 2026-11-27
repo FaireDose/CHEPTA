@@ -593,6 +593,17 @@ function solveCore(sys, fs, ctx = newRunContext("previous", null)) {
     let x = tears.map(e => vec(tearValue(e), e));
     let xPrev = null, gPrev = null, it = 0, err = Infinity;
     const history = [];
+    // a design specification's solve (CHEPTA-Lab's request 16): started from a solved point at nearby inputs, a slow
+    // loop changes by less than the tolerance in its first pass and would stop before it has moved, giving the
+    // design specification the old answer. There a pass below the tolerance counts only from the second pass on, and
+    // only where the error left, estimated from the rate r of the last two passes (err r / (1 - r), the remaining
+    // sum of a geometric series), is below the tolerance too
+    const settled = (e, h) => {
+      if (!ctx.designSpecSolve || e === 0) return true;
+      if (h.length < 2) return false;
+      const r = e / h[h.length - 2];
+      return r < 1 && e * r / (1 - r) < opt.tolerance;
+    };
     // the timing of each pass (proposal 0027, (b)), and where the loop is, for an OUT_OF_TIME
     const loopTiming = { blocks: seq.slice(), tears: tears.map(e => e.id), passes: [] };
     ctx.loops.push(loopTiming);
@@ -846,7 +857,7 @@ function solveCore(sys, fs, ctx = newRunContext("previous", null)) {
           : "material accumulates in the loop";
         throw stop(`: the recycle grows without bound (tear stream ${tears[after.indexOf(big)].id} carries more than ${GROWTH_LIMIT.toExponential(0)} times the feed): ${way}`, { netChangePass_kmol_h: net });
       }
-      if (err < opt.tolerance) { it++; break; }
+      if (err < opt.tolerance && settled(err, history)) { it++; break; }
       const xf = x.flat(), F = g.flat().map((v, i) => v - xf[i]);
       if (opt.method === "broyden") {
         const pt = broydenUpdate(xf, F);
