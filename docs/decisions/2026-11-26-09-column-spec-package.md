@@ -76,11 +76,17 @@ of 2 and bottoms of 4581 kmol/h, on PR. It is fed with Lab's converged plant's c
 | plant-vl-recovery | NO_CONVERGENCE | ok, 657 s |
 | plant-vl-R2.1273 | NO_CONVERGENCE | ok, 374 s |
 | plant-vl-boilup | NO_CONVERGENCE | NO_CONVERGENCE: on a Broyden guess the temperature steps reached 325.5 of 326.15 K and stopped (open) |
-| plant-vl-he5-nozones | NO_CONVERGENCE (column) | NO_CONVERGENCE in HE5, a temperature cross (Lab's M4, not a column fault) |
+| plant-vl-he5-nozones | NO_CONVERGENCE (column) | step 1 alone: NO_CONVERGENCE in HE5, a temperature cross; with main's minimum approach along the exchanger (#270) merged: ok, 31 iterations, 530 s |
 | plant-vl-share-warm (control) | ok | ok, 2 iterations, 13 s |
-| plant-vl and plant-vl-share-warm with PR + MHV1 | (not run) | refused before solving: methanol + nitrogen has no MHV1 set (the nitrogen sets of decision 2026-11-25-01, another worker) |
+| plant-vl and plant-vl-share-warm with PR + MHV1 | (not run) | before #268: refused, methanol + nitrogen had no MHV1 set. With #268 merged: neither reaches the column. plant-vl (the paper's start) stops in mixer MIXER1 ("PR: no physical root at 84.2 K, 100 kPa"); plant-vl-share-warm in compressor CP3 (PHASE_SPLIT: the feed at 300 K and 7000 kPa may split into two liquids). Not column faults; for Lab's move of the plant to PR + MHV1 |
 
 In every converged plant the condenser is at 53.0 C, with 38.5-38.6 kmol/h of vapour (a share of 0.84 %).
+
+**After steps 2-7 (2026-11-27), the same inputs again:** the same results, within a few seconds of run time or a few
+tens of seconds on the long plant runs: the column alone 7-12 s (38.536 kmol/h), with PR + MHV1 20 s (38.281), the
+paper's feed 3 s; plant-vl 436 s, -warm 50 s, -warm-direct 47 s, -nobypass 553 s, -purity 160 s, -recovery 867 s,
+-R2.1273 429 s, the control -share-warm 20 s, all at 53.0 C (53.005 for the control); plant-vl-boilup still not
+converged. With main merged (#270), plant-vl-he5-nozones also converges: 9 of the 10.
 
 ## The maintainer's answers (2026-11-26)
 
