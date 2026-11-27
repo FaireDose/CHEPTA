@@ -142,3 +142,11 @@ its path and its answer.
 As in the table: (1) M6, built in the pull request of this proposal; (2) condenser; (3) reboiler; (4) side streams;
 (5) the whole column; (6) pumparounds; (7) workbench and documents. Each with its reference rows, fixtures and tests,
 and CHEPTA-Lab's runs before and after where Lab has a case.
+
+## As built (2026-11-27)
+
+All steps were built in one pull request (the maintainer, 2026-11-26: "i want all steps in one go"). One correction to
+the table above: the partial condenser's and the reboiler's temperatures are not solved among the MESH equations cold.
+A stage at its bubble or dew point has a temperature that fixes its composition, so both take a purity's path (MESH
+from a restart profile, the outer loop cold), as the total condenser's does. Details and the checks:
+docs/decisions/2026-11-26-09-column-spec-package.md.

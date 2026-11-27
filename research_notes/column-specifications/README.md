@@ -123,7 +123,7 @@ Read: `src/units/columns/column.js`, `engine.js`, `specifications.js`, `two-liqu
 | reflux ratio | condenser | inside MESH | MESH | MESH | equation |
 | reflux flow | condenser | none | MESH | — | — |
 | distillate flow | condenser | inside MESH | MESH | MESH | equation |
-| condenser temperature (total, partial) | condenser | outer loop (stage_temperature) | MESH | MESH (Newton), outer (BP) | equation |
+| condenser temperature (total, partial) | condenser | outer loop (stage_temperature); after proposal 0029: MESH from a profile, outer cold | MESH | MESH (Newton), outer (BP) | equation |
 | condenser temperature (vapour + liquid) | condenser | inside MESH; cold start fixed by step 1 of 0029 | MESH (V1, U1 side streams) | input V (not T) | equation |
 | subcooling | condenser | none | not read | input (K at T - dT) | — |
 | vapour share / vapour flow | condenser | inside MESH (vapour + liquid) | MESH (ratio, flow) | input flow | — |
@@ -143,8 +143,11 @@ Read: `src/units/columns/column.js`, `engine.js`, `specifications.js`, `two-liqu
 
 ## What follows for CHEPTA (taken up in proposal 0029)
 
-1. Every specification that fixes a variable of the end it frees (a temperature, a flow, a ratio, a duty) can go
-   among the MESH equations at once and cold, as DWSIM's Newton solver does: it does not need the outer loop.
+1. Every specification that fixes a flow, a ratio or a duty of the end it frees can go among the MESH equations at
+   once and cold, as DWSIM's Newton solver does: it does not need the outer loop. (Corrected on 2026-11-27, after the
+   build: a temperature cannot. A stage at its bubble or dew point at the column's pressure has a temperature that fixes
+   its composition, so a temperature behaves as a purity: from a restart profile among the MESH equations, cold by the
+   outer loop. The vapour + liquid condenser's temperature is the exception, since its vapour share is free.)
 2. Composition specifications (purity, recovery, component flow) cannot be held by CHEPTA's continuation in the
    volatilities (CSB 13.5); they stay as proposal 0028 has them: in MESH from a profile, the outer loop cold.
 3. Specifications on another stage than an end (a stage temperature, a side draw's purity) widen the band of the Newton
@@ -153,3 +156,9 @@ Read: `src/units/columns/column.js`, `engine.js`, `specifications.js`, `two-liqu
 4. The cold start of a condenser given by its temperature: the continuation's first column, without separation, has
    no top vapour that is partly condensed at that temperature. A column at a vapour share first, then the
    temperature (CHEPTA-Lab M6; proposal 0029, step 1).
+
+## After the build (2026-11-27)
+
+Proposal 0029 was built in one go (the maintainer, 2026-11-26). The column "CHEPTA today" in the tables above is the
+state before it; what changed is in docs/models/columns.md, "The full set of column specifications", and in
+docs/decisions/2026-11-26-09-column-spec-package.md.
