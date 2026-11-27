@@ -20,6 +20,21 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   at 260 with the ethanol feed varied too. The maintainer agreed the three answers (2026-11-26): the two-specification message
   is kept for 0.6.3; the step rule is kept. Open: the convergence test of a design specification's solves for every
   flowsheet, as a separate, later change.
+- **The minimum approach along the whole exchanger, CHEPTA-Lab M4 "still open"**
+  (docs/decisions/2026-11-25-04-minimum-approach-along-exchanger.md): built: the smallest temperature difference is
+  taken along the whole exchanger (the zone boundaries, each side's bubble and dew points inside a zone, golden-section
+  refinement between the boundaries), not only at the zone boundaries; a cross is refused at its deepest point, named
+  "inside the exchanger". Lab's HE5 with the plant's streams 20 and 28 now solves at 93,483 kW (2 K at the cold side's
+  bubble point) instead of ending on a cross; checked against CoolProp (n-butane against boiling n-butane). Decided
+  (the maintainer, 2026-11-26): the refinement stays as it is. Open: split the area at the phase boundaries too, with
+  proposal 0013's next step. Note for Lab: drop the `zones: 10` workaround on HE5 and rerun the plant runs.
+- **Speed of flowsheet and design-specification runs, Lab's priority 1 for 0.6.3 and request 18** (proposal 0027;
+  docs/decisions/2026-11-25-02-solve-speed-proposal.md): every loop pass and design-specification evaluation starts
+  every rigorous column cold (74 % of the time is the columns' cold start); proposed: columns restarted from their last
+  answer and the two-liquid stage's failed old K-values forgotten (prototype: Lab's design-specification run 108 min to
+  16 min, the same answer within its tolerance), timing in the result, `solver.timeLimit_s` with an `OUT_OF_TIME` that
+  names the solve and the varied value. Accepted 2026-11-25 (the seven recommended answers); next: step 2, the build
+  of (a), (b), (c) and (e1), re-measured on Lab's plant; then (e2) as its own proposal.
 - **CHEPTA-Lab's requests 17 and 19, and the rest of 8, 13 and M2** (docs/decisions/2026-11-20-03-lab-requests-17-19.md):
   built: the strict range mode refuses a block outside every loop at once, and a loop that stops names its last pass's
   records outside their ranges (17); a purity every column exceeds is refused as exceeded, the scan going to 1e-6 of the
@@ -31,10 +46,21 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   measured ternary data (Xia 2004, Bezanehtak 2004, Xie 2005; ThermoML) show the paper's 18.5 mol % CO2 is not
   physical and CHEPTA's PR with k_ij (3.4 %) is too high (+77 % in solubility in a 1:1 solvent); PR + gE (MHV1) is
   within 9 % and gives about 2.6 % (without N2). Built: the data, the check, the test, four known issues and the method
-  rule. Decided (2026-11-25): nitrogen + water (IAPWS G7-04) and nitrogen + methanol MHV1 sets, by a separate worker;
+  rule. Decided (2026-11-25): nitrogen + water and nitrogen + methanol MHV1 sets, by a separate worker (built in #268:
+  nitrogen + water fitted to its ThermoML data, not IAPWS G7-04 as first written here; the maintainer, 2026-11-26);
   then Lab's separator and the methanol examples move to PR + gE (MHV1); Lab does not tune toward the paper's CO2
   recycle. Open: the maintainer's check of the transcribed rows (rule 4); the nitrogen sets (nitrogen + methanol has
   no ThermoML data: search the open literature).
+- **Nitrogen inside MHV1; pair coverage** (docs/decisions/2026-11-25-01-nitrogen-mhv1.md): built: N2 + methanol
+  fitted inside the rule to IUPAC SDS Vol. 10 (4 sets; PR 2.8 %, SRK 3.7 % in P, within the gate; ChemSep's k_ij 22-25 %),
+  N2 + water to its ThermoML articles (5.4 / 5.6 %, written with a fit-quality warning as a proposal); PR + gE (MHV1)
+  now runs Lab's separator with N2 (2.38 % CO2, 0.42 % H2 in the liquid); `validation/pair_coverage.mjs` prints the
+  sets of every gas + liquid pair. Decided (the maintainer, 2026-11-26, "ok with your recommendation"): the ThermoML
+  N2 + water set stays (it replaces the "IAPWS G7-04" of the 2026-11-25 wording); IUPAC SDS Vol. 10 and Boyer 1960 at
+  1 atm partial pressure confirmed; SRK + gE (MHV1) stays refused for CO2 + water; nothing for ethylene until a case
+  dissolves it in a liquid. The maintainer agrees to #268 as it stands (2026-11-26: "I will not check data now but
+  agree"). Open: the maintainer's check of the transcribed rows (rule 4), deferred: the SDS Vol. 10 rows (PDF pages 491,
+  225, 226, 227, 219) and the three ThermoML nitrogen + water files.
 - **Recycle solver safeguards, Lab's request 14** (docs/decisions/2026-11-14-08-recycle-safeguards.md): built: Broyden
   rejects a pass ten times worse (a step reduction, as COFE's line search), a finite-difference Jacobian on a stall
   (COFE's "Jacobian ... when required"); a block that fails in a loop stops it at once, named (the maintainer,
@@ -51,8 +77,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   profile solves them among its MESH equations (any condenser, VL and VLL; the outer loop cold and as the fallback); a
   clearly stable second-liquid verdict reused at a stage's Jacobian points, the full test kept at the answer; one
   secant step and the nearest solved point as the start in a design specification; the tolerance warning of a fraction
-  relative to its target. Open: three questions in the decision file (the MESH form for a start given by a person; the
-  default tolerance of a fraction; free side-draw rates).
+  relative to its target. The maintainer's answers (2026-11-26): the MESH form also for a start given by a person (as
+  built); free side-draw rates on the outer loop for now (proposal 0029). Open: the default tolerance of a fraction
+  target relative to the target, as a separate change.
 - **Proposal 0027 built: faster flowsheet and design-specification runs** (docs/decisions/2026-11-25-03-solve-speed-build.md;
   the proposal and the maintainer's seven answers: docs/decisions/2026-11-25-02-solve-speed-proposal.md): the rigorous
   columns restarted from their last answer (`solver.columnRestart`), the two-liquid stage's failed old K-values

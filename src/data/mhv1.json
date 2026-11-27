@@ -556,6 +556,132 @@
     ]
    },
    "quality_warning": "AAD 7 % in the Henry's law constant against IAPWS G7-04 (max 16.3 %), 2 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
+  },
+  {
+   "model": "SRK",
+   "i": "nitrogen",
+   "j": "water",
+   "NRTL": {
+    "a_ij": 13.6375,
+    "a_ji": 7.3712,
+    "b_ij": -58.57,
+    "b_ji": -1012.06,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "chapoy2004-nitrogen-water",
+    "muromachi2017-nitrogen-water"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of SRK to the 61 bubble pressures of 2 articles of the NIST TRC ThermoML Archive (each article the same total weight), 274.18-363.02 K, 915-7160 kPa: AAD 5.6 % in P (max 23.2 %), gas solubility at the measured T and P AAD 5.3 % (max 26.9 %), 0.0012 in y (max 0.0058, 24 points)",
+    "data": [
+     "validation/data/eos/thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json",
+     "validation/data/eos/thermoml_nitrogen_water_10-1021-je049869d.json"
+    ],
+    "conditions": "T = 274.18-363.02 K, P = 915-7160 kPa",
+    "T_range_K": [
+     274.18,
+     363.02
+    ]
+   },
+   "quality_warning": "AAD 5.6 % in P (max 23.2 %), 5.3 % in the gas solubility, 0.6 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-26 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md: the ThermoML fit confirmed)"
+  },
+  {
+   "model": "PR",
+   "i": "nitrogen",
+   "j": "water",
+   "NRTL": {
+    "a_ij": -1.7718,
+    "a_ji": 9.2255,
+    "b_ij": 504.58,
+    "b_ji": -1483.15,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "chapoy2004-nitrogen-water",
+    "muromachi2017-nitrogen-water"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the 61 bubble pressures of 2 articles of the NIST TRC ThermoML Archive (each article the same total weight), 274.18-363.02 K, 915-7160 kPa: AAD 5.4 % in P (max 23.2 %), gas solubility at the measured T and P AAD 5.1 % (max 26.8 %), 0.0003 in y (max 0.0007, 12 points)",
+    "data": [
+     "validation/data/eos/thermoml_nitrogen_water_10-1007-s10765-017-2310-y.json",
+     "validation/data/eos/thermoml_nitrogen_water_10-1021-je049869d.json"
+    ],
+    "conditions": "T = 274.18-363.02 K, P = 915-7160 kPa",
+    "T_range_K": [
+     274.18,
+     363.02
+    ]
+   },
+   "quality_warning": "AAD 5.4 % in P (max 23.2 %), 5.1 % in the gas solubility, 0.4 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-26 (docs/decisions/2026-11-25-01-nitrogen-mhv1.md: the ThermoML fit confirmed)"
+  },
+  {
+   "model": "SRK",
+   "i": "nitrogen",
+   "j": "methanol",
+   "NRTL": {
+    "a_ij": 4.3997,
+    "a_ji": -0.214,
+    "b_ij": 13.02,
+    "b_ji": 125.57,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "boyer1960-nitrogen-methanol",
+    "katayama1976-nitrogen-methanol",
+    "kretschmer1946-nitrogen-methanol",
+    "krichevskii1947-nitrogen-methanol"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of SRK to the 26 bubble pressures of 4 articles of the NIST TRC ThermoML Archive (each article the same total weight), 213.15-343.15 K, 101.325-19700 kPa: AAD 3.7 % in P (max 8.8 %), gas solubility at the measured T and P AAD 3.6 % (max 9 %)",
+    "data": [
+     "validation/data/eos/sds10_nitrogen_methanol_boyer1960.json",
+     "validation/data/eos/sds10_nitrogen_methanol_katayama1976.json",
+     "validation/data/eos/sds10_nitrogen_methanol_kretschmer1946.json",
+     "validation/data/eos/sds10_nitrogen_methanol_krichevskii1947.json"
+    ],
+    "conditions": "T = 213.15-343.15 K, P = 101.325-19700 kPa",
+    "T_range_K": [
+     213.15,
+     343.15
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "nitrogen",
+   "j": "methanol",
+   "NRTL": {
+    "a_ij": 4.3846,
+    "a_ji": -0.3887,
+    "b_ij": 10.44,
+    "b_ji": 167.12,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "boyer1960-nitrogen-methanol",
+    "katayama1976-nitrogen-methanol",
+    "kretschmer1946-nitrogen-methanol",
+    "krichevskii1947-nitrogen-methanol"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the 26 bubble pressures of 4 articles of the NIST TRC ThermoML Archive (each article the same total weight), 213.15-343.15 K, 101.325-19700 kPa: AAD 2.8 % in P (max 8.4 %), gas solubility at the measured T and P AAD 2.7 % (max 8.5 %)",
+    "data": [
+     "validation/data/eos/sds10_nitrogen_methanol_boyer1960.json",
+     "validation/data/eos/sds10_nitrogen_methanol_katayama1976.json",
+     "validation/data/eos/sds10_nitrogen_methanol_kretschmer1946.json",
+     "validation/data/eos/sds10_nitrogen_methanol_krichevskii1947.json"
+    ],
+    "conditions": "T = 213.15-343.15 K, P = 101.325-19700 kPa",
+    "T_range_K": [
+     213.15,
+     343.15
+    ]
+   }
   }
  ]
 }

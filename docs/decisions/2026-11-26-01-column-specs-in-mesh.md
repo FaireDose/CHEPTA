@@ -159,6 +159,15 @@ Where the time goes now (design specification, after): SCDS15 70 s, SCDS11 65 s,
 3. Side draws whose rate is to be found, and stage temperatures, stay on the outer loop. **Recommended: yes for now**:
    a free draw rate is one more unknown (a bordered system), a separate step if Lab needs it.
 
+## The maintainer's answers (2026-11-26, through the coordinator: "agree with all the other 6 points")
+
+1. The MESH form also for a `start` given by a person outside a flowsheet: **yes**. Already so in this build (a
+   profile of any origin; `tried` says "from the start profile given"), tested in test/columns-specs-in-mesh.test.js
+   (every case is solved from a profile given directly to the engine). Nothing more to build.
+2. The default tolerance of a fraction target relative to the target: **yes, as a separate change** (open item).
+3. Free side-draw rates stay on the outer loop for now: **yes**; worker I's proposal 0029 (the full column-specification
+   package) takes them up.
+
 ## Rules kept
 
 No existing test or validation data changed; new cases, fixtures and tests only. `npm run build` passes; `npm test` (main merged): 1857 tests, 1851 pass, 0 fail, 5 skipped, 1 todo (the UNIQUAC ternary azeotrope, as before).
