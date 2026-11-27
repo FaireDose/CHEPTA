@@ -1,6 +1,6 @@
 # 0029: The full set of column specifications (condenser, reboiler, side streams, the whole column)
 
-- **Status:** In discussion (step 1 built; the other steps wait for the maintainer's answers)
+- **Status:** Accepted (the maintainer, 2026-11-26: "all steps in one go"; the other recommendations as proposed); built, see docs/decisions/2026-11-26-09-column-spec-package.md
 - **Author(s):** Claude (coding agent), for the maintainer
 - **Discussion:** the maintainer, 2026-11-26: "About the condenser, before that have a quick research on more
   possibilities as what we can put as specs inside the column and here I mean to take it together with reboiler and

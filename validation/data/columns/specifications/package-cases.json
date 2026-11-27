@@ -1,0 +1,525 @@
+{
+ "chepta_column_specification_cases": 1,
+ "about": "Proposal 0029 (the full set of column specifications; the maintainer, 2026-11-26): one case per new specification or feature, on the benzene + toluene column of case M3 (10 stages, feed on stage 5, Peng-Robinson). Solved by validation/python/reference_mesh_package.py (fixture validation/fixtures/column_spec_package.json) and by the engine in test/columns-spec-package.test.js. The values are this project's choices of inputs, not data.",
+ "tolerances": {
+  "numerical": {
+   "engine_against_reference": {
+    "flows_relative": 2e-05,
+    "mole_fractions_absolute": 2e-06,
+    "T_K_absolute": 0.0001,
+    "adjusted_relative": 2e-05,
+    "why": "The engine meets a design specification to a scaled residual of 1e-6 (src/units/columns/specifications.js, SPEC_TOLERANCE: for a purity x about 1e-6 x (1 - x), for a flow a relative 1e-6), the reference to 1e-12, so the two columns differ by the engine's tolerance on the specification times the column's sensitivity to it; these limits are about ten times the largest difference seen when the cases were written (2026-11-11)."
+   }
+  }
+ },
+ "cases": [
+  {
+   "id": "P1-reflux-flow",
+   "title": "A reflux flow and the distillate flow (proposal 0029, step 2)",
+   "method_choice": "Peng-Robinson for both phases, as cases B2 and M3 (benzene + toluene: hydrocarbons, docs/METHOD_SELECTION.md rules 2 and 6).",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   },
+   "specs": [
+    {
+     "kind": "reflux_flow_mol_s",
+     "value": 18.0
+    },
+    {
+     "kind": "distillate_flow_mol_s",
+     "value": 5.8
+    }
+   ]
+  },
+  {
+   "id": "P2-distillate-to-feed-subcooled",
+   "title": "The distillate as a share of the feed, a total condenser subcooled by 8 K (step 2)",
+   "method_choice": "Peng-Robinson for both phases, as cases B2 and M3 (benzene + toluene: hydrocarbons, docs/METHOD_SELECTION.md rules 2 and 6).",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 3.0
+    },
+    {
+     "kind": "distillate_to_feed",
+     "value": 0.5
+    }
+   ],
+   "subcooling_K": 8.0
+  },
+  {
+   "id": "P3-partial-condenser-temperature",
+   "title": "A partial condenser's temperature (step 2): a stage temperature of stage 1",
+   "method_choice": "Peng-Robinson for both phases, as cases B2 and M3 (benzene + toluene: hydrocarbons, docs/METHOD_SELECTION.md rules 2 and 6).",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "partial",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 3.0
+    },
+    {
+     "kind": "stage_temperature",
+     "stage": 1,
+     "value": 358.6
+    }
+   ]
+  },
+  {
+   "id": "P4-reboiler-temperature",
+   "title": "The reboiler's temperature (step 3): a stage temperature of stage 10",
+   "method_choice": "Peng-Robinson for both phases, as cases B2 and M3 (benzene + toluene: hydrocarbons, docs/METHOD_SELECTION.md rules 2 and 6).",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 3.0
+    },
+    {
+     "kind": "stage_temperature",
+     "stage": 10,
+     "value": 383.5
+    }
+   ]
+  },
+  {
+   "id": "P5-stage-duty-share-draw",
+   "title": "A side heater on stage 7 and a liquid draw of 10 % of stage 3's liquid (step 4)",
+   "method_choice": "Peng-Robinson for both phases, as cases B2 and M3 (benzene + toluene: hydrocarbons, docs/METHOD_SELECTION.md rules 2 and 6).",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 3.0
+    },
+    {
+     "kind": "distillate_flow_mol_s",
+     "value": 5.6
+    }
+   ],
+   "stage_duties": [
+    {
+     "stage": 7,
+     "Q_W": 50000.0
+    }
+   ],
+   "draws": [
+    {
+     "stage": 3,
+     "phase": "liquid",
+     "share": 0.1,
+     "start_rate_mol_s": 1.5
+    }
+   ]
+  },
+  {
+   "id": "P6-pumparound-duty",
+   "title": "A pumparound from stage 6 to stage 3, 8 mol/s, cooled by 80 kW (step 6)",
+   "method_choice": "Peng-Robinson for both phases, as cases B2 and M3 (benzene + toluene: hydrocarbons, docs/METHOD_SELECTION.md rules 2 and 6).",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 3.0
+    },
+    {
+     "kind": "distillate_flow_mol_s",
+     "value": 5.8
+    }
+   ],
+   "pumparounds": [
+    {
+     "from": 6,
+     "to": 3,
+     "rate_mol_s": 8.0,
+     "Q_W": -80000.0
+    }
+   ]
+  },
+  {
+   "id": "P7-pumparound-return-temperature",
+   "title": "A pumparound from stage 7 to stage 4, 6 mol/s, returned at 350 K (step 6)",
+   "method_choice": "Peng-Robinson for both phases, as cases B2 and M3 (benzene + toluene: hydrocarbons, docs/METHOD_SELECTION.md rules 2 and 6).",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 3.0
+    },
+    {
+     "kind": "distillate_flow_mol_s",
+     "value": 5.8
+    }
+   ],
+   "pumparounds": [
+    {
+     "from": 7,
+     "to": 4,
+     "rate_mol_s": 6.0,
+     "return_T_K": 350.0
+    }
+   ]
+  },
+  {
+   "id": "P8-flow-ratio-component-ratio",
+   "title": "The reflux over the feed and the ratio of toluene to benzene in the bottoms (step 5)",
+   "method_choice": "Peng-Robinson for both phases, as cases B2 and M3 (benzene + toluene: hydrocarbons, docs/METHOD_SELECTION.md rules 2 and 6).",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   },
+   "specs": [
+    {
+     "kind": "flow_ratio",
+     "numerator": {
+      "flow": "reflux"
+     },
+     "denominator": {
+      "flow": "feed"
+     },
+     "value": 1.6
+    },
+    {
+     "kind": "component_ratio",
+     "product": "bottoms",
+     "component": "toluene",
+     "relative_to": "benzene",
+     "value": 15.0
+    }
+   ]
+  },
+  {
+   "id": "P9-draw-rate-found",
+   "title": "A liquid draw from stage 8 whose rate is found for 72 % toluene in it (step 4)",
+   "method_choice": "Peng-Robinson for both phases, as cases B2 and M3 (benzene + toluene: hydrocarbons, docs/METHOD_SELECTION.md rules 2 and 6).",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 3.0
+    },
+    {
+     "kind": "distillate_flow_mol_s",
+     "value": 5.2
+    },
+    {
+     "kind": "purity",
+     "product": "side_draw",
+     "draw": 1,
+     "component": "toluene",
+     "value": 0.72
+    }
+   ],
+   "draws": [
+    {
+     "stage": 8,
+     "phase": "liquid",
+     "start_rate_mol_s": 1.0
+    }
+   ],
+   "bracket_mol_s": [
+    0.3,
+    3.0
+   ]
+  },
+  {
+   "id": "P10-vapour-share-draw",
+   "title": "A vapour draw of 5 % of stage 8's vapour, with the bottoms flow (step 4)",
+   "method_choice": "Peng-Robinson for both phases, as cases B2 and M3 (benzene + toluene: hydrocarbons, docs/METHOD_SELECTION.md rules 2 and 6).",
+   "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+   },
+   "components": [
+    "benzene",
+    "toluene"
+   ],
+   "pressure_kPa": 111.4575,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 5,
+     "flow_mol_s": 11.7471,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 5.8
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 3.0
+    },
+    {
+     "kind": "bottoms_flow_mol_s",
+     "value": 5.5
+    }
+   ],
+   "draws": [
+    {
+     "stage": 8,
+     "phase": "vapour",
+     "share": 0.05,
+     "start_rate_mol_s": 1.0
+    }
+   ]
+  }
+ ]
+}

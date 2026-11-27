@@ -8,6 +8,11 @@
  * carry `results`, the stream table of the flash as it was at save time, so the mass balance
  * can be read without CHEPTA (it is a record and is never read back into a calculation).
  *
+ * Format 12 is the lowest format that holds the full set of column specifications (proposal 0029, 2026-11-26): a column
+ * block with reflux_kmol_h, distillate_to_feed, reboiler_T_K, subcooling_K, pumparounds, a total or partial condenser's
+ * condenser_T_K, stage_duties_kW on a distillation column, a side draw given by its share, or a design specification
+ * of kind component_ratio or flow_ratio. A format-11 reader refuses such a key as unknown without saying why, so the
+ * format is raised and the older version says "format 12". It is written only when a column uses one.
  * Format 10 is the lowest format that holds design specifications (proposal 0022; CHEPTA-Lab's request 15, 2026-11-14): a
  * flowsheet's `designSpecs` (vary one input of a block within bounds to meet a target). A format-9 reader refuses the key as
  * unknown without saying why, so the format is raised and the older version says "format 10". It is written only when a
@@ -72,7 +77,7 @@ import { checkUserData } from "../thermo/user-data.js";
 /** The newest format this library writes; it reads this one and every older one. Format 3 adds the user's own data
  *  (proposal 0012) and is written only when there is some; format 2 adds the flowsheet (proposal 0006, step 4); a
  *  format 1 file is a format 2 file without it. */
-export const PROJECT_FORMAT = 11;
+export const PROJECT_FORMAT = 12;
 /** The flowsheet block types that need format 4 (proposal 0013). */
 const FORMAT_4_BLOCKS = ["hx", "valve", "pump", "compressor", "expander"];
 /** The flowsheet block types that need format 8 (proposal 0020). */
@@ -96,6 +101,20 @@ const hasDesignSpecs = fs => Array.isArray(fs?.designSpecs) && fs.designSpecs.le
 const VL_KEYS = ["condenser_T_K", "vapour_distillate_kmol_h", "vapour_share"];
 const hasVapourLiquidCondenser = fs => !!fs?.blocks?.some(b => b?.type === "column" && (b.spec?.condenser === "vapour_liquid" || VL_KEYS.some(k => b.spec?.[k] != null)))
   || !!fs?.streams?.some(s => typeof s?.from === "string" && s.from.endsWith(".vapour_distillate"));
+
+/** Does a flowsheet document have a column with a key of proposal 0029 (the full set of column specifications)? Such a
+ *  project needs format 12. */
+const SPEC_0029_KEYS = ["reflux_kmol_h", "distillate_to_feed", "reboiler_T_K", "subcooling_K", "pumparounds"];
+const usesColumnSpecs0029 = fs => !!fs?.blocks?.some(b => {
+  const sp = b?.type === "column" ? b.spec ?? {} : null;
+  if (!sp) return false;
+  const distillation = (sp.configuration ?? "distillation") === "distillation";
+  return SPEC_0029_KEYS.some(k => sp[k] != null)
+    || (sp.condenser_T_K != null && sp.condenser !== "vapour_liquid")
+    || (distillation && Array.isArray(sp.stage_duties_kW) && sp.stage_duties_kW.length > 0)
+    || (Array.isArray(sp.side_draws) && sp.side_draws.some(d => d?.share != null))
+    || (Array.isArray(sp.specifications) && sp.specifications.some(d => ["component_ratio", "flow_ratio"].includes(d?.kind)));
+});
 
 /** The keys of `workbench`, in the order they are written. */
 const KEYS = ["view", "diagram", "model", "eos", "mixing", "vapour", "P_kPa", "T_K", "units", "basis", "inputs", "z", "flash", "sets", "prefer",
@@ -143,7 +162,8 @@ export function projectOf(state, { version = "", results, now = new Date() } = {
   const needs9 = splitsByFlow(flowsheet) || splitsByFlow(state.reactor) || splitsByFlow(state.column);
   const needs10 = hasDesignSpecs(flowsheet) || hasDesignSpecs(state.reactor) || hasDesignSpecs(state.column);
   const needs11 = hasVapourLiquidCondenser(flowsheet) || hasVapourLiquidCondenser(state.reactor) || hasVapourLiquidCondenser(state.column);
-  const doc = { fugacity_project: needs11 ? 11 : needs10 ? 10 : needs9 ? 9 : needs8 ? 8 : needs7 ? 7 : needs6 ? 6 : w.chart ? 5 : needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
+  const needs12 = usesColumnSpecs0029(flowsheet) || usesColumnSpecs0029(state.reactor) || usesColumnSpecs0029(state.column);
+  const doc = { fugacity_project: needs12 ? 12 : needs11 ? 11 : needs10 ? 10 : needs9 ? 9 : needs8 ? 8 : needs7 ? 7 : needs6 ? 6 : w.chart ? 5 : needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
   if (state.title) doc.title = String(state.title);
   doc.workbench = w;
   if (flowsheet) doc.flowsheet = flowsheet;
@@ -203,6 +223,7 @@ export function readProject(input) {
   if ((splitsByFlow(doc.flowsheet) || splitsByFlow(doc.reactor) || splitsByFlow(doc.column)) && f < 9) throw new Error(`A splitter given by flow (flow_kmol_h or flow_kg_h) needs format 9 (this file says format ${f}).`);
   if ((hasDesignSpecs(doc.flowsheet) || hasDesignSpecs(doc.reactor) || hasDesignSpecs(doc.column)) && f < 10) throw new Error(`Design specifications (flowsheet.designSpecs) need format 10 (this file says format ${f}).`);
   if ((hasVapourLiquidCondenser(doc.flowsheet) || hasVapourLiquidCondenser(doc.reactor) || hasVapourLiquidCondenser(doc.column)) && f < 11) throw new Error(`The column's vapour + liquid condenser (condenser "vapour_liquid", its vapour distillate) needs format 11 (this file says format ${f}).`);
+  if ((usesColumnSpecs0029(doc.flowsheet) || usesColumnSpecs0029(doc.reactor) || usesColumnSpecs0029(doc.column)) && f < 12) throw new Error(`The column's specifications of proposal 0029 (a reflux flow, the distillate's share of the feed, an end temperature, subcooling, pumparounds, side heaters, a draw by share, a ratio of two components or flows) need format 12 (this file says format ${f}).`);
   if (w.chart != null && f < 5) throw new Error(`workbench.chart needs format 5 (this file says format ${f}).`);
   if ((hasBlock(doc.flowsheet, FORMAT_6_BLOCKS) || hasBlock(doc.reactor, FORMAT_6_BLOCKS)) && f < 6) throw new Error(`The flowsheet's column, crystallizer, evaporator, extraction and membrane blocks need format 6 (this file says format ${f}).`);
   if (doc.column != null && f < 6) throw new Error(`The Column workspace needs format 6 (this file says format ${f}).`);

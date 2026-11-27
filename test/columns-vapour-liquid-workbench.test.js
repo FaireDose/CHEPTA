@@ -121,7 +121,8 @@ test("Lab's methanol column with the condenser at 53 C from the workbench: solve
 
   // the project: format 11, read back to the same column, which solves to the same products
   const doc = projectOf(initialState({ components: [], flowsheet: fs }), { version: "test", now: new Date("2026-11-19T00:00:00Z") });
-  assert.equal(PROJECT_FORMAT, 11);
+  // (format 12 added by proposal 0029, 2026-11-26, for the column keys of its package; this feature is still written as format 11)
+  assert.ok(PROJECT_FORMAT >= 11);
   assert.equal(doc.fugacity_project, 11);
   const back = stateFromProject(readProject(JSON.parse(JSON.stringify(doc)))).flowsheet;
   assert.deepEqual(col(back), col(fs));

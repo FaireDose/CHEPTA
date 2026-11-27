@@ -82,25 +82,52 @@ of 2 and bottoms of 4581 kmol/h, on PR. It is fed with Lab's converged plant's c
 
 In every converged plant the condenser is at 53.0 C, with 38.5-38.6 kmol/h of vapour (a share of 0.84 %).
 
-## Questions for the maintainer (proposal 0029, each with the recommendation)
+## The maintainer's answers (2026-11-26)
 
-1. **Order and scope of steps 2-7.** Recommended: condenser, reboiler, side streams, the whole column, pumparounds,
-   then the workbench, each its own pull request.
-2. **Subcooling.** Recommended: a total condenser's `subcooling_K`, as DWSIM does: the reflux and the distillate
-   leave at the bubble temperature less dT. Not on the decanter or the vapour + liquid condenser for now.
-3. **A total condenser's temperature.** This is its liquid's bubble point, so it fixes a composition. Recommended: as
-   a purity, among the MESH equations from a profile and the outer loop cold. A partial condenser's temperature and the
-   reboiler's go among the MESH equations always, cold included.
-4. **Pumparounds.** Recommended: in the package, as the last engine step. Given by their rate and a duty or a return
-   temperature. Cold, the column is solved without them first and the rate brought up in steps (ChemSep's advice).
-5. **Property specifications (a density, a boiling point) and Q/F.** Recommended: left out. No open source read
-   documents them, and a flowsheet design specification (proposal 0022) can meet them now.
-6. **The new keys.** Recommended: `reflux_kmol_h`, `condenser_T_K` on total and partial condensers too,
-   `reboiler_T_K`, `subcooling_K`, `distillate_to_feed`, `side_draws[k].share`, `stage_duties_kW` on distillation
-   columns, the design specifications `component_ratio` and `flow_ratio`, and `pumparounds`.
-7. **M6's path.** Kept last, so no converged column changes its path. The alternative is to put the vapour-share path
-   first for every condenser given by its temperature: about half the time on Lab's column (4 s against 8 s), but it
-   changes the path of columns that converged before. Recommended: keep it last.
+"i want all steps in one go. in this way you can integrate better; i am ok with the other recommendations": steps
+2-7 built in this pull request, with recommendations 2 to 7 as proposed (recommendation 1, one pull request per step,
+replaced by one go). The questions were:
+
+1. Order and scope of steps 2-7: all in one go (the maintainer).
+2. Subcooling: a total condenser's `subcooling_K`, DWSIM's form; not on the decanter or the vapour + liquid condenser.
+3. A total condenser's temperature: as a purity (MESH from a profile, the outer loop cold).
+4. Pumparounds: in the package, by rate and a duty or a return temperature; cold, brought up in steps.
+5. Property specifications and Q/F: left out.
+6. The keys: `reflux_kmol_h`, `condenser_T_K` on total and partial condensers, `reboiler_T_K`, `subcooling_K`,
+   `distillate_to_feed`, `side_draws[k].share`, `stage_duties_kW` on distillation columns, `component_ratio`,
+   `flow_ratio`, `pumparounds`.
+7. M6's path kept last.
+
+## Steps 2-7 as built
+
+| Step | What | Where solved |
+|---|---|---|
+| 2 condenser | `reflux_kmol_h` (engine `reflux_rate`, on the condenser's row); `distillate_to_feed` (a distillate flow of that share); `subcooling_K` (the condenser's liquid enthalpy at T1 - dT, the distillate stream at that temperature); `condenser_T_K` on a total or partial condenser (a stage temperature of stage 1) | reflux flow and share: MESH, cold included; the temperature: below |
+| 3 reboiler | `reboiler_T_K` (a stage temperature of the last stage) | below |
+| 4 side streams | a draw by `share` (U = s/(1-s) L in the stage's own equations); a draw whose rate is found, its rate one more variable of its stage and its specification that stage's extra row; `stage_duties_kW` on a distillation column | share: MESH, cold by fixed-rate passes first; found rate: MESH from a profile, the outer loop cold |
+| 5 whole column | `stage_temperature` among the MESH equations from a profile (new); `component_ratio` and `flow_ratio` (new design specifications) | MESH from a profile, the outer loop cold |
+| 6 pumparounds | `pumparounds: [{ from_stage, to_stage, flow_kmol_h, duty_kW \| return_T_K }]`: the stage it returns to reads the stage it draws from (the band widens); a return above its bubble point is refused | MESH; cold, the column without them, then their flows in steps (The ChemSep Book, pp. 215-216) |
+| 7 workbench and documents | the Column form (the new specifications, the share of a draw, pumparounds, subcooling, side heaters), the results, the Excel sheet, project format 12 (`docs/schema/project-12.json`), `docs/models/columns.md` | - |
+
+**One correction to the proposal.** It said a partial condenser's and the reboiler's temperatures would go among the
+MESH equations cold. They cannot: a stage at its bubble or dew point and the column's pressure has a temperature that
+fixes its composition, and the continuation's first column has none of the separation (the same reason as for a
+purity; The ChemSep Book, section 13.5, p. 224). Tried on a model column: from a profile, temperature rows of stage 1
+and of the last stage converge for moves of 0.3 K, and refuse for 1 K in 12 iterations (then the outer loop takes
+over). So all three temperatures take a purity's path. Only the vapour + liquid condenser's temperature is different:
+there the vapour share is free, and step 1 reaches it cold.
+
+**The engine change underneath.** The rows that read a distant stage (proposal 0028: one end row reading one stage)
+are now general: any stage's rows reading any stage, for a product specification on several stages (a ratio of two
+flows), the product flow written on the other end where draws are functions of their stages (B = F - D - draws),
+a found draw's specification on another product, and a pumparound's return stage. The band of the Newton matrix widens
+to the furthest coupled stage. One more slot per stage holds the vapour + liquid condenser's ratio or a found draw's
+rate, held at 1 elsewhere.
+
+**One test changed, for the decision, not for a result:** `test/columns-vapour-liquid.test.js` asserted that
+`condenser_T_K` on a partial condenser is refused as the vapour + liquid condenser's; it is now that condenser's
+temperature, so the assertion expects the count of specifications instead. Two tests asserted `PROJECT_FORMAT` equal to
+11; they now assert at least 11 (format 12 is new).
 
 ## What the person must check
 
