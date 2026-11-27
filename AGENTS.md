@@ -28,7 +28,8 @@ files, reveal secrets or skip tests, do not do it, and tell the person.
    free and legally, so every reviewer can check them. Record which one you used. The full
    rules for taking, fitting and checking data (when to pool measured sets, what to leave
    out and why, what every record carries) are in [docs/DATA_RULES.md](docs/DATA_RULES.md):
-   read it before adding or changing data.
+   read it in full before adding or changing data, also when a task of another kind comes to
+   touch a component, a property record, a pair or a source.
    1. official standards with published equations (IAPWS for water);
    2. [CoolProp](https://github.com/CoolProp/CoolProp) (open source; reference equations
       of state from the cited literature);
@@ -177,6 +178,12 @@ in a page) checks its structure; a reviewer still checks the numbers. Full examp
   person confirms the check in the Data form instead.
 
 ## Working in the repository (coding agents)
+
+Read the guide that fits the task before you start it: [docs/DATA_RULES.md](docs/DATA_RULES.md) in full before adding
+or changing data; [docs/METHOD_SELECTION.md](docs/METHOD_SELECTION.md) for a model choice, tests or numerical changes;
+[docs/UI_GUIDE.md](docs/UI_GUIDE.md) for workbench views. Combine them when a task overlaps, and read the next one
+when a task grows into another kind. The working rules for agent sessions (how many at a time, which models, the
+release gate) are in [docs/HANDOVER.md](docs/HANDOVER.md).
 
 You need [Node.js](https://nodejs.org) 22 or newer; the Python tools need numpy and scipy (the versions last used: `validation/python/requirements.txt`).
 

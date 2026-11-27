@@ -1,0 +1,78 @@
+{
+  "capability": "solve_flowsheet",
+  "input": {
+    "flowsheet": {
+      "components": [
+        "carbon-dioxide",
+        "methanol",
+        "water"
+      ],
+      "thermo": {
+        "model": "PR"
+      },
+      "blocks": [
+        {
+          "id": "F0",
+          "type": "feed",
+          "spec": {
+            "flow_kmol_h": {
+              "carbon-dioxide": 22.230147,
+              "methanol": 4559.835619,
+              "water": 4585.826986
+            },
+            "T_K": 356.3464,
+            "P_kPa": 100
+          }
+        },
+        {
+          "id": "COLUMN",
+          "type": "column",
+          "spec": {
+            "mode": "rigorous",
+            "stages": 30,
+            "feed_stage": 24,
+            "P_kPa": 100,
+            "condenser": "vapour_liquid",
+            "condenser_T_K": 326.15,
+            "reflux_ratio": 2,
+            "bottoms_kmol_h": 4581
+          }
+        },
+        {
+          "id": "P0",
+          "type": "product"
+        },
+        {
+          "id": "P1",
+          "type": "product"
+        },
+        {
+          "id": "P2",
+          "type": "product"
+        }
+      ],
+      "streams": [
+        {
+          "id": "in0-29",
+          "from": "F0.out",
+          "to": "COLUMN.in"
+        },
+        {
+          "id": "31-MEOH",
+          "from": "COLUMN.distillate",
+          "to": "P0.in"
+        },
+        {
+          "id": "32",
+          "from": "COLUMN.vapour_distillate",
+          "to": "P1.in"
+        },
+        {
+          "id": "30-WATER",
+          "from": "COLUMN.bottoms",
+          "to": "P2.in"
+        }
+      ]
+    }
+  }
+}

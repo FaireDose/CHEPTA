@@ -18,3 +18,10 @@ Built here from a Lab input (not a Lab file):
 | File | Built from | Fault on main 415da41 |
 |---|---|---|
 | plant62-R-bottoms-col5-14stages-SCDS5-iteration5.request.json | Lab's cases/ethyl-acetate-piotrowski-2021/results-chepta-main-415da41/plant62-R-bottoms-col5-14stages.request.json, run on this branch: column 5 (absorber, 14 stages, VLL) alone, with the two inlets (S27, S6) it had when the plant stopped in it at loop iteration 5, as CHEPTA computed them | `NO_CONVERGENCE` (request 8); the same inlets converge with 8, 11 and 13 stages, and with one liquid on 14 |
+
+Added for proposal 0029, step 1 (CHEPTA-Lab M6; Lab's main at commit 8b8b64f, read 2026-11-26), copied unchanged;
+`test/columns-condenser-temperature.test.js` runs it:
+
+| File | Lab case, run | Fault on main 415da41 |
+|---|---|---|
+| vl-column-a6feed-T53.request.json | cases/methanol-co2-campos-2022/results-chepta-main-415da41: the methanol column alone (30 stages, feed 24, 100 kPa, condenser "vapour_liquid" at 326.15 K, reflux ratio 2, bottoms 4581 kmol/h, PR), fed with stream 29-col of Lab's converged plant (CO2 0.2425 %) | `NO_CONVERGENCE`: Newton stalled, the continuation stopped at 0 %; the message spoke of "a large vapour share" where the share is 0.8 % (M6) |

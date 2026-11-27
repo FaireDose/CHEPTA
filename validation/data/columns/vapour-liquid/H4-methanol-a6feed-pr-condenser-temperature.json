@@ -1,0 +1,56 @@
+{
+  "chepta_column_case": 1,
+  "id": "H4-methanol-a6feed-pr-condenser-temperature",
+  "title": "CHEPTA-Lab's methanol column fed with its converged plant's column feed (CO2 0.2425 %), the vapour + liquid condenser at 53 C, Peng-Robinson",
+  "purpose": "Proposal 0029, step 1 (CHEPTA-Lab M6, 2026-11-26): the column of Lab's request vl-column-a6feed-T53 (CHEPTA-Lab, cases/methanol-co2-campos-2022/results-chepta-main-415da41/vl-column-a6feed-T53.request.json, read 2026-11-26): 30 stages, feed on stage 24, 100 kPa, condenser \"vapour_liquid\" at 326.15 K, reflux ratio 2 (L1 / U1), bottoms 4581 kmol/h, fed with stream 29-col of Lab's converged plant-a6. Before step 1 the engine did not converge on it from its cold starts (NO_CONVERGENCE), while the same column given by its vapour share converged. The engine's answer is checked against this reference's own solution of the MESH equations (started from the engine's profile, perturbed), and against the reference's column at the vapour share of that answer, which must be the same column.",
+  "method_choice": "Peng-Robinson for both phases: a polar liquid with light gases at 100 kPa (docs/METHOD_SELECTION.md); Lab's own choice, kept as in its request file",
+  "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+  },
+  "components": [
+    "carbon-dioxide",
+    "methanol",
+    "water"
+  ],
+  "pressure_kPa": 100.0,
+  "column": {
+    "configuration": "distillation",
+    "stages": 30,
+    "condenser": "vapour_liquid",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 24,
+      "flow_kmol_h": {
+        "carbon-dioxide": 22.230147,
+        "methanol": 4559.835619,
+        "water": 4585.826986
+      },
+      "T_K": 356.3464
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 2.0
+    },
+    {
+      "kind": "bottoms_flow_kmol_h",
+      "value": 4581.0
+    },
+    {
+      "kind": "condenser_T_K",
+      "value": 326.15
+    }
+  ],
+  "tolerances": {
+    "engine_against_reference": {
+      "flows_relative": 1e-06,
+      "mole_fractions_absolute": 1e-07,
+      "T_K_absolute": 1e-05,
+      "duties_relative": 1e-06,
+      "why": "As case H3 (the same two Peng-Robinson implementations and the solvers' convergence)."
+    }
+  }
+}
